@@ -1,0 +1,324 @@
+﻿@page "{Id?}"
+@model IdentityServerCenter.AddOrUpdateUserModel
+
+@{
+    var content = string.IsNullOrEmpty(Model.Id) ? "新建用户" : $"编辑[{Model.ApplicationUser.UserName}]";
+}
+
+@{
+    ViewData["Title"] = content;
+}
+
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">主页</a></li>
+        <li class="breadcrumb-item"><a href="/UserPage/UserManagerPages/Index">用户</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@content</li>
+    </ol>
+</nav>
+
+
+<div id="app">
+
+    <el-page-header @@back="goBack" content="@content">
+    </el-page-header>
+    <hr />
+
+    @{
+        IdentityServerCenter.ViewModels.CreateOrUpdateUserViewModel addOrUpdateUserViewModel = null;
+        if (!string.IsNullOrEmpty(Model.Id))
+        {
+            addOrUpdateUserViewModel = new IdentityServerCenter.ViewModels.CreateOrUpdateUserViewModel
+            {
+                Id = Model.ApplicationUser.Id,
+                Name = Model.ApplicationUser.Name,
+                Password = Model.ApplicationUser.Password,
+                UserName = Model.ApplicationUser.UserName
+            };
+        }
+    }
+
+
+
+    <el-tabs tab-position="left">
+        <el-tab-pane label="基本信息">
+            <div>
+                <el-form ref="form" label-width="150px" method="post" action="/UserPage/UserManagerPages/AddOrUpdateUser?handler=CreateOrUpdateUser">
+                    @Html.AntiForgeryToken()
+
+                    <el-form-item label="">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="@addOrUpdateUserViewModel.Id" />
+                        <span asp-validation-for="@addOrUpdateUserViewModel.Id" class="text-danger"></span>
+                    </el-form-item>
+
+                    <el-form-item label="用户名(登录账号)">
+                        <input asp-for="@addOrUpdateUserViewModel.UserName" class="form-control" />
+                        <span asp-validation-for="@addOrUpdateUserViewModel.UserName" class="text-danger"></span>
+                    </el-form-item>
+
+                    <el-form-item label="姓名">
+                        <input asp-for="@addOrUpdateUserViewModel.Name" class="form-control" />
+                        <span asp-validation-for="@addOrUpdateUserViewModel.Name" class="text-danger"></span>
+                    </el-form-item>
+
+                    <el-form-item label="密码">
+                        <input asp-for="@addOrUpdateUserViewModel.Password" class="form-control" />
+                        <span asp-validation-for="@addOrUpdateUserViewModel.Password" class="text-danger"></span>
+                    </el-form-item>
+
+
+
+                    <el-form-item>
+                        @{ var btnText = string.IsNullOrEmpty(Model.Id) ? "创建账号" : "修改";}
+                        <input type="submit" value="@btnText" class="btn btn-primary" />
+                        <button type="button" class="btn btn-dark" @@click="goBack">取消</button>
+                    </el-form-item>
+                </el-form>
+            </div>
+        </el-tab-pane>
+
+        @{
+            string showAllRolesJsonString = "[]";
+            string userRolesJsonString = "[]";
+        }
+
+        @if (!string.IsNullOrEmpty(Model.Id))
+        {
+            <el-tab-pane label="角色分配">
+                <template>
+                    <el-transfer v-model="selectedRoles"
+                                 :data="roles"
+                                 :titles="['全部角色', '当前拥有的角色']"
+                                 @@change="onChange">
+                    </el-transfer>
+                </template>
+
+                @*改变用户角色*@
+                @{
+                    var allRoles = await RoleManager.Roles.ToListAsync();
+                    var showAllRoles = allRoles.Select(e => new { key = e.Name, label = e.Name });
+                    showAllRolesJsonString = System.Text.Json.JsonSerializer.Serialize(showAllRoles);
+
+                    var user = await UserManager.FindByIdAsync(Model.Id?.ToString());
+                    var userRoles = await UserManager.GetRolesAsync(user);
+                    userRolesJsonString = System.Text.Json.JsonSerializer.Serialize(userRoles);
+
+                    ChangeUserRolesViewModel changeUserRolesViewModel = new ChangeUserRolesViewModel
+                    {
+                        UserId = Model.ApplicationUser.Id,
+                        Roles = userRoles.ToList()
+                    };
+                }
+                <form method="post" asp-page-handler="ChangeUserRoles" id="ChangeUserRolesForm">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="@changeUserRolesViewModel.UserId" />
+                    <input type="hidden" asp-for="@changeUserRolesViewModel.Roles" value="@string.Join(",",changeUserRolesViewModel.Roles)" />
+                </form>
+
+            </el-tab-pane>
+        }
+
+        @if (!string.IsNullOrEmpty(Model.Id))
+        {
+            string[] valueTypes ={
+                                    System.Security.Claims.ClaimValueTypes.String,
+                                    System.Security.Claims.ClaimValueTypes.Boolean,
+                                    System.Security.Claims.ClaimValueTypes.Integer,
+                                    System.Security.Claims.ClaimValueTypes.DateTime,
+                                };
+
+            var dto = new ApplicationIdentityUserClaim
+            {
+                UserId = Model.Id,
+                ClaimValueType = valueTypes.FirstOrDefault()
+            };
+
+            <el-tab-pane label="附加属性（UserClaim）">
+                <form method="post" asp-page-handler="CreateOrUpdateUserClaim">
+                    <input type="hidden" asp-for="@dto.UserId" />
+                    <div class="form-group">
+                        <label>类型</label>
+                        <input class="form-control" asp-for="@dto.ClaimType" id="claimType" />
+                        <div class="mt-1">
+                            <label>建议类型：</label>
+                            @{
+
+                                void ClaimTypeTag(string value)
+                                {
+                                    <el-tag onclick="document.querySelector('#claimType').value='@value'" style="margin-top:3px">
+                                        @value
+                                    </el-tag>
+                                }
+
+                                var jswtClassInfo = typeof(IdentityModel.JwtClaimTypes);
+                                var fis = jswtClassInfo.GetFields();  // 注意，这里不能有任何选项，否则将无法获取到const常量
+                                foreach (var item in fis)
+                                {
+                                    var value = item.GetRawConstantValue().ToString();
+                                    <span>@{ClaimTypeTag(value);}</span>
+                                }
+
+                                string[] otherTypes = { "微信", "QQ", "微博", "个性签名" };
+                                foreach (var value in otherTypes)
+                                {
+                                    <span>@{ClaimTypeTag(value);}</span>
+                                }
+                            }
+                        </div>
+                        <span asp-validation-for="@dto.ClaimType" class="text-danger"></span>
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        <label>值</label>
+                        <input class="form-control" asp-for="@dto.ClaimValue" />
+                        <span asp-validation-for="@dto.ClaimValue" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>数据类型</label>
+                        <select asp-for="@dto.ClaimValueType">
+                            @{
+                                foreach (var item in valueTypes)
+                                {
+                                    <option value="@item">@item.Split("#").LastOrDefault()</option>
+                                }
+                            }
+                        </select>
+                        <span asp-validation-for="@dto.ClaimValueType" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-primary" value="创建" />
+                    </div>
+                </form>
+
+                <hr />
+                <template>
+                    <el-table :data="userClaims"
+                              style="width: 100%">
+
+                        <el-table-column label="类型"
+                                         width="180">
+                            <template slot-scope="scope">
+                                <span style="margin-left: 10px">{{ scope.row.claimType }}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="值"
+                                         width="180">
+                            <template slot-scope="scope">
+                                <span style="margin-left: 10px">{{ scope.row.claimValue }}</span>
+                            </template>
+                        </el-table-column>
+
+                        <el-table-column label="值类型"
+                                         width="180">
+                            <template slot-scope="scope">
+                                <span style="margin-left: 10px">{{ scope.row.claimValueType }}</span>
+                            </template>
+                        </el-table-column>
+
+                        <el-table-column label="操作">
+                            <template slot-scope="scope">
+                                <el-button size="mini"
+                                           type="danger"
+                                           @@click="handleDeleteUserClaim(scope.$index, scope.row)">删除</el-button>
+                            </template>
+                        </el-table-column>
+
+                    </el-table>
+                </template>
+            </el-tab-pane>
+        }
+
+        @*<el-tab-pane label="定时任务补偿">定时任务补偿</el-tab-pane>*@
+    </el-tabs>
+
+
+</div>
+
+
+@section Scripts{
+    <partial name="_ValidationSummary" />
+    <script>
+        var vue = new Vue({
+            el: "#app",
+            data: {
+                roles: JSON.parse('@Html.Raw(showAllRolesJsonString)'),
+                selectedRoles: JSON.parse('@Html.Raw(userRolesJsonString)'),
+                userClaims:[]
+            },
+
+            created: function () {
+                this.loadUserClaims()
+            },
+
+            mounted:function(){
+                var t = this
+                $('form').ajaxForm({
+                    success: function (responseText, statusText, xhr, $form) {
+                        t.$notify({ title: '成功', message: '操作成功', type: 'success' });
+                        t.loadUserClaims();
+                     },
+
+                     error: function (errmsg) {
+                         t.$notify.error({title: '错误',message: JSON.stringify(errmsg.responseJSON)});
+                     }
+                 });
+            },
+            methods: {
+                goBack: function() {
+                    window.location.href = "/UserPage/UserManagerPages/Index"
+                },
+
+                loadUserClaims: function () {
+                    var t = this
+                    t.userClaims = []
+                    axios.get("@Model.UserClaims&userId=@Model.ApplicationUser.Id").then(function (res){
+                        t.userClaims = res.data
+                    }).catch(function (err) {
+                        t.$notify.error({ title: '错误', message: "加载用户声明数据错误" });
+                    })
+                },
+
+                handleDeleteUserClaim: function (index, userClaim) {
+                    var t = this
+                    this.$confirm('此操作将永久删除声明类型, 是否继续?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        axios.post("?handler=DeleteUserClaim", { Id: userClaim.id },
+                            {
+                                headers: {
+                                    RequestVerificationToken: $("input[name='__RequestVerificationToken']").val()
+                                }
+                            })
+                            .then(function (res) {
+                                t.$notify({ title: '成功', message: '操作成功', type: 'success' });
+                                t.loadUserClaims()
+                            })
+                            .catch(function (err) {
+                                t.$notify.error({ title: '错误', message: JSON.stringify(err) });
+                            })
+                    }).catch(() => {
+                        //this.$message({
+                        //    type: 'info',
+                        //    message: '已取消删除'
+                        //});
+                    });
+                },
+
+                onChange: function (value) {
+                    var s = "";
+                    $.map(value, function (v) {
+                        s = s + v + "、";
+                    })
+                    $("#changeUserRolesViewModel_Roles").val(s);
+                    $("#ChangeUserRolesForm").submit()
+                }
+            }
+        })
+    </script>
+}

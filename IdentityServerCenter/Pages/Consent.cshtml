@@ -1,0 +1,118 @@
+﻿@page
+@model IdentityServerCenter.Pages.ConsentModel
+@{
+    Layout = "~/Pages/Account/_Layout.cshtml";
+    ViewData["Title"] = "确认授权";
+}
+
+@inject IdentityServer4.Stores.IClientStore ClientStore
+@{
+    var client = Model.AuthorizationRequest.Client;
+}
+
+
+    <div style="height:530px" class="mt-3">
+        <div>
+            <div class="row justify-content-center align-items-center">
+                <div class="col-12 col-sm-7 col-md-6">
+                    <div style="background-color: white;" class="p-5">
+
+
+                        @if (!string.IsNullOrEmpty(client.LogoUri))
+                        {
+                            <div class="client-logo"><img src="@client.LogoUri"></div>
+                        }
+
+                        <h2>
+                            @(client.ClientName??client.ClientId)
+                            <small>请求访问您的许可</small>
+                        </h2>
+
+
+                        <form method="post">
+                            <input type="hidden" asp-for="ViewModel.ReturnUrl" />
+                            <div class="form-group">
+                                @if (Model.Resources.IdentityResources.Any())
+                                {
+                                    <div class="card">
+                                        <div class="card-header">
+                                            个人信息
+                                        </div>
+                                        <ul class="list-group list-group-flush">
+                                            @foreach (var scope in Model.Resources.IdentityResources)
+                                            {
+                                                string strChecked = string.Empty;
+
+                                                if (scope.Required || scope.Emphasize)
+                                                {
+                                                    strChecked = "checked";
+                                                }
+
+                                                <li class="list-group-item">
+                                                    <input type="checkbox"
+                                                           name="ViewModel.Scopes"
+                                                           value="@scope.Name"
+                                                           @Html.Raw(strChecked) />
+
+                                                    <label for="@scope.Name">
+                                                        <b>@(scope.DisplayName??scope.Name)</b>@scope.Description
+                                                    </label>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                }
+
+                                @if (Model.Resources.ApiScopes.Any())
+                                {
+                                    <div class="card">
+                                        <div class="card-header">
+                                            API访问
+                                        </div>
+                                        <ul class="list-group list-group-flush">
+                                            @foreach (var scope in Model.Resources.ApiScopes)
+                                            {
+                                                <li class="list-group-item">
+                                                    <input type="checkbox" name="ViewModel.Scopes" value="@scope.Name" checked/>
+
+                                                    <label for="@scope.Name">
+                                                        <b>@scope.DisplayName</b>@scope.Description
+                                                    </label>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                }
+
+                            </div>
+
+                            <div class="form-group">
+                                <label>
+                                    <input asp-for="ViewModel.RememberConsent" />
+                                    <strong>记住我的选择</strong>
+                                </label>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="submit" asp-for="ViewModel.OkOrCancelButton" value="允许授权" class="btn btn-primary" autofocus />
+                                <input type="submit" asp-for="ViewModel.OkOrCancelButton" value="不允许" class="btn btn-dark" />
+                            </div>
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    @*<script src="~/new/wwwroot/lib/jquery/dist/jquery.min.js">
+    </script>
+    <script src="~/new/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+    <script src="~/new/wwwroot/js/axios.min.js"></script>
+    <script src="~/new/wwwroot/js/sweetalert.min.js"></script>
+    <partial name="_ValidationSummary" />*@

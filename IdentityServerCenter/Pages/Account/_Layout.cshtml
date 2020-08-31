@@ -1,0 +1,133 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/new/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css">
+    <title>@ViewBag.Title - 学习坊</title>
+
+    @*<style>
+            * {
+                line-height: 1.2;
+                margin: 0;
+            }
+
+            html {
+                color: #888;
+                display: table;
+                font-family: sans-serif;
+                height: 100%;
+                text-align: center;
+                width: 100%;
+            }
+
+            body {
+                display: table-cell;
+                vertical-align: middle;
+                margin: 2em auto;
+            }
+
+            @@media only screen and (max-width: 280px) {
+                body,
+                p {
+                    width: 95%;
+                }
+            }
+        </style>*@
+
+    <style>
+        a.navbar-brand{white-space:normal;text-align:center;word-break:break-all}html{font-size:14px}@@media(min-width:768px){html{font-size:16px}}.border-top{border-top:1px solid #e5e5e5}.border-bottom{border-bottom:1px solid #e5e5e5}.box-shadow{box-shadow:0 .25rem .75rem rgba(0,0,0,.05)}button.accept-policy{font-size:1rem;line-height:inherit}html{position:relative;min-height:100%}body{margin-bottom:60px}.footer{position:absolute;bottom:0;width:100%;white-space:nowrap;height:60px}.text-sm{font-size:14px}.text-black{color:#0d0d0d}
+    </style>
+
+    @await RenderSectionAsync("Head",false)
+</head>
+<body style="background-image: url(../../login.jpg);">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="/">学习坊</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">已授权客户端</a>
+                    </li>
+
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" asp-page="UpdateInfo">@User.Identity.Name</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" asp-page="Logout">注销</a>
+                        </li>
+                    }
+
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
+                            Dropdown
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                    <input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        @RenderBody()
+
+        <footer class="border-top footer text-white text-center mt-3">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        Copyright &copy; @DateTime.Now.Year - 学习坊 @*- <a asp-page="/Forum/Privacy" class="text-white">隐私政策</a>*@
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <a style="font-size:13px;color:white" target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=45048102000066">
+                            <img src="~/images/beian.png" asp-append-version="true" />
+                            桂公网安备 45048102000066号&nbsp;|
+
+                        </a>
+                        <a style="font-size:13px;color:white" target="_blank" href="http://www.beian.miit.gov.cn/">
+                            桂ICP备19007772号
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="~/new/wwwroot/lib/jquery/dist/jquery.min.js">
+    </script>
+    <script src="~/new/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+    @await RenderSectionAsync("Scripts", false);
+</body>
+</html>

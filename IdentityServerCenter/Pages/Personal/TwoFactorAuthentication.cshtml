@@ -1,0 +1,11 @@
+﻿@page
+@model IdentityServerCenter.TwoFactorAuthenticationModel
+@{
+    ViewData["Title"] = "TwoFactorAuthentication";
+}
+
+<h2>开启双因素验证</h2>
+<hr />
+<p>@Model.Key</p>
+
+<img src="@Model.ImageBase64" class="img-fluid" style="width:200px;height:200px"/>

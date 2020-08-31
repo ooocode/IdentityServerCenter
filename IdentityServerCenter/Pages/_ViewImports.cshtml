@@ -1,0 +1,29 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@namespace IdentityServerCenter.Pages
+@using IdentityServer4.EntityFramework.Interfaces;
+@using IdentityServer4.EntityFramework.Entities;
+@inject IConfigurationDbContext ConfigurationDbContext
+@using Microsoft.EntityFrameworkCore;
+
+@using IdentityServerCenter.Models
+@using Microsoft.AspNetCore.Identity
+@using IdentityServerCenter.Data
+@using IdentityServerCenter.Database.Models
+@inject ApplicationDbContext ApplicationDbContext
+@inject UserManager<ApplicationUser> UserManager
+@inject RoleManager<ApplicationRole> RoleManager
+@inject SignInManager<ApplicationUser> SignInManager
+
+@using StackExchange.Profiling
+@addTagHelper *, MiniProfiler.AspNetCore.Mvc
+
+
+@using TagHelperSamples
+@using TagHelperSamples.Authorization
+@addTagHelper "*, TagHelperSamples.Authorization"
+
+@using IdentityServerCenter.Services.ClientService
+@inject IClientService ClientService
+
+@using Utility

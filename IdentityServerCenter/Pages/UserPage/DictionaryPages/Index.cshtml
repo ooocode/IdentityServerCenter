@@ -1,0 +1,183 @@
+﻿@page "{TypeId:long?}"
+@model IdentityServerCenter.Pages.UserPage.DictionaryPages.IndexModel
+
+@{
+    ViewData["Title"] = "数字字典";
+}
+
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">主页</a></li>
+        <li class="breadcrumb-item active" aria-current="page">数字字典</li>
+    </ol>
+</nav>
+
+@inject IdentityServerCenter.Database.Services.IDictionaryService dictionaryService;
+
+
+<div id="app">
+    <div class="row">
+        <div class="col-12">
+            <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                    @*<span>卡片名称</span>*@
+                    @*<el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>*@
+                    <span class="text-right">
+                        <a asp-page="CreateOrUpdateDictionary">新建字典</a>
+                        <a asp-page="CreateOrUpdateDictionaryType">新建字典分类</a>
+                    </span>
+                </div>
+
+
+
+                <ul class="nav nav-tabs">
+
+                    <li class="nav-item">
+                        @if (!Model.TypeId.HasValue)
+                        {
+                            <a class="nav-link active" asp-route-TypeId="">全部</a>
+                        }
+                        else
+                        {
+                            <a class="nav-link" asp-route-TypeId="">全部</a>
+                        }
+                    </li>
+
+                    @{
+                        var types = await dictionaryService.GetDictionaryTypesAsync();
+                        foreach (var item in types)
+                        {
+                            @*<li class="nav-item">
+                                    <a class="nav-link active" href="#">Active</a>
+                                </li>*@
+                            var active = (Model.TypeId.HasValue && item.Id == Model.TypeId) ? "active" : string.Empty;
+                            <li class="nav-item">
+                                <a class="nav-link @active" asp-route-TypeId="@item.Id">@item.Name</a>
+                            </li>
+                        }
+                    }
+                </ul>
+
+                <div>
+                    <template>
+                        <el-table :data="tableData"
+                                  v-loading="loading"
+                                  style="width: 100%">
+
+                            <el-table-column label="代码"
+                                             width="200">
+                                <template slot-scope="scope">
+                                    <span style="margin-left: 10px">{{ scope.row.code }}</span>
+                                </template>
+                            </el-table-column>
+
+                            <el-table-column label="值"
+                                             width="200">
+                                <template slot-scope="scope">
+                                    <span style="margin-left: 10px">{{ scope.row.value }}</span>
+                                </template>
+                            </el-table-column>
+
+                            <el-table-column label="备注"
+                                             width="200">
+                                <template slot-scope="scope">
+                                    <span style="margin-left: 10px">{{ scope.row.remark }}</span>
+                                </template>
+                            </el-table-column>
+
+                            <el-table-column label="启用"
+                                             width="50">
+                                <template slot-scope="scope">
+                                    <span style="margin-left: 10px">{{ scope.row.enabled?"✔":"❌" }}</span>
+                                </template>
+                            </el-table-column>
+
+                            <el-table-column label="操作">
+                                <template slot-scope="scope">
+
+                                    <el-button size="mini"
+                                               type="info"
+                                               @@click="handleEdit(scope.row.id)">编辑</el-button>
+
+                                    <el-button size="mini"
+                                               type="danger"
+                                               @@click="handleDelete(scope.row)">删除</el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </template>
+                </div>
+            </el-card>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script>
+        function getPermissons() {
+            return axios.get("?handler=Dictionaries")
+        }
+
+        async function deletePermisson(t, id, code) {
+            var result = await t.$prompt('请输入[ ' + code + ' ]确认删除',
+                '确认删除数据吗？删除后不可恢复',
+                {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    inputPlaceholder: code
+                });
+
+            if (result.value !== null) {
+                if (result.value.trim() != code) {
+                    t.$notify.error({ title: '错误', message: "输入错误，请检查输入" });
+                    return;
+                }
+                try {
+                    await axios.post("?handler=DeleteDictionary", {
+                        DictionaryId: id
+                    })
+
+                    t.$notify.success({ title: '成功', message: "删除权限成功" });
+                } catch (err) {
+                    t.$notify.error({ title: '错误', message: JSON.stringify(err.response.data) });
+                }
+            } else {
+                t.$notify.error({ title: '错误', message: "无效输入" });
+            }
+        }
+        var vue = new Vue({
+            el: "#app",
+            data: {
+                loading: false,
+                tableData: []
+            },
+            created: function () {
+                this.load();
+            },
+            methods: {
+                load: function () {
+                    var t = this
+                    t.loading = true
+                    getPermissons().then(function (res) {
+                        console.log(res.data)
+                        t.tableData = res.data
+                        t.loading = false
+                    }).catch(function (err) {
+                        t.loading = false
+                    })
+                },
+
+                handleEdit: function (id) {
+                    window.location.href = "/UserPage/DictionaryPages/CreateOrUpdateDictionary/" + id
+                },
+
+                async handleDelete(data) {
+                    await deletePermisson(this, data.id, data.code)
+                    this.load();
+                }
+            }
+        })
+    </script>
+}

@@ -1,0 +1,13 @@
+﻿@page
+@model IdentityServerCenter.LoginWith2faModel
+@{
+    ViewData["Title"] = "LoginWith2fa";
+}
+
+<h2>LoginWith2faModel</h2>
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="text" asp-for="LoginWith2FaViewModel.Code" class="form-control" />
+    <input type="hidden" asp-for="LoginWith2FaViewModel.ReturnUrl"/>
+    <input type="submit" value="确定" class="btn btn-primary" />
+</form>

@@ -1,0 +1,180 @@
+﻿@page
+@model IdentityServerCenter.Pages.UserPage.RoleManagerPages.IndexModel
+@{
+    ViewData["Title"] = "角色列表";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">主页</a></li>
+        <li class="breadcrumb-item active" aria-current="page">角色</li>
+    </ol>
+</nav>
+
+
+
+<div>
+    @*<div class="col text-right">
+        <el-button onclick="window.location.reload()"><i class="el-icon-refresh-left"></i>&nbsp;刷新</el-button>
+        <el-button onclick="window.location.href='/UserPage/RoleManagerPages/AddOrUpdateRole'"><i class="el-icon-circle-plus-outline"></i>&nbsp;新建角色</el-button>
+
+    </div>*@
+
+    <div class="row justify-content-end">
+        <el-button onclick="window.location.reload()"><i class="el-icon-refresh-left"></i>&nbsp;刷新</el-button>
+
+        <div class="col-5">
+            <el-input placeholder="请输入用户名或姓名搜索"
+                      v-model="search"
+                      clearable>
+            </el-input>
+        </div>
+        <div class="col-auto">
+            <el-button @@click="searchClick"><i class="el-icon-search"></i>&nbsp;搜索</el-button>
+            <el-button onclick="window.location.href='/UserPage/RoleManagerPages/AddOrUpdateRole'"><i class="el-icon-circle-plus-outline"></i>&nbsp;新建角色</el-button>
+        </div>
+    </div>
+    <hr />
+</div>
+
+
+<el-table :data="tableUsersData"
+          v-loading="loading"
+          style="width: 100%">
+
+
+    <el-table-column label="角色名称"
+                     width="180">
+        <template slot-scope="scope">
+            <el-popover trigger="hover" placement="top">
+                <p>Id: {{ scope.row.id }}</p>
+                <p>创建时间: {{ scope.row.createDateTime }}</p>
+                <div slot="reference" class="name-wrapper">
+                    <el-tag size="medium">{{ scope.row.name }}</el-tag>
+                </div>
+            </el-popover>
+        </template>
+    </el-table-column>
+
+
+    <el-table-column label="描述"
+                     width="180">
+        <template slot-scope="scope">
+            <span>{{ scope.row.desc }}</span>
+        </template>
+    </el-table-column>
+
+    <el-table-column label="操作">
+        <template slot-scope="scope">
+            <template>
+                <el-button size="mini"
+                           @@click="handleEdit(scope.$index, scope.row)">
+                    <i class="el-icon-edit"></i>
+                    编辑
+                </el-button>
+
+                <el-button v-if="!scope.row.nonEditable"
+                           size="mini"
+                           type="danger"
+                           @@click="handleDelete(scope.$index, scope.row)">
+                    <i class="el-icon-delete-solid"></i>
+                    删除
+                </el-button>
+            </template>
+        </template>
+    </el-table-column>
+</el-table>
+
+
+<el-pagination background
+               layout="prev, pager, next"
+               :page-size="take"
+               :total="total"
+               @@current-change="currentChange">
+</el-pagination>
+
+@section Scripts{
+    <script>
+        var vue = new Vue({
+            el: "#app",
+            data: {
+                tableUsersData: [],
+                loading: true,
+                search: '',
+                skip: 0,
+                take: 10,
+                total: 0
+            },
+            created: function () {
+                this.loadUsers(0)
+            },
+            methods: {
+                loadUsers: function (skip) {
+                    var t = this
+                    t.loading = true
+                    axios.get("?handler=LoadRoles&skip=" + skip + "&take=" + this.take + "&search=" + this.search)
+                        .then(function (res) {
+                            t.tableUsersData = res.data.rows
+                            t.total = res.data.total
+                            t.loading = false
+                        }).catch(function (err) {
+                            alert(err)
+                            t.loading = false
+                        })
+                },
+
+                handleEdit(index, row) {
+                    console.log(index, row);
+                    window.location.href = "/UserPage/RoleManagerPages/AddOrUpdateRole/" + row.id
+                },
+
+                //删除角色
+                async handleDelete(index, row) {
+                    console.log(index, row);
+                    var roleId = row.id
+                    var roleName = row.name;
+                    await deleteRole(this, roleId, roleName)
+
+                    this.loadUsers(this.skip)
+                },
+
+                //点击分页
+                currentChange: function (pageIndex) {
+                    var skip = (pageIndex - 1) * this.take
+                    this.skip = skip
+                    this.loadUsers(skip)
+                },
+
+                //点击查询
+                searchClick: function () {
+                    this.loadUsers(0)
+                }
+            }
+        })
+
+        async function deleteRole(t, roleId, roleName) {
+            var result = await t.$prompt('请输入[ ' + roleName + ' ]确认删除',
+                '确认删除角色吗？删除时角色对应的权限也被删除，且不可恢复',
+                {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    inputPlaceholder: roleName
+                });
+
+            if (result.value !== null) {
+                try {
+                    await axios.post("?handler=DeleteRole", {
+                        RoleId: roleId,
+                        RoleName: result.value
+                    })
+
+                    t.$notify.success({ title: '成功', message: "删除角色成功" });
+                } catch (err) {
+                    t.$notify.error({ title: '错误', message: JSON.stringify(err.response.data) });
+                }
+            } else {
+                t.$notify.error({ title: '错误', message: "无效输入" });
+            }
+        }
+    </script>
+}

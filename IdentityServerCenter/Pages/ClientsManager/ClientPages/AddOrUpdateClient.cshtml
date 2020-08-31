@@ -1,0 +1,167 @@
+﻿@page "{Id:int?}"
+@model IdentityServerCenter.Pages.ClientsManager.ClientPages.AddOrUpdateClientModel
+@{
+    var isCreate = !Model.Id.HasValue;
+    var content = isCreate ? "新建客户端" : $"编辑{Model.AddOrUpdateClientDto.ClientId}";
+    ViewData["Title"] = content;
+
+}
+
+
+<div>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">主页</a></li>
+            <li class="breadcrumb-item"><a href="/ClientsManager/ClientPages">客户端</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@content</li>
+        </ol>
+    </nav>
+
+    <el-page-header @@back="goBack" content="@content">
+    </el-page-header>
+
+    <hr />
+
+    <form method="post">
+        <input type="hidden" asp-for="@Model.AddOrUpdateClientDto.Id" />
+
+        <div class="form-group">
+            <label>客户端Id</label>
+            <input class="form-control" asp-for="@Model.AddOrUpdateClientDto.ClientId" />
+            <span class="text-danger" asp-validation-for="@Model.AddOrUpdateClientDto.ClientId"></span>
+        </div>
+
+        <div class="form-group">
+            <label>客户端名称</label>
+            <input class="form-control" asp-for="@Model.AddOrUpdateClientDto.ClientName" />
+            <span class="text-danger" asp-validation-for="@Model.AddOrUpdateClientDto.ClientName"></span>
+        </div>
+
+        <div class="form-group">
+            <label>客户端描述</label>
+            <input class="form-control" asp-for="@Model.AddOrUpdateClientDto.Description" />
+            <span class="text-danger" asp-validation-for="@Model.AddOrUpdateClientDto.Description"></span>
+        </div>
+
+        <div class="form-group">
+            <label>作用域</label>
+            <el-checkbox-group v-model="type" @@change="onChange">
+                @{
+                    var identityResourcesScopes = await ConfigurationDbContext.IdentityResources.ToListAsync();
+                    foreach (var scope in identityResourcesScopes)
+                    {
+                        var required = scope.Required ? "disabled" : "";
+
+                        if (isCreate)
+                        {
+                            <el-checkbox label="@scope.Name" checked name="type" @required></el-checkbox>
+                        }
+                        else
+                        {
+                            if (Model.AddOrUpdateClientDto.Scopes.Contains(scope.Name))
+                            {
+                                <el-checkbox label="@scope.Name" checked name="type" @required></el-checkbox>
+                            }
+                            else
+                            {
+                                <el-checkbox label="@scope.Name" name="type" @required></el-checkbox>
+                            }
+                        }
+                    }
+                }
+            </el-checkbox-group>
+
+            @{
+                string defalutStringValue = null;
+                if (isCreate)
+                {
+                    defalutStringValue = string.Join(';', identityResourcesScopes.Select(e => e.Name));
+                }
+                else
+                {
+                    defalutStringValue = Model.AddOrUpdateClientDto.Scopes;
+                }
+            }
+
+            <input type="hidden" class="form-control" asp-for="@Model.AddOrUpdateClientDto.Scopes" value="@defalutStringValue" />
+            <span class="text-danger" asp-validation-for="@Model.AddOrUpdateClientDto.Scopes"></span>
+        </div>
+
+        <div class="form-group">
+            <label>允许重定位uri列表</label>
+            <input class="form-control" asp-for="@Model.AddOrUpdateClientDto.RedirectUris" />
+            <span class="text-danger" asp-validation-for="@Model.AddOrUpdateClientDto.RedirectUris"></span>
+            <label>（可以多个，多个用 ; 号分割，英文的; 分号）,如 http://localhost:5000/signin-oidc</label>
+        </div>
+
+        <div class="form-group">
+            <label>允许后端注销uri列表</label>
+            <input class="form-control" asp-for="@Model.AddOrUpdateClientDto.PostLogoutRedirectUris" />
+            <span class="text-danger" asp-validation-for="@Model.AddOrUpdateClientDto.PostLogoutRedirectUris"></span>
+            <label>（可以多个，多个用 ; 号分割，英文的; 分号）,如 http://localhost:5000/signout-callback-oidc</label>
+        </div>
+
+        <div class="form-group">
+            <label>前端通道注销uri</label>
+            <input class="form-control" asp-for="@Model.AddOrUpdateClientDto.FrontChannelLogoutUri" />
+            <span class="text-danger" asp-validation-for="@Model.AddOrUpdateClientDto.FrontChannelLogoutUri"></span>
+            <label>如 http://localhost:5000/signout-callback-oidc</label>
+        </div>
+
+
+        <div class="form-group">
+            <input asp-for="@Model.AddOrUpdateClientDto.RequireConsent" id="RequireConsent" />
+            <label for="RequireConsent">是否显示同意授权页面</label>
+        </div>
+
+        <div class="form-group">
+            @{
+                var submitValue = Model.Id.HasValue ? "更新" : "创建";
+            }
+            <input type="submit" class="btn btn-primary" value="@submitValue" />
+        </div>
+    </form>
+</div>
+
+
+@section Scripts{
+    <partial name="_ValidationSummary" />
+
+    <script>
+        var vue = new Vue({
+            el: "#app",
+            data: {
+                type: []
+            },
+
+            mounted: function () {
+                $('form').ajaxForm({
+                    success: function (responseText, statusText, xhr, $form) {
+                        //swal("成功", "即将转到" + responseText, 'success')
+                        window.location.href = "/ClientsManager/ClientPages/Index"
+                    },
+                    error: function (errmsg) {
+                        for (var i in errmsg.responseJSON) {
+                            swal("错误", errmsg.responseJSON[i][0], "error")
+                        }
+                    }
+                });
+            },
+
+            methods: {
+                onChange: function (val) {
+                    var str = "";
+                    $.map(val, function (i) {
+                        str = str + i + ';';
+                    })
+
+                    $("#AddOrUpdateClientDto_Scopes").val(str)
+                    console.log($("#AddOrUpdateClientDto_Scopes").val())
+                },
+                goBack: function () {
+                    window.history.back()
+                }
+            }
+        })
+    </script>
+}

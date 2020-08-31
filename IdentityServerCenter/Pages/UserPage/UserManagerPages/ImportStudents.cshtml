@@ -1,0 +1,58 @@
+﻿@page
+@model Study.Website.Pages.Teacher.ImportStudentsModel
+@{
+    ViewData["Title"] = "批量创建学生账号";
+}
+<h2>批量创建学生账号</h2>
+<hr />
+
+<box3 title="导入学生">
+    <form method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+        <label>选择EXCEL上传学生名单进行批量注册</label>
+        <input type="file" name="upload" class="form-control" />
+        <input type="submit" class="btn btn-primary" value="上传" />
+    </form>
+</box3>
+
+<br />
+
+<box3 title="数据格式示例">
+    <a href="~/students.xlsx">下载Excel样例</a>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>班级名称</th>
+                <th>学号</th>
+                <th>姓名</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>外国语学院20级英语1班</td>
+                <td>117633050103</td>
+                <td>张三</td>
+            </tr>
+            <tr>
+                <td>外国语学院20级英语1班</td>
+                <td>117633050104</td>
+                <td>李四</td>
+            </tr>
+
+            <tr>
+                <td>软件学院21级软件工程2班</td>
+                <td>117633050105</td>
+                <td>王五</td>
+            </tr>
+        </tbody>
+    </table>
+</box3>
+
+@section Scripts{ 
+    <script>
+        var vue = new Vue({
+            el: "#app"
+        })
+    </script>
+}

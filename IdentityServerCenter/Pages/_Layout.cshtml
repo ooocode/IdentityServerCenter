@@ -1,0 +1,194 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - 学习坊后台管理</title>
+
+    <link rel="stylesheet" href="~/new/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/new/wwwroot/css/site.css" />
+
+    @*<environment include="Development">*@
+    <link rel="stylesheet" href="~/new/wwwroot/lib/element-ui/theme-chalk/index.css">
+    <link rel="stylesheet" href="~/new/wwwroot/css/dropzone.min.css" />
+    @*</environment>*@
+    @await RenderSectionAsync("Head", false)
+
+    @*<script src="https://cdn.jsdelivr.net/npm/babel-regenerator-runtime@6.5.0/runtime.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"></script>*@
+</head>
+<body>
+    @{
+        List<(int index, string url, string icon, string title)> items = new List<(int, string, string, string)>();
+        var activeIndex = -1;
+        var path = Context.Request.RouteValues.Values.FirstOrDefault().ToString();
+        if (path.StartsWith("/UserPage"))
+        {
+            items.Add((1, "/UserPage/UserManagerPages/Index", "el-icon-user-solid", "用户"));
+            items.Add((2, "/UserPage/RoleManagerPages/Index", "el-icon-user", "角色"));
+            items.Add((3, "/UserPage/PermissionsPages/Index", "el-icon-user", "权限"));
+            items.Add((4, "/UserPage/DictionaryPages/Index", "el-icon-user", "数字字典"));
+            items.Add((5, "/UserPage/Classes/SchoolClasses", "el-icon-user", "全校班级"));
+            items.Add((6, "/UserPage/UserManagerPages/ImportStudents", "el-icon-user", "批量创建学生账号"));
+
+            activeIndex = items.FirstOrDefault(e => path.Contains(e.url, StringComparison.OrdinalIgnoreCase)).index;
+        }
+        else if (path.StartsWith("/ClientsManager"))
+        {
+
+            items.Add((1, "/ClientsManager/ClientPages/Index", "el-icon-user-solid", "客户端"));
+            items.Add((2, "/ClientsManager/IdentityResourcePage/Index", "el-icon-user", "身份资源"));
+            //items.Add((3, "/ClientsManager/RoleManagerPages/Index", "el-icon-user", "API资源"));
+
+            activeIndex = items.FirstOrDefault(e => path.Contains(e.url, StringComparison.OrdinalIgnoreCase)).index;
+        }
+    }
+
+    <template id="template">
+        <div style="display:none" id="templateSub">
+            <el-container style="min-height: initial; border: 1px solid #eee">
+                <el-aside width="300px">
+                    <el-menu :default-openeds="['1', '3']">
+                        @{
+                            var index = 1;
+                            foreach (var item in items)
+                            {
+
+                                var backgroudColor = index == activeIndex ? "style=\"color:red\"" : string.Empty;
+
+                                <el-menu-item index="@index" onclick="window.location.href='@item.url'">
+                                    <i class="el-icon-setting" @Html.Raw(backgroudColor)></i>
+                                    <span slot="title" @Html.Raw(backgroudColor)>@item.title</span>
+                                </el-menu-item>
+
+                                index++;
+                            }
+                        }
+                    </el-menu>
+                </el-aside>
+
+                <el-container>
+                    @*<el-header style="text-align: right; font-size: 12px">
+                    <el-dropdown>
+                        <i class="el-icon-setting" style="margin-right: 15px"></i>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item>查看</el-dropdown-item>
+                            <el-dropdown-item>新增</el-dropdown-item>
+                            <el-dropdown-item>删除</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                    <span>王小虎</span>
+                </el-header>*@
+
+                    <el-main>
+                        <slot></slot>
+                    </el-main>
+                </el-container>
+            </el-container>
+        </div>
+    </template>
+
+    @*<mini-profiler />*@
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-page="/Index" asp-authorize asp-roles="管理员">学习坊管理员后台</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1" asp-authorize asp-roles="@SeedData.defaultSuperAdminRole">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/UserPage/UserManagerPages/Index">用户管理</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/ClientsManager/ClientPages/Index">客户端管理</a>
+                        </li>
+
+                        @*<li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Personal/TwoFactorAuthentication">双因素验证</a>
+                        </li>*@
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Developer"> 开发者AspNetCore网站接入</a>
+                        </li>
+                       
+                    </ul>
+                </div>
+
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse" asp-authorize>
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a asp-page="/Account/UpdateInfo" class="nav-link text-dark" style="border-Radius: 15px;" title="个人中心">
+                                @User.Identity.Name
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" style="border-Radius: 15px;" href="/Account/Logout" title="注销">注销</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container-fluid">
+        <main role="main" class="pb-3">
+            <div id="app">
+                <template-com>
+                    @RenderBody()
+                </template-com>
+            </div>
+        </main>
+    </div>
+
+    @*<footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2020 - 学习坊云盘 - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            </div>
+        </footer>*@
+
+    <script src="~/new/wwwroot/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/new/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/new/wwwroot/js/site.js" asp-append-version="true"></script>
+
+    <!-- import Vue before Element -->
+    @*<environment include="Development">*@
+    <script src="~/new/wwwroot/js/vue.js"></script>
+    <script src="~/new/wwwroot/js/vue-router.js"></script>
+    <script src="~/new/wwwroot/js/index.js"></script>
+    <script src="~/new/wwwroot/js/axios.min.js"></script>
+
+
+    <script src="~/new/wwwroot/js/sweetalert.min.js"></script>
+
+
+    <script>
+        Vue.component("template-com", {
+            template: '#template',
+            mounted: function () {
+                document.getElementById("templateSub").removeAttribute("style")
+            }
+        })
+    </script>
+
+
+    @RenderSection("Scripts", required: false)
+
+
+
+    @*<script>
+            if (document.querySelector("#appMenu")) {
+                var vueMenu = new Vue({
+                    el: '#appMenu',
+                    mounted: function () {
+                        $("#appMenu").removeAttr("style")
+                    }
+                })
+            }
+        </script>*@
+</body>
+</html>

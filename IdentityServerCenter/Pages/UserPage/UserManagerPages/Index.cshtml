@@ -1,0 +1,207 @@
+﻿@page
+@model IdentityServerCenter.Pages.UserPage.UserManagerPages.IndexModel
+@{
+    ViewData["Title"] = "用户";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">主页</a></li>
+        <li class="breadcrumb-item active" aria-current="page">用户</li>
+    </ol>
+</nav>
+
+<div>
+    <div class="row justify-content-end">
+        <el-button onclick="window.location.reload()"><i class="el-icon-refresh-left"></i>&nbsp;刷新</el-button>
+
+        <div class="col-5">
+            <el-input placeholder="请输入用户名或姓名搜索"
+                      v-model="search"
+                      clearable>
+            </el-input>
+        </div>
+        <div class="col-auto">
+            <el-button @@click="searchClick"><i class="el-icon-search"></i>&nbsp;搜索</el-button>
+            <el-button onclick="window.location.href='/UserPage/UserManagerPages/AddOrUpdateUser'"><i class="el-icon-circle-plus-outline"></i>&nbsp;新建用户</el-button>
+        </div>
+    </div>
+    <hr />
+
+
+    <el-table :data="users.rows"
+              v-loading="loading"
+              style="width: 100%">
+
+
+        <el-table-column label="用户名(登录账号)"
+                         width="180">
+            <template slot-scope="scope">
+                <el-popover trigger="hover" placement="top">
+                    <el-avatar shape="square" :size="100" :src="scope.row.photo"></el-avatar>
+                    <p>Id: {{ scope.row.user.id }}</p>
+                    <p>姓名: {{ scope.row.user.name }}</p>
+                    <p>邮箱: {{ scope.row.user.email }}</p>
+                    <p>手机号码: {{ scope.row.user.phoneNumber }}</p>
+                    <p>个人简介: {{ scope.row.user.desc }}</p>
+
+                    <div slot="reference" class="name-wrapper">
+                        <el-tag size="medium">{{ scope.row.user.userName }}</el-tag>
+                    </div>
+                </el-popover>
+            </template>
+        </el-table-column>
+
+
+        <el-table-column label="姓名"
+                         width="180">
+            <template slot-scope="scope">
+                <span style="margin-left: 10px">{{ scope.row.user.name }}</span>
+            </template>
+        </el-table-column>
+
+        <el-table-column label="角色"
+                         width="180">
+            <template slot-scope="scope">
+                <span v-for="role in scope.row.roles">
+                    <el-tag type="success" v-on:click="onClickRole(role)">{{ role.name }}</el-tag>
+                </span>
+            </template>
+        </el-table-column>
+
+        <el-table-column label="性别"
+                         width="50">
+            <template slot-scope="scope">
+                <span>{{ scope.row.user.sex == 0?"男":"女" }}</span>
+            </template>
+        </el-table-column>
+
+        <el-table-column label="操作">
+            <template slot-scope="scope">
+                <el-button size="mini"
+                           @@click="handleEdit(scope.$index, scope.row.user)">
+                    <i class="el-icon-edit"></i>
+                    编辑
+                </el-button>
+
+                <el-button size="mini"
+                           type="danger"
+                           @@click="handleDelete(scope.$index, scope.row.user)">
+                    <i class="el-icon-delete-solid"></i>
+                    删除
+                </el-button>
+            </template>
+        </el-table-column>
+    </el-table>
+
+
+
+    <el-pagination background
+                   layout="prev, pager, next"
+                   :current-page="curPage"
+                   :page-size="users.pageSize"
+                   :total="users.total"
+                   @@current-change="currentChange">
+    </el-pagination>
+</div>
+
+@section Scripts{
+    <script>
+        const router = new VueRouter()
+
+        var vue = new Vue({
+            router,
+            el: "#app",
+            data: {
+                loading: true,
+                search: '',
+                curPage: 1,
+                users: ''
+            },
+
+            created: function () {
+                console.log(this.$route.path.replace("/", ""))
+                var strIndex = this.$route.path.replace("/", "")
+                if (strIndex == "") {
+                    strIndex = 1;
+                }
+
+                this.curPage = parseInt(strIndex)
+                if (this.curPage == NaN) {
+                    this.curPage = 1
+                }
+                console.log(this.curPage)
+                this.loadUsers(this.curPage)
+            },
+            methods: {
+                loadUsers: function (pageIndex) {
+                    var t = this
+                    t.loading = true
+                    axios.get("/UserPage/UserManagerPages/Index?handler=LoadUsers&pageIndex=" + pageIndex + "&search=" + this.search)
+                        .then(function (res) {
+                            t.users = res.data
+                            console.log(t.users)
+                            t.tableUsersData = res.data.rows
+                            t.loading = false
+                        }).catch(function (err) {
+                            t.$notify.error({
+                                title: '错误',
+                                message: err
+                            });
+                            t.loading = false
+                        })
+                },
+                //点击编辑
+                handleEdit(index, user) {
+                    window.location.href = "/UserPage/UserManagerPages/AddOrUpdateUser/" + user.id
+                },
+                handleDelete(index, user) {
+                    deleteUser(this, user.id, user.userName)
+                },
+
+                currentChange: function (pageIndex) {
+                    this.loadUsers(pageIndex)
+                    router.push({ path: "" + pageIndex })
+                }
+                ,
+                //点击查询
+                searchClick: function () {
+                    this.curPage = 1
+                    router.push({ path: "" + this.curPage })
+                    this.loadUsers(0)
+                },
+
+                //点击角色
+                onClickRole: function (role) {
+                    console.log(role)
+                }
+            }
+        })
+
+        async function deleteUser(t, userId, userName) {
+            var value = await t.$prompt('请输入[ ' + userName + ' ]确认删除',
+                '确认删除用户吗？删除时用户对应的其他信息也被删除，且不可恢复',
+                {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    inputPlaceholder: userName
+                });
+            if (value.value != null) {
+                axios.post("/UserPage/UserManagerPages/Index?handler=DeleteUser",
+                    {
+                        UserId: userId,
+                        UserName: value.value
+                    })
+                    .then(function (res) {
+                        t.$notify({ title: '成功', message: '删除成功', type: 'success' });
+                        t.loadUsers(t.skip)
+                    }).catch(function (err) {
+                        console.log(err)
+                        t.$notify.error({ title: '错误', message: JSON.stringify(err.response.data) });
+                    })
+            } else {
+                t.$notify.error({ title: '错误', message: "无效的输入" });
+            }
+        }
+    </script>
+}

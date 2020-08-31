@@ -1,0 +1,172 @@
+﻿@page
+@model IdentityServerCenter.LoginModel
+@{
+    ViewData["Title"] = "账号登录";
+}
+
+<div class="mt-3">
+    <div style="height:530px">
+        <div>
+            <div class="row justify-content-center align-items-center">
+                <div class="col-12 col-sm-7 col-md-4">
+                    <div style="background-color: white;" class="p-5">
+                        <div>
+                            <img src="~/logo.png" style="width:125px;height:50px" /><b>账号登录</b>
+                        </div>
+
+                        <hr>
+                        @if (Model.LoginViewModel.EnableLocalLogin)
+                        {
+                            <form method="post">
+                                <input type="hidden" asp-for="@Model.LoginViewModel.ReturnUrl" />
+
+                                <fieldset>
+                                    <div class="form-group">
+                                        <input class="form-control" placeholder="账号" asp-for="@Model.LoginViewModel.Username" autofocus>
+                                        <span asp-validation-for="@Model.LoginViewModel.Username" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" placeholder="密码" asp-for="@Model.LoginViewModel.Password" autocomplete="off">
+                                        <span asp-validation-for="@Model.LoginViewModel.Password" class="text-danger"></span>
+                                    </div>
+
+                                    <input type="hidden" asp-for="@Model.LoginViewModel.RequiresTwoFactor" />
+
+
+                                    @*双因素验证*@
+                                    <input type="hidden" asp-for="@Model.LoginViewModel.TwoFactorCode">
+
+
+                                    @if (Model.LoginViewModel.AllowRememberLogin)
+                                    {
+                                        <div class="form-group login-remember">
+                                            <label asp-for="@Model.LoginViewModel.RememberLogin">
+                                                <input asp-for="@Model.LoginViewModel.RememberLogin">
+                                                <strong>记住登录</strong>
+                                            </label>
+
+                                            <a asp-page="Regist" class="ml-3">注册账号</a>
+                                        </div>
+                                    }
+
+
+                                    <div class="form-group">
+                                        <input class="btn btn-primary" type="submit" asp-for="@Model.LoginViewModel.Button" value="登录">
+                                        <input class="btn btn-dark" type="button" value="取消" onclick="cancelClick()">
+                                    </div>
+                                </fieldset>
+                            </form>
+                        }
+
+                        <hr />
+
+                        @*@{
+                                var schemes = await SignInManager.GetExternalAuthenticationSchemesAsync();
+                            }*@
+
+                        @if (Model.LoginViewModel.VisibleExternalProviders.Any())
+                        {
+                            <h5>第三方账号登陆</h5>
+
+                            @*<ul class="list-inline">*@
+                            @foreach (var provider in Model.LoginViewModel.VisibleExternalProviders)
+                            {
+                                @*<li>*@
+                                <a class="btn btn-default"
+                                   asp-controller="External"
+                                   asp-action="Challenge"
+                                   asp-route-provider="@provider.AuthenticationScheme"
+                                   asp-route-returnUrl="@Model.LoginViewModel.ReturnUrl">
+                                    @if (provider.DisplayName.ToLower() == "github")
+                                    {
+                                        <img src="~/images/GitHub-Mark-32px.png" class="img-fluid" />
+                                    }
+                                    else if (provider.DisplayName.ToLower() == "qq")
+                                    {
+                                        <img src="~/images/QQ-32px.ico" class="img-fluid" />
+                                    }
+                                    else
+                                    {
+                                        @provider.DisplayName
+                                    }
+                                </a>
+                                @*</li>*@
+                            }
+                            @*</ul>*@
+                        }
+                        <div class="text-right"> <a href="~/.well-known/openid-configuration">OIDC 发现文档</a></div>
+
+                        @if (!Model.LoginViewModel.EnableLocalLogin && !Model.LoginViewModel.VisibleExternalProviders.Any())
+                        {
+                            <div class="alert alert-warning">
+                                <strong>Invalid login request</strong>
+                                There are no login schemes configured for this client.
+                            </div>
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+</div>
+
+@section Scripts{
+
+    <script src="~/new/wwwroot/js/axios.min.js"></script>
+    <script src="~/new/wwwroot/js/sweetalert.min.js"></script>
+    <partial name="_ValidationSummary" />
+
+
+    <script>
+        $(document).ready(function () {
+
+            $('form').ajaxForm({
+                success: function (responseText, statusText, xhr, $form) {
+                    window.location.href = responseText
+                },
+                beforeSubmit: function (formData, jqForm, options) {
+
+                    return true
+                },
+                error: function (errmsg) {
+
+                    if (errmsg.responseText.indexOf("需要启动双因素验证") != -1) {
+
+                        swal({
+                            text: '请输入6位双因素验证码',
+                            content: "input",
+                            button: {
+                                text: "确定",
+                                closeModal: true,
+                            },
+                        })
+                            .then(function (name) {
+                                if (name) {
+                                    $('#LoginViewModel_TwoFactorCode').val(name)
+                                    $('form').submit()
+                                }
+                            }).catch(function (err) { console.log(err) })
+                    } else {
+                        swal("发生错误", errmsg.responseText, "error")
+                    }
+                }
+            });
+        })
+
+        function cancelClick() {
+            axios.post("?handler=Cancel", { ReturnUrl: $("#LoginViewModel_ReturnUrl").val() }, {
+                headers: {
+                    RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                }
+            }).then(function (res) {
+                window.location.href = res.data
+            })
+
+        }
+    </script>
+}

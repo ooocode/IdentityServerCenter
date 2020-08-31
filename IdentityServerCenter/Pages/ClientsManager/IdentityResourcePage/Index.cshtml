@@ -1,0 +1,65 @@
+﻿@page
+@model IdentityServerCenter.Pages.IdentityResourcePage.IndexModel
+@{
+    ViewData["Title"] = "身份资源";
+}
+
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">主页</a></li>
+        <li class="breadcrumb-item active" aria-current="page">身份资源</li>
+    </ol>
+</nav>
+
+<div class="text-right">
+    <el-button onclick="window.location.href='/ClientsManager/IdentityResourcePage/AddOrCreateIdentityResource'">新建</el-button>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th style="width:90px">资源名称</th>
+            <th style="width:90px">显示名称</th>
+            <th>描述</th>
+            <th>UserClaims</th>
+            <th style="width:90px">启用</th>
+            <th style="width:90px">编辑</th>
+            <th style="width:90px">删除</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @{
+            var resources = await ConfigurationDbContext.IdentityResources.Include(e=>e.UserClaims).ToListAsync();
+            foreach (var resource in resources)
+            {
+                <tr>
+                    <td>@resource.Name</td>
+                    <td>@resource.DisplayName</td>
+                    <td>@resource.Description</td>
+                    <td>@string.Join('、',resource.UserClaims.Select(e => e.Type))</td>
+                    <td>@resource.Enabled</td>
+                    <td><a asp-page="AddOrCreateIdentityResource" asp-route-Id="@resource.Id" class="btn btn-dark btn-sm">编辑</a></td>
+                    <td>
+                        @if (!resource.Required)
+                        {
+                            <form method="post" asp-page-handler="DeleteIdentityResource">
+                                <input type="hidden" name="resourceId" value="@resource.Id" />
+                                <input type="submit" value="删除" class="btn btn-danger btn-sm" />
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+    <script>
+        var vue = new Vue({
+            el:"#app"
+        })
+    </script>
+}

@@ -1,0 +1,1490 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>IdentityServerCenter</name>
+    </assembly>
+    <members>
+        <member name="M:Study.Website.Pages.Teacher.Classes.SchoolClassesModel.OnGetLoadSchoolClassesAsync(System.String,System.Nullable{System.Int32})">
+            <summary>
+            从第一页开始
+            </summary>
+            <param name="pageIndex"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Study.Website.Pages.Teacher.Classes.StudentsOfClassModel.ClassId">
+            <summary>
+            班级id
+            </summary>
+        </member>
+        <member name="M:Study.Website.Pages.Teacher.Classes.StudentsOfClassModel.OnGetLoadStudentsAsync">
+            <summary>
+            根据班级id加载学生
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Study.Website.Pages.Teacher.ImportStudentsModel.OnPostAsync(Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            添加学生
+            </summary>
+            <param name="upload"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.ApiResourcesController.GetApiResourcesAsync(System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
+            <summary>
+            获取身份资源列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.ApiResourcesController.GetApiResourceByIdAsync(System.Int32)">
+            <summary>
+            根据id获取身份资源
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.ApiResourcesController.CreateOrUpdateApiResourceAsync(IdentityServerCenter.Services.IdentityResourceService.ApiResourceDto)">
+            <summary>
+            创建或者更新身份资源
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.ApiResourcesController.DeleteApiResourceAsync(System.Int32)">
+            <summary>
+            删除api资源
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.ApiResourcesController.GetRecommendUserClaims">
+            <summary>
+            推荐的用户声明
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.ApiScopesController.GetApiScopesAsync(System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
+            <summary>
+            获取api作用域列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.ApiScopesController.GetApiScopeByIdAsync(System.Int32)">
+            <summary>
+            根据id获取api作用域
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.ApiScopesController.CreateOrUpdateApiScopeAsync(IdentityServerCenter.Services.IdentityResourceService.ApiScopeDto)">
+            <summary>
+            创建或者更新api作用域
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.ApiScopesController.DeleteApiScopeAsync(System.Int32)">
+            <summary>
+            删除api作用域
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.ClientsController.GetClientsAsync(System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
+            <summary>
+            获取客户端列表
+            </summary>
+            <param name="skip"></param>
+            <param name="take"></param>
+            <param name="search"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.ClientsController.GetClientByIdAsync(System.Int32)">
+            <summary>
+            通过id获取客户端
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.ClientsController.DeleteClientByIdAsync(System.Int32)">
+            <summary>
+            通过id删除客户端
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.ClientsController.CreateOrUpdateClientAsync(IdentityServerCenter.Services.ClientService.ClientDto)">
+            <summary>
+            创建或者更新客户端
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.ClientsController.GetExampleGrantTypes">
+            <summary>
+            默认授权类型
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.ClientsController.GetAllEnabledScopesAsync">
+            <summary>
+            可用的作用域
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.FilesController.Get(System.String)">
+            <summary>
+            获取头像
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.IdentityResourcesController.GetIdentityResourcesAsync(System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
+            <summary>
+            获取身份资源列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.IdentityResourcesController.GetIdentityResourceByIdAsync(System.Int32)">
+            <summary>
+            根据id获取身份资源
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.IdentityResourcesController.CreateOrUpdateIdentityResourceAsync(IdentityServerCenter.Services.IdentityResourceService.IdentityResourceDto)">
+            <summary>
+            创建或者更新身份资源
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.IdentityResourcesController.DeleteIdentityResourceAsync(System.Int32)">
+            <summary>
+            删除身份资源
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.IdentityResourcesController.GetRecommendUserClaims">
+            <summary>
+            推荐的用户声明
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.PermissonsController.GetPermissonsAsync(System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
+            <summary>
+            获取所有权限
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.PermissonsController.GetPermissonByIdAsync(System.String)">
+            <summary>
+            根据id获取权限
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.PermissonsController.CreateOrUpdatePermissonAsync(IdentityServerCenter.Models.Permisson)">
+            <summary>
+            创建或者更新权限
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.PermissonsController.DeletePermissonAsync(System.String)">
+            <summary>
+            删除权限
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.RolesController.GetRolesAsync(System.Int32,System.Int32,System.String)">
+            <summary>
+            查询角色列表
+            </summary>
+            <param name="skip"></param>
+            <param name="take"></param>
+            <param name="search"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.RolesController.GetRoleByIdAsync(System.String)">
+            <summary>
+            通过id获取角色
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.RolesController.DeleteRoleByIdAsync(System.String)">
+            <summary>
+            删除角色
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.RolesController.GetRolePermissonsAsync(System.String)">
+            <summary>
+            获取角色拥有的权限
+            </summary>
+            <param name="roleId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.RolesController.ReAddPermissonsToRoleAsync(System.String,IdentityServerCenter.Database.Dtos.RoleServiceDtos.ReAddPermissonsToRoleDto)">
+            <summary>
+            重新分配权限到角色
+            </summary>
+            <param name="roleId"></param>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.UsersController.GetUsersAsync(System.Int32,System.Int32,System.String)">
+            <summary>
+            查询用户列表
+            </summary>
+            <param name="skip"></param>
+            <param name="take"></param>
+            <param name="search"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.UsersController.GetUserByIdAsync(System.String)">
+            <summary>
+            通过id获取角色
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.UsersController.DeleteUserByIdAsync(System.String)">
+            <summary>
+            通过id删除用户
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.UsersController.CreateOrUpdateUserAsync(IdentityServerCenter.ViewModels.CreateOrUpdateUserViewModel)">
+            <summary>
+            创建或者更新用户
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.UsersController.PatchUserAsync(IdentityServerCenter.Data.ApplicationDbContext,AutoMapper.IMapper,System.String,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{IdentityServerCenter.ViewModels.CreateOrUpdateUserViewModel})">
+            <summary>
+            部分更新用户信息
+            </summary>
+            <param name="userId"></param>
+            <param name="document"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.UsersController.GetRolesOfUserAsync(System.String)">
+            <summary>
+            获取用户拥有的角色
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.UsersController.AddToRolesAsync(System.String,IdentityServerCenter.Database.Dtos.UserServiceDtos.AddToRolesDto)">
+            <summary>
+            为用户分配角色
+            </summary>
+            <param name="userId"></param>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.UsersController.GetUserClaimsAsync(System.String)">
+            <summary>
+            获取用户声明
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.UsersController.CreateOrUpdateUserClaimAsync(System.String,IdentityServerCenter.Database.Models.ApplicationIdentityUserClaim)">
+            <summary>
+            创建或者更新角色声明
+            </summary>
+            <param name="userId"></param>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.UsersController.DeleteUserClaimAsync(System.String,System.Int32)">
+            <summary>
+            删除用户声明
+            </summary>
+            <param name="userId"></param>
+            <param name="claimId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Controllers.UsersController.GetPermissonsOfUserAsync(System.String)">
+            <summary>
+            用户拥有的权限
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Models.SeedData.AddIdentityResourcesAsync">
+            <summary>
+            添加默认身份资源
+            </summary>
+        </member>
+        <member name="M:IdentityServerCenter.Pages.Account.UpdateInfoModel.OnPostUploadPhotoAsync">
+            <summary>
+            上传头像
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Pages.Account.UpdateInfoModel.OnPostUpdateAsync(IdentityServerCenter.Pages.Account.UpdateUserInfoViewModel)">
+            <summary>
+            更新信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Pages.Account.UpdateInfoModel.OnPostUpdatePasswordAsync(IdentityServerCenter.Pages.Account.UpdatePasswordViewModel)">
+            <summary>
+            更新密码
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:IdentityServerCenter.Pages.Account.UpdatePasswordViewModel">
+            <summary>
+            更新密码
+            </summary>
+        </member>
+        <member name="P:IdentityServerCenter.Pages.Account.UpdatePasswordViewModel.ConfirmPassword">
+            <summary>
+            确认密码
+            </summary>
+        </member>
+        <member name="T:IdentityServerCenter.Pages.Account.UpdateUserInfoViewModel">
+            <summary>
+            更新信息视图模型
+            </summary>
+        </member>
+        <member name="P:IdentityServerCenter.Pages.Account.UpdateUserInfoViewModel.Name">
+            <summary>
+            姓名
+            </summary>
+        </member>
+        <member name="P:IdentityServerCenter.Pages.Account.UpdateUserInfoViewModel.PhoneNumber">
+            <summary>
+            手机号码
+            </summary>
+        </member>
+        <member name="P:IdentityServerCenter.Pages.Account.UpdateUserInfoViewModel.Email">
+            <summary>
+            邮箱
+            </summary>
+        </member>
+        <member name="P:IdentityServerCenter.Pages.Account.UpdateUserInfoViewModel.Sex">
+            <summary>
+            性别
+            </summary>
+        </member>
+        <member name="P:IdentityServerCenter.Pages.Account.UpdateUserInfoViewModel.Desc">
+            <summary>
+            个人简介
+            </summary>
+        </member>
+        <member name="P:IdentityServerCenter.Pages.Account.UpdateUserInfoViewModel.ClassId">
+            <summary>
+            班级id
+            </summary>
+        </member>
+        <member name="M:IdentityServerCenter.Pages.ClientsManager.ClientPages.AddOrUpdateClientModel.OnPostAsync(IdentityServerCenter.Services.ClientService.AddOrUpdateClientDto)">
+            <summary>
+            添加或更新客户端
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:IdentityServerCenter.Pages.ClientsManager.ClientPages.IndexModel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:IdentityServerCenter.Pages.ClientsManager.ClientPages.IndexModel.OnPostDeleteClientAsync(System.Int32)">
+            <summary>
+            删除
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Pages.ClientsManager.IdentityResourcePage.AddOrCreateIdentityResourceModel.OnPostAsync(IdentityServerCenter.Pages.ClientsManager.IdentityResourcePage.AddOrCreateIdentityResourceModel.CreateOrUpdateIdentityResourceViewModel)">
+            <summary>
+            POST 创建或者更新
+            </summary>
+            <param name="ViewModel"></param>
+            <returns></returns>
+        </member>
+        <member name="T:IdentityServerCenter.Pages.ClientsManager.IdentityResourcePage.AddOrCreateIdentityResourceModel.CreateOrUpdateIdentityResourceViewModel">
+            <summary>
+            创建或更新身份资源视图模型
+            </summary>
+        </member>
+        <member name="M:IdentityServerCenter.Pages.IdentityResourcePage.IndexModel.OnPostDeleteIdentityResourceAsync(System.Int32)">
+            <summary>
+            删除身份资源
+            </summary>
+            <param name="resourceId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Pages.UserPage.DictionaryPages.IndexModel.OnGetDictionariesAsync">
+            <summary>
+            获取词典表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Pages.UserPage.DictionaryPages.IndexModel.OnPostDeleteDictionaryAsync(IdentityServerCenter.Pages.UserPage.DictionaryPages.DeletePermissonViewModel)">
+            <summary>
+            删除词典数据
+            </summary>
+            <param name="viewModel"></param>
+            <returns></returns>
+        </member>
+        <member name="P:IdentityServerCenter.Pages.UserPage.PermissionsPages.PermissonViewModel.Name">
+            <summary>
+            名称（只能是数字或者字母）
+            </summary>
+        </member>
+        <member name="P:IdentityServerCenter.Pages.UserPage.PermissionsPages.PermissonViewModel.DisplyName">
+            <summary>
+            显示名称
+            </summary>
+        </member>
+        <member name="P:IdentityServerCenter.Pages.UserPage.PermissionsPages.PermissonViewModel.Roles">
+            <summary>
+            分配到的角色
+            </summary>
+        </member>
+        <member name="M:IdentityServerCenter.Pages.UserPage.PermissionsPages.IndexModel.getRolesByPermissionIdAsync(System.String)">
+            <summary>
+            根据权限id获取对应角色列表
+            </summary>
+            <param name="permissonId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Pages.UserPage.PermissionsPages.IndexModel.OnGetPermissonsAsync">
+            <summary>
+            获取权限表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Pages.UserPage.PermissionsPages.IndexModel.GetCodeStringAsync">
+            <summary>
+            获取代码
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Pages.UserPage.PermissionsPages.IndexModel.OnGetDownloadCsharpCodeAsync">
+            <summary>
+            获取c# 代码文件
+            </summary>
+        </member>
+        <member name="M:IdentityServerCenter.Pages.UserPage.PermissionsPages.IndexModel.OnPostDeletePermissonAsync(IdentityServerCenter.Pages.UserPage.PermissionsPages.DeletePermissonViewModel)">
+            <summary>
+            删除权限
+            </summary>
+            <param name="viewModel"></param>
+            <returns></returns>
+        </member>
+        <member name="P:IdentityServerCenter.Pages.UserPage.RoleManagerPages.AddOrUpdateRoleModel.Id">
+            <summary>
+            角色Id
+            </summary>
+        </member>
+        <member name="P:IdentityServerCenter.Pages.UserPage.RoleManagerPages.AddOrUpdateRoleModel.CreateOrUpdateRoleDto">
+            <summary>
+            添加或更新角色视图模型
+            </summary>
+        </member>
+        <member name="M:IdentityServerCenter.Pages.UserPage.RoleManagerPages.AddOrUpdateRoleModel.OnPostAddOrUpdateRoleAsync(IdentityServerCenter.Database.Models.ApplicationRole)">
+            <summary>
+            添加或者创建角色
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Pages.UserPage.RoleManagerPages.AddOrUpdateRoleModel.OnPostAddRolePemissonsAsync(IdentityServerCenter.Pages.UserPage.RoleManagerPages.AddRoleClaimsViewModel)">
+            <summary>
+            分配角色权限
+            </summary>
+            <param name="viewModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Pages.UserPage.RoleManagerPages.IndexModel.OnGetLoadRolesAsync(System.Int32,System.Int32,System.String)">
+            <summary>
+            加载角色
+            </summary>
+            <param name="skip"></param>
+            <param name="take"></param>
+            <param name="search"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Pages.UserPage.RoleManagerPages.IndexModel.OnPostDeleteRoleAsync(IdentityServerCenter.Pages.UserPage.RoleManagerPages.DeleteRoleViewModel)">
+            <summary>
+            删除角色
+            </summary>
+            <param name="deleteRoleViewModel"></param>
+            <returns></returns>
+        </member>
+        <member name="T:IdentityServerCenter.Pages.UserPage.RoleManagerPages.DeleteRoleViewModel">
+            <summary>
+            删除角色视图模型
+            </summary>
+        </member>
+        <member name="M:IdentityServerCenter.Pages.UserPage.UserManagerPages.IndexModel.OnGetLoadUsersAsync(System.Nullable{System.Int32},System.String)">
+            <summary>
+            加载用户数据
+            </summary>
+            <param name="pageIndex"></param>
+            <param name="search"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Pages.UserPage.UserManagerPages.IndexModel.OnPostDeleteUserAsync(IdentityServerCenter.Pages.UserPage.UserManagerPages.DeleteUserViewModel)">
+            <summary>
+            删除用户
+            </summary>
+            <param name="deleteUserViewModel"></param>
+            <returns></returns>
+        </member>
+        <member name="T:IdentityServerCenter.Pages.UserPage.UserManagerPages.DeleteUserViewModel">
+            <summary>
+            删除用户视图模型
+            </summary>
+        </member>
+        <member name="P:IdentityServerCenter.Pages.UserPage.UserManagerPages.DeleteUserViewModel.UserId">
+            <summary>
+            用户Id
+            </summary>
+        </member>
+        <member name="P:IdentityServerCenter.Pages.UserPage.UserManagerPages.DeleteUserViewModel.UserName">
+            <summary>
+            用户名
+            </summary>
+        </member>
+        <member name="M:IdentityServerCenter.LoginModel.OnPost(IdentityServer4.Quickstart.UI.LoginViewModel)">
+            <summary>
+            登录
+            </summary>
+            <param name="LoginViewModel">登录视图模型</param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.LoginModel.OnPostCancelAsync(IdentityServer4.Quickstart.UI.LoginViewModel)">
+            <summary>
+            取消按钮
+            </summary>
+            <param name="LoginViewModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.AddOrUpdateUserModel.OnPostCreateOrUpdateUserAsync(IdentityServerCenter.ViewModels.CreateOrUpdateUserViewModel)">
+            <summary>
+            创建或编辑用户
+            </summary>
+            <param name="addOrUpdateUserViewModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.AddOrUpdateUserModel.OnPostChangeUserRolesAsync(IdentityServerCenter.ChangeUserRolesViewModel)">
+            <summary>
+            改变用户现有角色
+            </summary>
+            <param name="changeUserRolesViewModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.AddOrUpdateUserModel.OnGetUserClaimsAsync(System.String)">
+            <summary>
+            获取用户声明
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.AddOrUpdateUserModel.OnPostCreateOrUpdateUserClaimAsync(IdentityServerCenter.Database.Models.ApplicationIdentityUserClaim)">
+            <summary>
+            创建或者更新用户声明
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.AddOrUpdateUserModel.OnPostDeleteUserClaimAsync(IdentityServerCenter.DeleteUserClaimViewModel)">
+            <summary>
+            删除用户声明
+            </summary>
+            <param name="viewModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Quickstart.ControllersExtensions.IsNativeClient(IdentityServer4.Models.AuthorizationRequest)">
+            <summary>
+            Checks if the redirect URI is for a native client.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Rpc.ProfileServiceEx.GetUsers(UserGrpcService.GetUsersReq,Grpc.Core.ServerCallContext)">
+            <summary>
+            获取用户列表
+            </summary>
+            <param name="request"></param>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Rpc.ProfileServiceEx.GetRoles(Google.Protobuf.WellKnownTypes.Empty,Grpc.Core.ServerCallContext)">
+            <summary>
+            获取所有角色
+            </summary>
+            <param name="request"></param>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Rpc.ProfileServiceEx.AddUserToRole(UserGrpcService.AddUserToRoleReq,Grpc.Core.ServerCallContext)">
+            <summary>
+            为用户分配角色
+            </summary>
+            <param name="request"></param>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Rpc.ProfileServiceEx.RemoveUserFromUserRole(UserGrpcService.AddUserToRoleReq,Grpc.Core.ServerCallContext)">
+            <summary>
+            从用户角色表中移除用户
+            </summary>
+            <param name="request"></param>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Rpc.ProfileServiceEx.FindById(UserGrpcService.UserIdReq,Grpc.Core.ServerCallContext)">
+            <summary>
+            通过id查找用户
+            </summary>
+            <param name="request"></param>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Rpc.ProfileServiceEx.FindByUserName(UserGrpcService.UserNameReq,Grpc.Core.ServerCallContext)">
+            <summary>
+            通过用户名查找用户
+            </summary>
+            <param name="request"></param>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Rpc.ProfileServiceEx.GetRolesOfUser(UserGrpcService.UserIdReq,Grpc.Core.ServerCallContext)">
+            <summary>
+            通过id获取用户拥有的角色
+            </summary>
+            <param name="request"></param>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Rpc.ProfileServiceEx.GetUsersInRole(UserGrpcService.GetUsersInRoleReq,Grpc.Core.ServerCallContext)">
+            <summary>
+            获取角色下的用户
+            </summary>
+            <param name="request"></param>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Rpc.ProfileServiceEx.UpdateAwatar(UserGrpcService.UserAvatarReq,Grpc.Core.ServerCallContext)">
+            <summary>
+            更新头像
+            </summary>
+            <param name="request"></param>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Rpc.ProfileServiceEx.UpdatePassword(UserGrpcService.UserPasswordReq,Grpc.Core.ServerCallContext)">
+            <summary>
+            更新密码
+            </summary>
+            <param name="request"></param>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Rpc.ProfileServiceEx.UpdateUser(UserGrpcService.UpdateUserReq,Grpc.Core.ServerCallContext)">
+            <summary>
+            更新用户信息
+            </summary>
+            <param name="request"></param>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Rpc.ProfileServiceEx.GetUsersByClassId(UserGrpcService.UserNameReq,Grpc.Core.ServerCallContext)">
+            <summary>
+            根据班级id获取用户列表
+            </summary>
+            <param name="request"></param>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Rpc.ProfileServiceEx.GetUsersByRoleName(UserGrpcService.RoleNameReq,Grpc.Core.ServerCallContext)">
+            <summary>
+            通过角色获取用户
+            </summary>
+            <param name="request"></param>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Rpc.ProfileServiceEx.GetSchoolClasses(UserGrpcService.SchoolClassesReq,Grpc.Core.ServerCallContext)">
+            <summary>
+            获取学校班级
+            </summary>
+            <param name="request"></param>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Rpc.ProfileServiceEx.GetSchoolClassById(UserGrpcService.IdReq,Grpc.Core.ServerCallContext)">
+            <summary>
+            根据班级id获取班级信息
+            </summary>
+            <param name="request"></param>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Rpc.ProfileServiceEx.GetSchoolClassByName(UserGrpcService.NameReq,Grpc.Core.ServerCallContext)">
+            <summary>
+            根据班级名称获取班级信息
+            </summary>
+            <param name="request"></param>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Rpc.ProfileServiceEx.GetUserPermissons(UserGrpcService.UserIdReq,Grpc.Core.ServerCallContext)">
+            <summary>
+            根据用户id返回用户的权限列表
+            </summary>
+            <param name="request">用户id </param>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="T:IdentityServerCenter.Services.IdentityResourceService.ApiResourceService">
+            <summary>
+            Api资源服务
+            </summary>
+        </member>
+        <member name="M:IdentityServerCenter.Services.IdentityResourceService.ApiResourceService.GetApiResourcesAsync(System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
+            <summary>
+            获取api资源
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Services.IdentityResourceService.ApiResourceService.GetApiResourceByIdAsync(System.Int32)">
+            <summary>
+            通过id获取api资源
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Services.IdentityResourceService.ApiResourceService.DeleteApiResourceAsync(System.Int32)">
+            <summary>
+            删除api资源
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Services.IdentityResourceService.ApiResourceService.CreateOrUpdateApiResourceAsync(IdentityServerCenter.Services.IdentityResourceService.ApiResourceDto)">
+            <summary>
+            创建或者更新资源
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="T:IdentityServerCenter.Services.IdentityResourceService.ApiScopeService">
+            <summary>
+            Api作用域服务
+            </summary>
+        </member>
+        <member name="M:IdentityServerCenter.Services.IdentityResourceService.ApiScopeService.GetApiScopesAsync(System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
+            <summary>
+            获取api资源
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Services.IdentityResourceService.ApiScopeService.GetApiScopeByIdAsync(System.Int32)">
+            <summary>
+            通过id获取api作用域
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Services.IdentityResourceService.ApiScopeService.DeleteApiScopeAsync(System.Int32)">
+            <summary>
+            删除api作用域
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Services.IdentityResourceService.ApiScopeService.CreateOrUpdateApiScopeAsync(IdentityServerCenter.Services.IdentityResourceService.ApiScopeDto)">
+            <summary>
+            创建或者更新api作用域
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Services.IdentityResourceService.IdentityResourceService.GetIdentityResourcesAsync(System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
+            <summary>
+            获取身份资源
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Services.IdentityResourceService.IdentityResourceService.GetIdentityResourceByIdAsync(System.Int32)">
+            <summary>
+            通过id获取身份资源
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Services.IdentityResourceService.IdentityResourceService.DeleteIdentityResourceAsync(System.Int32)">
+            <summary>
+            删除身份资源
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Services.IdentityResourceService.IdentityResourceService.CreateOrUpdateIdentityResourceAsync(IdentityServerCenter.Services.IdentityResourceService.IdentityResourceDto)">
+            <summary>
+            创建或者更新资源
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="P:IdentityServerCenter.Services.ClientService.AddOrUpdateClientDto.Id">
+            <summary>
+            Id 如果是空，则创建，否则更新
+            </summary>
+        </member>
+        <member name="P:IdentityServerCenter.Services.ClientService.AddOrUpdateClientDto.RedirectUris">
+            <summary>
+            重定位uris
+            </summary>
+        </member>
+        <member name="P:IdentityServerCenter.Services.ClientService.AddOrUpdateClientDto.Scopes">
+            <summary>
+            作用域
+            </summary>
+        </member>
+        <member name="P:IdentityServerCenter.Services.ClientService.AddOrUpdateClientDto.RequireConsent">
+            <summary>
+            请求同意授权页面
+            </summary>
+        </member>
+        <member name="T:IdentityServerCenter.Services.ClientService.ClientService">
+            <summary>
+            客户端服务
+            </summary>
+        </member>
+        <member name="M:IdentityServerCenter.Services.ClientService.ClientService.GetExampleGrantTypes">
+            <summary>
+            获取示例grantType
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Services.ClientService.ClientService.GetClientsAsync(System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
+            <summary>
+            获取客户端列表
+            </summary>
+            <param name="skip"></param>
+            <param name="take"></param>
+            <param name="search"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Services.ClientService.ClientService.GetClientByIdAsync(System.Int32)">
+            <summary>
+            根据主键id获取客户端
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Services.ClientService.ClientService.GetAllEnabledScopesAsync">
+            <summary>
+            获取所有可用作用域
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Services.ClientService.ClientService.DeleteClientAsync(System.Int32)">
+            <summary>
+            删除客户端
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Services.ClientService.ClientService.CreateOrUpdateClientAsync(IdentityServerCenter.Services.ClientService.ClientDto)">
+            <summary>
+            添加或者更新客户端
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="P:IdentityServerCenter.Services.ClientService.EnabledScopeDto.TypeTag">
+            <summary>
+            类型标记   身份/API
+            </summary>
+        </member>
+        <member name="M:IdentityServerCenter.Services.ClientService.IClientService.CreateOrUpdateClientAsync(IdentityServerCenter.Services.ClientService.ClientDto)">
+            <summary>
+            添加或者更新OIDC客户端
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Services.ClientService.IClientService.DeleteClientAsync(System.Int32)">
+            <summary>
+            删除客户端
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServerCenter.Services.ClientService.IClientService.GetClientByIdAsync(System.Int32)">
+            <summary>
+            根据主键id获取客户端
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServer4.Quickstart.UI.ExternalController.Challenge(System.String,System.String)">
+            <summary>
+            initiate roundtrip to external authentication provider
+            </summary>
+        </member>
+        <member name="M:IdentityServer4.Quickstart.UI.ExternalController.Callback">
+            <summary>
+            Post processing of external authentication
+            </summary>
+        </member>
+        <member name="P:IdentityServer4.Quickstart.UI.LoginInputModel.RequiresTwoFactor">
+            <summary>
+            是否启动双因素验证
+            </summary>
+        </member>
+        <member name="P:IdentityServer4.Quickstart.UI.LoginInputModel.TwoFactorCode">
+            <summary>
+            双因素验证验证码
+            </summary>
+        </member>
+        <member name="P:IdentityServer4.Quickstart.UI.LoginInputModel.Button">
+            <summary>
+            按钮 （登录 or 取消）
+            </summary>
+        </member>
+        <member name="M:IdentityServer4.Quickstart.UI.Extensions.IsPkceClientAsync(IdentityServer4.Stores.IClientStore,System.String)">
+            <summary>
+            Determines whether the client is configured to use PKCE.
+            </summary>
+            <param name="store">The store.</param>
+            <param name="client_id">The client identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="T:IdentityServer4.Quickstart.UI.GrantsController">
+            <summary>
+            This sample controller allows a user to revoke grants given to clients
+            </summary>
+        </member>
+        <member name="M:IdentityServer4.Quickstart.UI.GrantsController.Index">
+            <summary>
+            Show list of grants
+            </summary>
+        </member>
+        <member name="M:IdentityServer4.Quickstart.UI.GrantsController.Revoke(System.String)">
+            <summary>
+            Handle postback to revoke a client
+            </summary>
+        </member>
+        <member name="M:IdentityServer4.Quickstart.UI.HomeController.Error(System.String)">
+            <summary>
+            Shows the error page
+            </summary>
+        </member>
+        <member name="T:UserGrpcService.UserReflection">
+            <summary>Holder for reflection information generated from Protos/user.proto</summary>
+        </member>
+        <member name="P:UserGrpcService.UserReflection.Descriptor">
+            <summary>File descriptor for Protos/user.proto</summary>
+        </member>
+        <member name="F:UserGrpcService.GetUsersReq.SkipFieldNumber">
+            <summary>Field number for the "Skip" field.</summary>
+        </member>
+        <member name="F:UserGrpcService.GetUsersReq.TaskFieldNumber">
+            <summary>Field number for the "Task" field.</summary>
+        </member>
+        <member name="F:UserGrpcService.GetUsersReq.QueryFieldNumber">
+            <summary>Field number for the "Query" field.</summary>
+        </member>
+        <member name="F:UserGrpcService.GetUsersInRoleReq.RoleIdFieldNumber">
+            <summary>Field number for the "RoleId" field.</summary>
+        </member>
+        <member name="F:UserGrpcService.GetUsersInRoleReq.SkipFieldNumber">
+            <summary>Field number for the "Skip" field.</summary>
+        </member>
+        <member name="F:UserGrpcService.GetUsersInRoleReq.TaskFieldNumber">
+            <summary>Field number for the "Task" field.</summary>
+        </member>
+        <member name="F:UserGrpcService.GetUsersInRoleReq.QueryFieldNumber">
+            <summary>Field number for the "Query" field.</summary>
+        </member>
+        <member name="F:UserGrpcService.AddUserToRoleReq.UserIdFieldNumber">
+            <summary>Field number for the "UserId" field.</summary>
+        </member>
+        <member name="F:UserGrpcService.AddUserToRoleReq.RoleIdFieldNumber">
+            <summary>Field number for the "RoleId" field.</summary>
+        </member>
+        <member name="F:UserGrpcService.RoleListReplay.RolesFieldNumber">
+            <summary>Field number for the "Roles" field.</summary>
+        </member>
+        <member name="T:UserGrpcService.RoleListReplay.Types">
+            <summary>Container for nested types declared in the RoleListReplay message type.</summary>
+        </member>
+        <member name="F:UserGrpcService.RoleListReplay.Types.RoleItem.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="P:UserGrpcService.RoleListReplay.Types.RoleItem.Id">
+             <summary>
+            角色Id
+             </summary>
+        </member>
+        <member name="F:UserGrpcService.RoleListReplay.Types.RoleItem.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="P:UserGrpcService.RoleListReplay.Types.RoleItem.Name">
+             <summary>
+            角色名称
+             </summary>
+        </member>
+        <member name="F:UserGrpcService.RoleListReplay.Types.RoleItem.NormalizedNameFieldNumber">
+            <summary>Field number for the "NormalizedName" field.</summary>
+        </member>
+        <member name="P:UserGrpcService.RoleListReplay.Types.RoleItem.NormalizedName">
+             <summary>
+            归一化的名称
+             </summary>
+        </member>
+        <member name="F:UserGrpcService.RoleListReplay.Types.RoleItem.ConcurrencyStampFieldNumber">
+            <summary>Field number for the "ConcurrencyStamp" field.</summary>
+        </member>
+        <member name="P:UserGrpcService.RoleListReplay.Types.RoleItem.ConcurrencyStamp">
+             <summary>
+            并发戳
+             </summary>
+        </member>
+        <member name="F:UserGrpcService.RoleNameReq.RoleNameFieldNumber">
+            <summary>Field number for the "RoleName" field.</summary>
+        </member>
+        <member name="F:UserGrpcService.RoleNameReq.SkipFieldNumber">
+            <summary>Field number for the "Skip" field.</summary>
+        </member>
+        <member name="F:UserGrpcService.RoleNameReq.TakeFieldNumber">
+            <summary>Field number for the "Take" field.</summary>
+        </member>
+        <member name="F:UserGrpcService.IdReq.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:UserGrpcService.StringListRes.ItemsFieldNumber">
+            <summary>Field number for the "Items" field.</summary>
+        </member>
+        <member name="F:UserGrpcService.NameReq.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <member name="T:UserGrpcService.UserIdReq">
+            <summary>
+            The request message containing the user's name.
+            </summary>
+        </member>
+        <member name="F:UserGrpcService.UserIdReq.UserIdFieldNumber">
+            <summary>Field number for the "UserId" field.</summary>
+        </member>
+        <member name="F:UserGrpcService.UserNameReq.UserNameFieldNumber">
+            <summary>Field number for the "UserName" field.</summary>
+        </member>
+        <member name="F:UserGrpcService.UserAvatarReq.UserIdFieldNumber">
+            <summary>Field number for the "UserId" field.</summary>
+        </member>
+        <member name="F:UserGrpcService.UserAvatarReq.AvatarUrlFieldNumber">
+            <summary>Field number for the "AvatarUrl" field.</summary>
+        </member>
+        <member name="F:UserGrpcService.UserRolesReply.RolesFieldNumber">
+            <summary>Field number for the "Roles" field.</summary>
+        </member>
+        <member name="F:UserGrpcService.UserPasswordReq.UserIdFieldNumber">
+            <summary>Field number for the "UserId" field.</summary>
+        </member>
+        <member name="F:UserGrpcService.UserPasswordReq.NewPasswordFieldNumber">
+            <summary>Field number for the "NewPassword" field.</summary>
+        </member>
+        <member name="F:UserGrpcService.BoolReply.ValueFieldNumber">
+            <summary>Field number for the "Value" field.</summary>
+        </member>
+        <member name="F:UserGrpcService.UserList.TotalFieldNumber">
+            <summary>Field number for the "Total" field.</summary>
+        </member>
+        <member name="P:UserGrpcService.UserList.Total">
+             <summary>
+            总数
+             </summary>
+        </member>
+        <member name="F:UserGrpcService.UserList.UsersFieldNumber">
+            <summary>Field number for the "Users" field.</summary>
+        </member>
+        <member name="T:UserGrpcService.UserReply">
+            <summary>
+            The response message containing the greetings.
+            </summary>
+        </member>
+        <member name="F:UserGrpcService.UserReply.LockoutEndFieldNumber">
+            <summary>Field number for the "LockoutEnd" field.</summary>
+        </member>
+        <member name="P:UserGrpcService.UserReply.LockoutEnd">
+             <summary>
+            
+             摘要:
+                 Gets or sets a flag indicating if two factor authentication is enabled for this
+                 user.
+             </summary>
+        </member>
+        <member name="F:UserGrpcService.UserReply.TwoFactorEnabledFieldNumber">
+            <summary>Field number for the "TwoFactorEnabled" field.</summary>
+        </member>
+        <member name="P:UserGrpcService.UserReply.TwoFactorEnabled">
+             <summary>
+            
+             摘要:
+                 Gets or sets a flag indicating if a user has confirmed their telephone address.
+             </summary>
+        </member>
+        <member name="F:UserGrpcService.UserReply.PhoneNumberConfirmedFieldNumber">
+            <summary>Field number for the "PhoneNumberConfirmed" field.</summary>
+        </member>
+        <member name="P:UserGrpcService.UserReply.PhoneNumberConfirmed">
+             <summary>
+            
+             摘要:
+                 Gets or sets a telephone number for the user.
+             </summary>
+        </member>
+        <member name="F:UserGrpcService.UserReply.PhoneNumberFieldNumber">
+            <summary>Field number for the "PhoneNumber" field.</summary>
+        </member>
+        <member name="F:UserGrpcService.UserReply.ConcurrencyStampFieldNumber">
+            <summary>Field number for the "ConcurrencyStamp" field.</summary>
+        </member>
+        <member name="P:UserGrpcService.UserReply.ConcurrencyStamp">
+             <summary>
+            
+             摘要:
+                 A random value that must change whenever a user is persisted to the store
+             </summary>
+        </member>
+        <member name="F:UserGrpcService.UserReply.SecurityStampFieldNumber">
+            <summary>Field number for the "SecurityStamp" field.</summary>
+        </member>
+        <member name="P:UserGrpcService.UserReply.SecurityStamp">
+             <summary>
+            
+             摘要:
+                 A random value that must change whenever a users credentials change (password
+                 changed, login removed)
+             </summary>
+        </member>
+        <member name="F:UserGrpcService.UserReply.PasswordHashFieldNumber">
+            <summary>Field number for the "PasswordHash" field.</summary>
+        </member>
+        <member name="P:UserGrpcService.UserReply.PasswordHash">
+             <summary>
+            
+             摘要:
+                 Gets or sets a salted and hashed representation of the password for this user.
+             </summary>
+        </member>
+        <member name="F:UserGrpcService.UserReply.EmailConfirmedFieldNumber">
+            <summary>Field number for the "EmailConfirmed" field.</summary>
+        </member>
+        <member name="P:UserGrpcService.UserReply.EmailConfirmed">
+             <summary>
+            
+             摘要:
+                 Gets or sets a flag indicating if a user has confirmed their email address.
+             </summary>
+        </member>
+        <member name="F:UserGrpcService.UserReply.NormalizedEmailFieldNumber">
+            <summary>Field number for the "NormalizedEmail" field.</summary>
+        </member>
+        <member name="P:UserGrpcService.UserReply.NormalizedEmail">
+             <summary>
+            
+             摘要:
+                 Gets or sets the normalized email address for this user.
+             </summary>
+        </member>
+        <member name="F:UserGrpcService.UserReply.EmailFieldNumber">
+            <summary>Field number for the "Email" field.</summary>
+        </member>
+        <member name="F:UserGrpcService.UserReply.NormalizedUserNameFieldNumber">
+            <summary>Field number for the "NormalizedUserName" field.</summary>
+        </member>
+        <member name="P:UserGrpcService.UserReply.NormalizedUserName">
+             <summary>
+            
+             摘要:
+                 Gets or sets the normalized user name for this user.
+             </summary>
+        </member>
+        <member name="F:UserGrpcService.UserReply.UserNameFieldNumber">
+            <summary>Field number for the "UserName" field.</summary>
+        </member>
+        <member name="F:UserGrpcService.UserReply.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="P:UserGrpcService.UserReply.Id">
+             <summary>
+            
+             摘要:
+                 Gets or sets the primary key for this user.
+             </summary>
+        </member>
+        <member name="F:UserGrpcService.UserReply.LockoutEnabledFieldNumber">
+            <summary>Field number for the "LockoutEnabled" field.</summary>
+        </member>
+        <member name="P:UserGrpcService.UserReply.LockoutEnabled">
+             <summary>
+            
+             摘要:
+                 Gets or sets a flag indicating if the user could be locked out.
+             </summary>
+        </member>
+        <member name="F:UserGrpcService.UserReply.AccessFailedCountFieldNumber">
+            <summary>Field number for the "AccessFailedCount" field.</summary>
+        </member>
+        <member name="P:UserGrpcService.UserReply.AccessFailedCount">
+             <summary>
+            
+             摘要:
+                 Gets or sets the number of failed login attempts for the current user.
+             </summary>
+        </member>
+        <member name="F:UserGrpcService.UserReply.PhotoFieldNumber">
+            <summary>Field number for the "Photo" field.</summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:UserGrpcService.UserReply.Photo" -->
+        <member name="F:UserGrpcService.UserReply.PasswordFieldNumber">
+            <summary>Field number for the "Password" field.</summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:UserGrpcService.UserReply.Password" -->
+        <member name="F:UserGrpcService.UserReply.SexFieldNumber">
+            <summary>Field number for the "Sex" field.</summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:UserGrpcService.UserReply.Sex" -->
+        <member name="F:UserGrpcService.UserReply.DescFieldNumber">
+            <summary>Field number for the "Desc" field.</summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:UserGrpcService.UserReply.Desc" -->
+        <member name="F:UserGrpcService.UserReply.ClassIdFieldNumber">
+            <summary>Field number for the "ClassId" field.</summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:UserGrpcService.UserReply.ClassId" -->
+        <member name="F:UserGrpcService.UserReply.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:UserGrpcService.UserReply.Name" -->
+        <member name="F:UserGrpcService.UpdateUserReq.UserIdFieldNumber">
+            <summary>Field number for the "UserId" field.</summary>
+        </member>
+        <member name="F:UserGrpcService.UpdateUserReq.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:UserGrpcService.UpdateUserReq.Name" -->
+        <member name="F:UserGrpcService.UpdateUserReq.PhoneNumberFieldNumber">
+            <summary>Field number for the "PhoneNumber" field.</summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:UserGrpcService.UpdateUserReq.PhoneNumber" -->
+        <member name="F:UserGrpcService.UpdateUserReq.EmailFieldNumber">
+            <summary>Field number for the "Email" field.</summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:UserGrpcService.UpdateUserReq.Email" -->
+        <member name="F:UserGrpcService.UpdateUserReq.SexFieldNumber">
+            <summary>Field number for the "Sex" field.</summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:UserGrpcService.UpdateUserReq.Sex" -->
+        <member name="F:UserGrpcService.UpdateUserReq.DescFieldNumber">
+            <summary>Field number for the "Desc" field.</summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:UserGrpcService.UpdateUserReq.Desc" -->
+        <member name="F:UserGrpcService.SchoolClassReply.IdFieldNumber">
+            <summary>Field number for the "Id" field.</summary>
+        </member>
+        <member name="F:UserGrpcService.SchoolClassReply.NameFieldNumber">
+            <summary>Field number for the "Name" field.</summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:UserGrpcService.SchoolClassReply.Name" -->
+        <member name="F:UserGrpcService.SchoolClassReply.DescFieldNumber">
+            <summary>Field number for the "Desc" field.</summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:UserGrpcService.SchoolClassReply.Desc" -->
+        <member name="F:UserGrpcService.SchoolClassListReply.TotalFieldNumber">
+            <summary>Field number for the "Total" field.</summary>
+        </member>
+        <member name="P:UserGrpcService.SchoolClassListReply.Total">
+             <summary>
+            总数
+             </summary>
+        </member>
+        <member name="F:UserGrpcService.SchoolClassListReply.SchoolClassesFieldNumber">
+            <summary>Field number for the "SchoolClasses" field.</summary>
+        </member>
+        <member name="F:UserGrpcService.SchoolClassesReq.SkipFieldNumber">
+            <summary>Field number for the "Skip" field.</summary>
+        </member>
+        <member name="P:UserGrpcService.SchoolClassesReq.Skip">
+             <summary>
+            跳过 N条记录
+             </summary>
+        </member>
+        <member name="F:UserGrpcService.SchoolClassesReq.TakeFieldNumber">
+            <summary>Field number for the "Take" field.</summary>
+        </member>
+        <member name="P:UserGrpcService.SchoolClassesReq.Take">
+             <summary>
+            取N条记录
+             </summary>
+        </member>
+        <member name="F:UserGrpcService.SchoolClassesReq.QueryNameFieldNumber">
+            <summary>Field number for the "QueryName" field.</summary>
+        </member>
+        <member name="P:UserGrpcService.SchoolClassesReq.QueryName">
+             <summary>
+            查询名字 可选
+             </summary>
+        </member>
+        <member name="T:UserGrpcService.User">
+            <summary>
+            The greeting service definition.
+            </summary>
+        </member>
+        <member name="P:UserGrpcService.User.Descriptor">
+            <summary>Service descriptor</summary>
+        </member>
+        <member name="T:UserGrpcService.User.UserBase">
+            <summary>Base class for server-side implementations of User</summary>
+        </member>
+        <member name="M:UserGrpcService.User.UserBase.GetUsers(UserGrpcService.GetUsersReq,Grpc.Core.ServerCallContext)">
+             <summary>
+            获取用户
+             </summary>
+             <param name="request">The request received from the client.</param>
+             <param name="context">The context of the server-side call handler being invoked.</param>
+             <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
+        <member name="M:UserGrpcService.User.UserBase.GetUsersInRole(UserGrpcService.GetUsersInRoleReq,Grpc.Core.ServerCallContext)">
+             <summary>
+            获取角色名称下的所有用户
+             </summary>
+             <param name="request">The request received from the client.</param>
+             <param name="context">The context of the server-side call handler being invoked.</param>
+             <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
+        <member name="M:UserGrpcService.User.UserBase.GetRoles(Google.Protobuf.WellKnownTypes.Empty,Grpc.Core.ServerCallContext)">
+             <summary>
+            获取角色
+             </summary>
+             <param name="request">The request received from the client.</param>
+             <param name="context">The context of the server-side call handler being invoked.</param>
+             <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
+        <member name="M:UserGrpcService.User.UserBase.AddUserToRole(UserGrpcService.AddUserToRoleReq,Grpc.Core.ServerCallContext)">
+             <summary>
+            为用户分配角色
+             </summary>
+             <param name="request">The request received from the client.</param>
+             <param name="context">The context of the server-side call handler being invoked.</param>
+             <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
+        <member name="M:UserGrpcService.User.UserBase.RemoveUserFromUserRole(UserGrpcService.AddUserToRoleReq,Grpc.Core.ServerCallContext)">
+             <summary>
+            从用户角色表中移除用户
+             </summary>
+             <param name="request">The request received from the client.</param>
+             <param name="context">The context of the server-side call handler being invoked.</param>
+             <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
+        <member name="M:UserGrpcService.User.UserBase.FindById(UserGrpcService.UserIdReq,Grpc.Core.ServerCallContext)">
+             <summary>
+            通过用户id查找用户
+             </summary>
+             <param name="request">The request received from the client.</param>
+             <param name="context">The context of the server-side call handler being invoked.</param>
+             <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
+        <member name="M:UserGrpcService.User.UserBase.FindByUserName(UserGrpcService.UserNameReq,Grpc.Core.ServerCallContext)">
+             <summary>
+            通过用户名查找用户
+             </summary>
+             <param name="request">The request received from the client.</param>
+             <param name="context">The context of the server-side call handler being invoked.</param>
+             <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
+        <member name="M:UserGrpcService.User.UserBase.GetRolesOfUser(UserGrpcService.UserIdReq,Grpc.Core.ServerCallContext)">
+             <summary>
+            通过用户id获取用户拥有的角色
+             </summary>
+             <param name="request">The request received from the client.</param>
+             <param name="context">The context of the server-side call handler being invoked.</param>
+             <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
+        <member name="M:UserGrpcService.User.UserBase.UpdateAwatar(UserGrpcService.UserAvatarReq,Grpc.Core.ServerCallContext)">
+             <summary>
+            更新用户头像
+             </summary>
+             <param name="request">The request received from the client.</param>
+             <param name="context">The context of the server-side call handler being invoked.</param>
+             <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
+        <member name="M:UserGrpcService.User.UserBase.UpdatePassword(UserGrpcService.UserPasswordReq,Grpc.Core.ServerCallContext)">
+             <summary>
+            更新密码
+             </summary>
+             <param name="request">The request received from the client.</param>
+             <param name="context">The context of the server-side call handler being invoked.</param>
+             <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
+        <member name="M:UserGrpcService.User.UserBase.UpdateUser(UserGrpcService.UpdateUserReq,Grpc.Core.ServerCallContext)">
+             <summary>
+            更新用户
+             </summary>
+             <param name="request">The request received from the client.</param>
+             <param name="context">The context of the server-side call handler being invoked.</param>
+             <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
+        <member name="M:UserGrpcService.User.UserBase.GetUsersByClassId(UserGrpcService.UserNameReq,Grpc.Core.ServerCallContext)">
+             <summary>
+            通过id获取用户列表
+             </summary>
+             <param name="request">The request received from the client.</param>
+             <param name="context">The context of the server-side call handler being invoked.</param>
+             <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
+        <member name="M:UserGrpcService.User.UserBase.GetUsersByRoleName(UserGrpcService.RoleNameReq,Grpc.Core.ServerCallContext)">
+             <summary>
+            通过角色名称获取用户
+             </summary>
+             <param name="request">The request received from the client.</param>
+             <param name="context">The context of the server-side call handler being invoked.</param>
+             <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
+        <member name="M:UserGrpcService.User.UserBase.GetSchoolClasses(UserGrpcService.SchoolClassesReq,Grpc.Core.ServerCallContext)">
+             <summary>
+            获取学校班级
+             </summary>
+             <param name="request">The request received from the client.</param>
+             <param name="context">The context of the server-side call handler being invoked.</param>
+             <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:UserGrpcService.User.UserBase.GetSchoolClassById(UserGrpcService.IdReq,Grpc.Core.ServerCallContext)" -->
+        <member name="M:UserGrpcService.User.UserBase.GetUserPermissons(UserGrpcService.UserIdReq,Grpc.Core.ServerCallContext)">
+             <summary>
+            根据用户id返回用户权限名称列表
+             </summary>
+             <param name="request">The request received from the client.</param>
+             <param name="context">The context of the server-side call handler being invoked.</param>
+             <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
+        <member name="M:UserGrpcService.User.BindService(UserGrpcService.User.UserBase)">
+            <summary>Creates service definition that can be registered with a server</summary>
+            <param name="serviceImpl">An object implementing the server-side handling logic.</param>
+        </member>
+        <member name="M:UserGrpcService.User.BindService(Grpc.Core.ServiceBinderBase,UserGrpcService.User.UserBase)">
+            <summary>Register service method with a service binder with or without implementation. Useful when customizing the  service binding logic.
+            Note: this method is part of an experimental API that can change or be removed without any prior notice.</summary>
+            <param name="serviceBinder">Service methods will be bound by calling <c>AddMethod</c> on this object.</param>
+            <param name="serviceImpl">An object implementing the server-side handling logic.</param>
+        </member>
+    </members>
+</doc>

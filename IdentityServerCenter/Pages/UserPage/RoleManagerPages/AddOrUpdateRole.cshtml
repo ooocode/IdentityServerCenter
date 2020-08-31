@@ -1,0 +1,215 @@
+﻿@page "{Id?}"
+@model IdentityServerCenter.Pages.UserPage.RoleManagerPages.AddOrUpdateRoleModel
+@{
+    ViewData["Title"] = "创建角色";
+}
+
+
+@section Head{
+    <link href="~/js/jquery.tree-multiselect.min.css" rel="stylesheet" />
+}
+
+@{ 
+    var dto = Model.CreateOrUpdateRoleDto;
+    var id = Model.Id;
+    bool isCreate = string.IsNullOrEmpty(Model.Id);
+}
+
+
+
+<div>
+    @{
+
+        var content = isCreate ? "新建角色" : $"编辑角色[{dto.Name}]";
+    }
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">主页</a></li>
+            <li class="breadcrumb-item"><a href="/UserPage/RoleManagerPages/Index">角色</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@content</li>
+        </ol>
+    </nav>
+
+
+    <el-page-header @@back="goBack" content="@content">
+    </el-page-header>
+    <hr />
+
+
+    <el-tabs tab-position="left" v-model="activeName">
+        <el-tab-pane label="基本信息">
+            <div>
+                <el-form ref="form" label-width="150px" method="post" action="/UserPage/RoleManagerPages/AddOrUpdateRole?handler=AddOrUpdateRole">
+                    @Html.AntiForgeryToken()
+
+                    <el-form-item label="">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="@dto.Id" />
+                        <span asp-validation-for="@dto.Id" class="text-danger"></span>
+                    </el-form-item>
+
+                    <el-form-item label="角色名称" required>
+                        <input asp-for="@dto.Name" class="form-control" />
+                        <span asp-validation-for="@dto.Name" class="text-danger"></span>
+                    </el-form-item>
+
+                    <el-form-item label="描述">
+                        <textarea asp-for="@dto.Desc" class="form-control"></textarea>
+                        <span asp-validation-for="@dto.Desc" class="text-danger"></span>
+                    </el-form-item>
+
+                    @if (Model.Role == null || !Model.Role.NonEditable)
+                    {
+                        <el-form-item>
+                            @{ var btnText = isCreate ? "创建角色" : "修改";}
+                            <input type="submit" value="@btnText" class="btn btn-primary" />
+                            <button type="button" class="btn btn-dark" @@click="goBack">取消</button>
+                        </el-form-item>
+                    }
+
+                </el-form>
+            </div>
+        </el-tab-pane>
+
+        @{List<string> initSelectedPermissons = new List<string>(); }
+        @if (!string.IsNullOrEmpty(Model.Id))
+        {
+            <el-tab-pane label="角色权限（RolePermission）" name="claims">
+                @{
+                    //角色拥有的声明
+                    var rolePermissions = await ApplicationDbContext.RolePermissons
+                        .Where(e => e.RoleId == id)
+                        .Select(e => e.PermissonId)
+                        .ToListAsync();
+
+                    var Permissons = await ApplicationDbContext.Permissons.ToListAsync();
+                }
+
+                <select id="demo1" multiple="multiple">
+                    @{
+
+                        foreach (var item in Permissons)
+                        {
+                            var fullName = item.DisplyName;
+
+                            var arr = fullName.Split(".");
+
+                            var parent = string.Join(".", arr.Take(arr.Length - 1));
+
+                            string selectedStr = null;
+                            if (rolePermissions.Contains(item.Id))
+                            {
+                                initSelectedPermissons.Add(item.Id);
+                                selectedStr = "selected";
+                            }
+
+                            string enabledStr = item.Enabled ? null : "[禁用]";
+
+                            <option value="@item.Id"
+                                    data-section="@parent"
+                                    selected="@selectedStr"
+                                    data-description="@item.Desc">
+                                @item.Name @arr.Last() @enabledStr
+                            </option>
+                        }
+                    }
+                </select>
+                <br />
+                <el-button v-on:click="AddRoleClaims">确定修改</el-button><br />
+                <div class="text-right">
+                    <el-tag>提示：修改后2分钟后生效</el-tag>
+                </div>
+
+            </el-tab-pane>
+        }
+
+
+
+        @*<el-tab-pane label="定时任务补偿">定时任务补偿</el-tab-pane>*@
+    </el-tabs>
+</div>
+
+
+@section Scripts{
+    <partial name="_ValidationSummary" />
+    <script src="~/js/jquery.tree-multiselect.min.js"></script>
+    <script>
+        var vue = new Vue({
+            el: "#app",
+            data: {
+                desc: "",
+                PermissonIds: [@Html.Raw(string.Join(',',initSelectedPermissons.Select(e=>"'"+e+"'")))],
+                tree: null,
+                activeName:''
+            },
+            created: function () {
+                this.activeName = window.location.hash.replace("#",'')
+            },
+            mounted: function () {
+                this.tree = $("select#demo1").treeMultiselect({
+                    searchable: true,
+                    searchParams: ['value', 'text', 'description', 'section'],
+                    enableSelectAll: true,
+                    //hideSidePanel: true,
+                    sectionDelimiter: '.',
+                    selectAllText: '全选',
+                    unselectAllText: '全不选',
+                    onChange: this.onChange
+                });
+
+
+                var t = this
+                $('form').ajaxForm({
+                    success: function (responseText, statusText, xhr, $form) {
+                        t.$notify({ title: '成功', message: '操作成功', type: 'success' });
+                    },
+
+                    error: function (errmsg) {
+                        t.$notify.error({ title: '错误', message: JSON.stringify(errmsg.responseJSON) });
+                    }
+                });
+
+
+                $("#app").removeAttr("style")
+            },
+            methods: {
+                goBack: function () {
+                    window.history.back()
+                },
+                onChange: function (allSelectedItems, addedItems, removedItems) {
+                    var t = this
+                    t.PermissonIds = []
+                    $.map(allSelectedItems, function (item) {
+                        t.PermissonIds.push(item.value);
+                    })
+                    console.log(t.PermissonIds)
+                },
+
+                AddRoleClaims: function () {
+                    console.log(this.PermissonIds)
+                    var t = this;
+                    axios.post("?handler=AddRolePemissons", {
+                        RoleId: '@id',
+                        Permissons:this.PermissonIds
+                    }, {
+                            headers: {
+                                RequestVerificationToken: $("input[name='__RequestVerificationToken']").val()
+                            }
+
+                    }).then(function (res) {
+                        console.log(res)
+                        t.PermissonIds= []
+                        t.$notify({ title: '成功', message: '操作成功', type: 'success' });
+                    }).catch(function (err) {
+                        t.$notify.error({ title: '错误', message: JSON.stringify(err.responseJSON) });
+                        t.PermissonIds= []
+                    })
+                }
+            }
+        })
+
+
+    </script>
+}
+

@@ -1,0 +1,137 @@
+﻿@page
+@model IdentityServerCenter.Pages.ClientsManager.ClientPages.IndexModel
+@{
+    ViewData["Title"] = "客户端列表";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">主页</a></li>
+        <li class="breadcrumb-item active" aria-current="page">客户端</li>
+    </ol>
+</nav>
+
+<a asp-page="AddOrUpdateClient" class="btn btn-sm btn-primary">创建</a>
+
+<div id="app">
+    <template>
+        <el-table :data="tableData"
+                  style="width: 100%">
+
+            <el-table-column label="客户端Id"
+                             width="180">
+                <template slot-scope="scope">
+                    <el-popover trigger="hover" placement="top">
+                        <p>客户端名称: {{ scope.row.clientName }}</p>
+                        <p>客户端描述: {{ scope.row.description }}</p>
+                        <p>允许重定位Uri: {{ scope.row.redirectUris }}</p>
+                        <p>允许退出Uri: {{ scope.row.postLogoutRedirectUris }}</p>
+                        <div slot="reference" class="name-wrapper">
+                            <el-tag size="medium">{{ scope.row.clientId }}</el-tag>
+                        </div>
+                    </el-popover>
+                </template>
+            </el-table-column>
+
+            <el-table-column label="作用域"
+                             width="180">
+                <template slot-scope="scope">
+                    <span style="margin-left: 10px">{{ scope.row.scopes }}</span>
+                </template>
+            </el-table-column>
+
+            <el-table-column label="授权类型"
+                             width="180">
+                <template slot-scope="scope">
+                    <span style="margin-left: 10px">{{ scope.row.allowedGrantTypes }}</span>
+                </template>
+            </el-table-column>
+
+
+            <el-table-column label="编辑"
+                             width="80">
+                <template slot-scope="scope">
+                    <el-button size="mini"
+                               @@click="handleEdit(scope.row.id)">编辑</el-button>
+                </template>
+            </el-table-column>
+
+            <el-table-column label="删除"
+                             width="75">
+                <template slot-scope="scope">
+                    <form method="post" asp-page-handler="DeleteClient">
+                        <input type="hidden" name="id" :value="scope.row.id" />
+                        <input type="submit" value="删除" class="btn btn-danger btn-sm" />
+                    </form>
+
+                </template>
+            </el-table-column>
+
+        </el-table>
+    </template>
+
+
+    @*<table class="table">
+            <thead>
+                <tr>
+                    <th>客户端Id</th>
+                    <th>客户端名称</th>
+                    <th>允许的授权类型</th>
+                    <th>允许的作用域</th>
+                    <th>重定位uri</th>
+                    <th>删除</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @{
+                    foreach (var client in Model.Clients)
+                    {
+                        <tr>
+                            <td>@client.ClientId</td>
+                            <td>@client.ClientName</td>
+                            <td>@client.AllowedGrantTypes</td>
+                            <td>@client.Scopes</td>
+                            <td>@client.RedirectUris</td>
+                            <td>
+                                <a asp-page="AddOrUpdateClient" asp-route-Id="@client.Id" class="btn btn-sm btn-success">编辑</a>
+                                <form method="post" asp-page-handler="DeleteClient">
+                                    <input type="hidden" name="id" value="@client.Id" />
+                                    <input type="submit" value="删除" class="btn btn-danger btn-sm" />
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>*@
+
+</div>
+
+@section Scripts{
+    <script>
+
+
+        var vue = new Vue({
+            el: "#app",
+            data: {
+                tableData: []
+            },
+
+            created: function () {
+                var t = this
+                axios
+                    .get("?handler=Clients")
+                    .then(function (res) { console.log(res.data); t.tableData = res.data })
+            },
+            methods: {
+                handleEdit: function (id) {
+                    window.location.href = "/ClientsManager/ClientPages/AddOrUpdateClient/" + id
+                },
+                handleDelete: function (id) {
+
+                }
+            }
+        })
+    </script>
+}

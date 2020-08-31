@@ -1,0 +1,18 @@
+﻿@page
+@model IdentityServerCenter.Pages.Account.LogoutModel
+@{
+    Layout = null;
+}
+
+<html>
+<head>
+</head>
+<body>
+    <iframe width="0" height="0" class="signout" src="@Html.Raw( Model.SignOutIFrameUrl)"></iframe>
+
+    @section Scripts{
+        <script src="~/js/signout-redirect.js"></script>
+    }
+</body>
+</html>
+

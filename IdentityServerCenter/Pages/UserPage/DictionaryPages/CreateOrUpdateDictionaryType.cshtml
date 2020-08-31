@@ -1,0 +1,95 @@
+﻿@page "{Id?}"
+@model IdentityServerCenter.Pages.UserPage.DictionaryPages.CreateOrUpdateDictionaryTypeModel
+
+@{
+    bool isCreate = !Model.Id.HasValue;
+    var viewModel = Model.ViewModel;
+    var title = (isCreate ? "新建字典分类" : $"编辑字典[{viewModel.Name}]");
+}
+
+@{
+    ViewData["Title"] = title;
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">主页</a></li>
+        <li class="breadcrumb-item"><a href="/UserPage/DictionaryPages/Index">数字字典</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@title</li>
+    </ol>
+</nav>
+
+<div id="app">
+    <el-page-header @@back="goBack" content="@title">
+    </el-page-header>
+</div>
+<hr />
+
+<div class="row">
+    <div class="col-12">
+        <form method="post">
+            <div class="form-group">
+                <input type="hidden" asp-for="@viewModel.Id" />
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="@viewModel.Name" class="control-label">分类名称</label>
+                <input asp-for="@viewModel.Name" class="form-control" />
+                <span asp-validation-for="@viewModel.Name" class="text-danger"></span>
+            </div>
+
+        
+            <div class="form-group">
+                <label asp-for="@viewModel.Remark" class="control-label">备注</label>
+                <input asp-for="@viewModel.Remark" class="form-control" />
+                <span asp-validation-for="@viewModel.Remark" class="text-danger"></span>
+            </div>
+
+            @*<div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="@viewModel.Enabled" /> 启用
+                    </label>
+                </div>
+            </div>*@
+
+            <div class="form-group">
+                <input type="submit" value="@(isCreate?"新建":"确定")" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationSummary" />
+
+    <script>
+        var vue = new Vue({
+            el: "#app",
+            mounted: function () {
+                var t = this
+                $('form').ajaxForm({
+                    success: function (responseText, statusText, xhr, $form) {
+                        t.$notify({ title: '成功', message: '操作成功', type: 'success' });
+                        window.location.href = '/UserPage/DictionaryPages/Index'
+                    },
+
+                    error: function (errmsg) {
+                        t.$notify.error({ title: '错误', message: JSON.stringify(errmsg.responseJSON) });
+                    }
+                });
+
+
+                $("#app").removeAttr("style")
+            },
+            methods: {
+                goBack: function () {
+                    window.history.back()
+                }
+            }
+        })
+    </script>
+
+}

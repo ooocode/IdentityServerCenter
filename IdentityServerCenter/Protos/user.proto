@@ -1,0 +1,318 @@
+syntax = "proto3";
+
+option csharp_namespace = "UserGrpcService";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+package user;
+
+// The greeting service definition.
+service User {
+  //获取用户
+  rpc GetUsers(GetUsersReq) returns (UserList);
+
+  //获取角色名称下的所有用户
+  rpc GetUsersInRole(GetUsersInRoleReq) returns (UserList);
+
+  //获取角色
+  rpc GetRoles(google.protobuf.Empty) returns (RoleListReplay);
+
+  //为用户分配角色
+  rpc AddUserToRole(AddUserToRoleReq) returns (BoolReply);
+
+  //从用户角色表中移除用户
+  rpc RemoveUserFromUserRole(AddUserToRoleReq) returns (BoolReply);
+
+  //通过用户id查找用户
+  rpc FindById (UserIdReq) returns (UserReply);
+
+  //通过用户名查找用户
+  rpc FindByUserName(UserNameReq)  returns (UserReply);
+
+  //通过用户id获取用户拥有的角色
+  rpc GetRolesOfUser(UserIdReq) returns(UserRolesReply); 
+
+  //更新用户头像
+  rpc UpdateAwatar(UserAvatarReq) returns(BoolReply);
+
+  //更新密码
+  rpc UpdatePassword(UserPasswordReq) returns(BoolReply);
+
+  //更新用户
+  rpc UpdateUser(UpdateUserReq) returns(BoolReply);
+
+  //通过id获取用户列表
+  rpc GetUsersByClassId(UserNameReq) returns (UserList);
+
+  //通过角色名称获取用户
+  rpc GetUsersByRoleName(RoleNameReq) returns (UserList);
+
+  //获取学校班级
+  rpc GetSchoolClasses(SchoolClassesReq) returns (SchoolClassListReply);
+
+  ///根据id查询学校班级
+  rpc GetSchoolClassById(IdReq) returns (SchoolClassReply);
+
+  rpc GetSchoolClassByName(NameReq) returns (SchoolClassReply);
+
+  //根据用户id返回用户权限名称列表
+  rpc GetUserPermissons(UserIdReq) returns (StringListRes);
+}
+
+
+message GetUsersReq{
+    uint32 Skip = 1;
+    uint32 Task = 2;
+    string Query = 3;
+}
+
+message GetUsersInRoleReq{
+    string RoleId = 1;
+    uint32 Skip = 2;
+    uint32 Task = 3;
+    string Query = 4;
+}
+
+message AddUserToRoleReq{
+    string UserId = 1;
+    string RoleId = 2;
+}
+
+message RoleListReplay{
+    message RoleItem{
+       //角色Id
+       string Id = 1;
+      
+       //角色名称
+       string Name = 2;
+
+       //归一化的名称
+       string NormalizedName = 3;
+
+       //并发戳
+       string ConcurrencyStamp = 4;
+	}
+
+    repeated RoleItem Roles = 1;
+}
+
+
+message RoleNameReq{
+    string RoleName = 1;
+    uint32 Skip = 2;
+    uint32 Take = 3;
+}
+
+message IdReq{
+    string Id = 1;
+}
+
+message StringListRes{
+    repeated string Items = 1;
+}
+
+message NameReq{
+    string Name = 1;
+}
+
+// The request message containing the user's name.
+message UserIdReq {
+  string UserId = 1;
+}
+
+message UserNameReq {
+  string UserName = 1;
+}
+
+message UserAvatarReq{
+    string UserId = 1;
+    string AvatarUrl = 2;
+}
+
+message UserRolesReply{
+    repeated string Roles = 1;
+}
+
+message UserPasswordReq{
+    string UserId = 1;
+    string NewPassword = 2;
+}
+
+message BoolReply{
+    bool Value = 1;
+}
+
+message UserList{
+    //总数
+    uint32 Total = 1;
+    repeated UserReply Users = 2;
+}
+
+// The response message containing the greetings.
+message UserReply {
+         google.protobuf.Timestamp LockoutEnd =1;
+        //
+        // 摘要:
+        //     Gets or sets a flag indicating if two factor authentication is enabled for this
+        //     user.
+
+          bool TwoFactorEnabled =2;
+        //
+        // 摘要:
+        //     Gets or sets a flag indicating if a user has confirmed their telephone address.
+
+         bool PhoneNumberConfirmed =3;
+        //
+        // 摘要:
+        //     Gets or sets a telephone number for the user.
+
+         string PhoneNumber =4;
+        //
+        // 摘要:
+        //     A random value that must change whenever a user is persisted to the store
+         string ConcurrencyStamp =5;
+        //
+        // 摘要:
+        //     A random value that must change whenever a users credentials change (password
+        //     changed, login removed)
+         string SecurityStamp =6;
+        //
+        // 摘要:
+        //     Gets or sets a salted and hashed representation of the password for this user.
+         string PasswordHash =7;
+        //
+        // 摘要:
+        //     Gets or sets a flag indicating if a user has confirmed their email address.
+         bool EmailConfirmed =8;
+        //
+        // 摘要:
+        //     Gets or sets the normalized email address for this user.
+         string NormalizedEmail =9;
+        //
+        // 摘要:
+        //     Gets or sets the email address for this user.
+
+         string Email =10;
+        //
+        // 摘要:
+        //     Gets or sets the normalized user name for this user.
+         string NormalizedUserName =11;
+        //
+        // 摘要:
+        //     Gets or sets the user name for this user.
+
+         string UserName =12;
+        //
+        // 摘要:
+        //     Gets or sets the primary key for this user.
+         string Id =13;
+        //
+        // 摘要:
+        //     Gets or sets a flag indicating if the user could be locked out.
+         bool LockoutEnabled =14;
+        //
+        // 摘要:
+        //     Gets or sets the number of failed login attempts for the current user.
+         int32 AccessFailedCount =15;
+
+
+
+
+   /// <summary>  自定义开始
+        /// 头像
+        /// </summary>
+         string Photo =16;
+
+        /// <summary>
+        /// 密码(以后再哈希保存吧)
+        /// </summary>
+         string Password =17;
+
+        /// <summary>
+        /// 性别
+        /// </summary>
+         uint32 Sex =18;
+
+
+        /// <summary>
+        /// 个人简介
+        /// </summary>
+         string Desc =19;
+
+
+        /// <summary>
+        /// 班级id
+        /// </summary>
+         string ClassId =20;
+
+
+        /// <summary>
+        /// 姓名
+        /// </summary>
+         string Name =21;
+}
+
+
+message UpdateUserReq{
+        int64 UserId = 1;
+        /// <summary>
+        /// 姓名
+        /// </summary>
+        string Name =2;
+
+
+        /// <summary>
+        /// 手机号码
+        /// </summary>
+        string PhoneNumber = 3;
+
+
+        /// <summary>
+        /// 邮箱
+        /// </summary>
+         string Email = 4;
+
+        /// <summary>
+        /// 性别
+        /// </summary>
+        uint32 Sex = 5;
+
+
+        /// <summary>
+        /// 个人简介
+        /// </summary>
+        string Desc = 6;
+}
+
+
+message SchoolClassReply{
+       string Id =1;
+
+
+        /// <summary>
+        /// 班级名称
+        /// </summary>
+       string Name =2;
+
+
+        /// <summary>
+        /// 班级描述
+        /// </summary>
+        string Desc = 3;
+}
+
+message SchoolClassListReply{
+    //总数
+    uint32 Total = 1;
+    repeated SchoolClassReply SchoolClasses = 2;
+}
+
+message SchoolClassesReq{
+    //跳过 N条记录
+    uint32 Skip = 1;
+    //取N条记录
+    uint32 Take = 2;
+
+    //查询名字 可选
+    string QueryName = 3;
+}

@@ -1,0 +1,97 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+		<UserSecretsId>994843fe-723a-41cc-8cee-b53cda65193d</UserSecretsId>
+	</PropertyGroup>
+
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DocumentationFile>IdentityServerCenter.xml</DocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Remove="Protos\user.proto" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="wwwroot\compressorjs\compressor.common.js" />
+		<None Include="wwwroot\compressorjs\compressor.esm.js" />
+		<None Include="wwwroot\compressorjs\compressor.js" />
+		<None Include="wwwroot\compressorjs\compressor.min.js" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AspNet.Security.OAuth.GitHub" Version="3.1.3" />
+		<PackageReference Include="AspNet.Security.OAuth.QQ" Version="3.1.3" />
+		<PackageReference Include="AutoMapper" Version="10.0.0" />
+		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
+		<PackageReference Include="Castle.Core" Version="4.4.1" />
+		<PackageReference Include="DotNetCore.CAP" Version="3.1.0" />
+		<PackageReference Include="DotNetCore.CAP.Dashboard" Version="3.1.0" />
+		<PackageReference Include="DotNetCore.CAP.Kafka" Version="3.1.0" />
+		<PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="3.1.0" />
+		<PackageReference Include="DotNetCore.CAP.SqlServer" Version="3.1.0" />
+		<PackageReference Include="EPPlus" Version="5.3.0" />
+		<PackageReference Include="FluentValidation.AspNetCore" Version="9.1.3" />
+		<PackageReference Include="Grpc.AspNetCore" Version="2.31.0" />
+		<PackageReference Include="Grpc.AspNetCore.Web" Version="2.31.0" />
+		<PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
+		<PackageReference Include="IdentityServer4.AspNetIdentity" Version="4.0.4" />
+		<PackageReference Include="IdentityServer4.EntityFramework" Version="4.0.4" />
+		<PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.15.0-beta1" />
+
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="3.1.7" />
+
+		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.7" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.7" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.7" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.7" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.7" />
+		<PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.7" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.7" />
+		<PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="3.1.7" />
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+		<PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.2.1" />
+		<PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.2.1" />
+		<PackageReference Include="NSwag.AspNetCore" Version="13.7.0" />
+		<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.2" />
+		<PackageReference Include="QRCoder" Version="1.3.9" />
+		<PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
+		<PackageReference Include="Snowflake.Core" Version="2.0.0" />
+		<PackageReference Include="StackExchange.Redis" Version="2.1.58" />
+		<PackageReference Include="System.Reactive" Version="4.4.1" />
+		<PackageReference Include="TagHelperSamples.Authorization" Version="3.0.56" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\IdentityServerCenter.Identity\IdentityServerCenter.Identity.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Protobuf Include="Protos\user.proto" GrpcServices="Server" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="localhost.cer">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="localhost.pfx">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="SHA256withRSA_zwovo.xyz.pfx">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+	<ProjectExtensions>
+		<VisualStudio>
+			<UserProperties appsettings_1json__JsonSchema="" />
+		</VisualStudio>
+	</ProjectExtensions>
+</Project>

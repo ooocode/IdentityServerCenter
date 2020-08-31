@@ -1,0 +1,21 @@
+﻿@page
+@model IdentityServerCenter.Pages.Account.AccessDeniedModel
+
+<div class="mt-3">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-12 col-sm-7 col-md-4">
+            <div style="background-color: white;" class="p-5">
+                <b>没有权限访问</b>
+
+
+                <ol>
+                    @foreach (var i in User.Claims)
+                    {
+                        <li>@i.Type ： @i.Value</li>
+                    }
+                </ol>
+            </div>
+
+        </div>
+    </div>
+</div>

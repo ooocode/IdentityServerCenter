@@ -1,0 +1,46 @@
+﻿@page
+@model IdentityServerCenter.Pages.DeveloperModel
+@{
+    ViewData["Title"] = "Developer";
+}
+
+<h2>开发者AspNetCore网站接入</h2>
+<hr />
+<div>
+    直接输入本地账号密码登录(不是第三方账号，而是本地用户)：/Account/Login?username=xxx&password=xxx<br /><br />
+    1、安装nuget IdentityServerCenterConnect<br /><br />
+
+
+    2、在Startup 中的 ConfigureServices 函数 添加 <br />
+
+
+   ` services.AddIdentityServerCenterConnect(new IdentityServerCenterConnect.ConfigurationOptions
+    {
+    AuthorityUrl = Configuration["Authority"],
+    ClientId = Configuration["ClientId"],
+    ClientSecret = "",
+    GRpcUrl = Configuration["RpcUserClientUri"],
+    Scopes = new System.Collections.Generic.List<string>
+    { "openid", "profile" }
+    });
+
+    `
+    <br /><br /><br />
+    3、自动注入GRPC服务 inject UserGrpcService.User.UserClient UserClient<br />
+    注入 IHttpContextHelper
+    <br /><br /><br />
+
+    4、判断用户身份有某个权限示例<br />
+    //是否被授权方法一<br />
+    inject IAuthorizationService AuthorizationService<br />
+    AuthorizationResult authorizationResult = await AuthorizationService.AuthorizeAsync(<br />
+    User, Permissons.Permisson.Article_Delete).ConfigureAwait(false);<br />
+    if (!authorizationResult.Succeeded)<br />
+    {<br />
+    return Forbid();<br />
+    }<br />
+    //是否被授权方法二<br />
+    [Authorize(Permissons.Permisson.Article_Delete)]<br /><br />
+    Permissons.Permisson.Article_Delete是权限名称字符串常量，可以从【<a href="/UserPage/PermissionsPages/Index">权限</a>】页面下载
+</div>
+
