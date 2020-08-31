@@ -44,14 +44,8 @@ namespace IdentityServerCenter.Models
 
     public class ApplicationUserValidator : AbstractValidator<ApplicationUser>
     {
-
-        private readonly ApplicationDbContext applicationDbContext;
-
-
         public ApplicationUserValidator(ApplicationDbContext applicationDbContext)
         {
-            this.applicationDbContext = applicationDbContext;
-
             RuleFor(x => x.UserName).NotEmpty().Length(1, 255).WithMessage("用户名错误");
             RuleFor(x => x.Password).NotEmpty().Length(6, 255).WithMessage("密码不能为空");
             RuleFor(x => x.Name).NotEmpty().Length(1, 255).WithMessage("显示名称不能为空");

@@ -10,14 +10,14 @@ namespace IdentityServerCenter.Database.Models
     {
         public ApplicationIdentityRoleClaim()
         {
-            this.ClaimValueType = System.Security.Claims.ClaimValueTypes.String;
+            this.ClaimValueType = ClaimValueTypes.String;
         }
 
         public ApplicationIdentityRoleClaim(string claimType, string claimValue)
         {
             this.ClaimType = claimType;
             this.ClaimValue = claimValue;
-            this.ClaimValueType = System.Security.Claims.ClaimValueTypes.String;
+            this.ClaimValueType = ClaimValueTypes.String;
         }
 
 
