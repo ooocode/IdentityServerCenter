@@ -110,29 +110,6 @@ namespace IdentityServerCenter
 
         public void ConfigureServices(IServiceCollection services)
         {
-            // cookie policy to deal with temporary browser incompatibilities
-            //services.AddSameSiteCookiePolicy();
-
-            //services.Configure<KestrelServerOptions>(ctx => 
-            //{
-            //    var con = Configuration["PfxFingerprint"];
-            //    var cc = System.Text.Encoding.UTF8.GetBytes(con);
-            //    ctx.ListenAnyIP(9998, op => { op.Protocols = HttpProtocols.Http2; });
-
-            //    ctx.ListenAnyIP(9999, op =>
-            //    {
-            //        op.UseHttps(e => e.ServerCertificate = new X509Certificate2());
-            //    });
-
-            //    ctx.ListenAnyIP(10000, op =>
-            //    {
-            //        op.Protocols = HttpProtocols.Http2;
-
-            //        op.UseHttps(e => e.ServerCertificate = new X509Certificate2());
-            //    });
-            //});
-
-
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.MinimumSameSitePolicy = SameSiteMode.Unspecified;
