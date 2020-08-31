@@ -48,10 +48,7 @@ namespace IdentityServerCenter.Data
             }
 
             base.OnModelCreating(builder);
-            // Customize the ASP.NET Identity model and override the defaults if needed.
-            // For example, you can rename the ASP.NET Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
-
+          
 
             //设置学校班级表 班级名称唯一
             builder.Entity<SchoolClass>().HasIndex(e => new { e.Name }).IsUnique();

@@ -1,8 +1,5 @@
 ﻿using AutoMapper;
-using DotNetCore.CAP;
-using Extensions;
 using IdentityServer4.EntityFramework.DbContexts;
-using IdentityServer4.Events;
 using IdentityServerCenter.Data;
 using IdentityServerCenter.Database.Models;
 using IdentityServerCenter.Database.Services;
@@ -11,75 +8,22 @@ using IdentityServerCenter.Models;
 using IdentityServerCenter.Services.ApiResourceService;
 using IdentityServerCenter.Services.ClientService;
 using IdentityServerCenter.Services.IdentityResourceService;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
-using Org.BouncyCastle.Crypto.Signers;
 using Study.Service;
-using System;
-using System.Buffers;
-using System.Buffers.Text;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Security.Cryptography.X509Certificates;
-using System.Text.Json;
-using AutoMapper;
-using Microsoft.Extensions.DependencyInjection;
 using FluentValidation.AspNetCore;
-using IdentityServerCenter.Database.Dtos.UserServiceDtos;
 using IdentityServerCenter.ViewModels;
 
 namespace IdentityServerCenter
 {
-
-    public class LongJsonConverter : System.Text.Json.Serialization.JsonConverter<long>
-    {
-        public override long Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-        {
-            if (reader.TokenType == JsonTokenType.String)
-            {
-                ReadOnlySpan<byte> span = reader.HasValueSequence ? reader.ValueSequence.ToArray() : reader.ValueSpan;
-                if (Utf8Parser.TryParse(span, out long number, out int bytesConsumed) && span.Length == bytesConsumed)
-                    return number;
-
-                if (Int64.TryParse(reader.GetString(), out number))
-                    return number;
-            }
-
-          
-
-            return reader.GetInt64();
-        }
-
-        //public override long Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-        //{
-        //    return reader.GetInt64();
-        //}
-
-        public override void Write(Utf8JsonWriter writer, [DisallowNull] long value, JsonSerializerOptions options)
-        {
-            if (writer is null)
-            {
-                throw new ArgumentNullException(nameof(writer));
-            }
-
-            if (options is null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            writer.WriteStringValue($"{value}");
-        }
-    }
-
     public class Startup
     {
         public IWebHostEnvironment Environment { get; }
@@ -94,32 +38,9 @@ namespace IdentityServerCenter
             IdentityModelEventSource.ShowPII = true;
         }
 
-        private void CheckSameSite(HttpContext httpContext, CookieOptions options)
-        {
-            if (options.SameSite == SameSiteMode.None)
-            {
-                //var userAgent = httpContext.Request.Headers["User-Agent"].ToString();
-                // TODO: Use your User Agent library of choice here.
-                //if (/* UserAgent doesn’t support new behavior */)
-                {
-                    // For .NET Core < 3.1 set SameSite = (SameSiteMode)(-1)
-                    options.SameSite = SameSiteMode.Unspecified;
-                }
-            }
-        }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                options.MinimumSameSitePolicy = SameSiteMode.Unspecified;
-                options.OnAppendCookie = cookieContext =>
-                    CheckSameSite(cookieContext.Context, cookieContext.CookieOptions);
-                options.OnDeleteCookie = cookieContext =>
-                    CheckSameSite(cookieContext.Context, cookieContext.CookieOptions);
-            });
-
-
             // configures IIS out-of-proc settings (see https://github.com/aspnet/AspNetCore/issues/14882)
             services.Configure<IISOptions>(iis =>
             {
@@ -386,7 +307,7 @@ namespace IdentityServerCenter
             ApplicationDbContext applicationDbContext, UserManager<ApplicationUser> userManager)
         {
             //初始化用户
-            SeedData seedData = new IdentityServerCenter.Models.SeedData(configurationDbContext, applicationDbContext, userManager);
+            SeedData seedData = new SeedData(configurationDbContext, applicationDbContext, userManager);
             seedData.InitAsync().Wait();
 
             if (Environment.IsDevelopment())

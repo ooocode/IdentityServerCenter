@@ -1,46 +1,12 @@
-﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
-
-using Castle.Components.DictionaryAdapter;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using Serilog;
-using Serilog.Events;
-using Serilog.Sinks.SystemConsole.Themes;
-using System;
-using System.Linq;
-using System.Net;
-using System.Reactive;
-using System.Reactive.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Xml;
 
 namespace IdentityServerCenter
 {
-    public class Test
-    {
-        public string UserName  { get; set; }
-    }
-
     public static class Program
     {
         public static void Main(string[] args)
         {
-
-
-            //Console.WriteLine("UserName : " + config.UserName);
-            //Console.WriteLine("IPAddress : " + config.IPAddress);
-            //Console.WriteLine("Numbers : " + string.Join(", ", config.Numbers));
-            //Console.WriteLine("Sum : " + config.Sum);
-
-
-
-
             //#if RELEASE
             //             Log.Logger = new LoggerConfiguration()
             //                .MinimumLevel.Debug()
