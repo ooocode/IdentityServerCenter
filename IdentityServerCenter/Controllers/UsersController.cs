@@ -170,7 +170,6 @@ namespace IdentityServerCenter.Controllers
 
             if (userId != dto.UserId)
             {
-
                 ModelState.AddModelError(string.Empty, "无效的参数");
                 return BadRequest(ModelState);
             }
@@ -201,7 +200,7 @@ namespace IdentityServerCenter.Controllers
         /// 创建或者更新角色声明
         /// </summary>
         /// <param name="userId"></param>
-        /// <param name="dto"></param>
+        /// <param name="claim"></param>
         /// <returns></returns>
         [HttpPost("{userId}/claims")]
         public async Task<IActionResult> CreateOrUpdateUserClaimAsync(string userId, ApplicationIdentityUserClaim claim)
