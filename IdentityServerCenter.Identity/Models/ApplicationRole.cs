@@ -37,14 +37,8 @@ namespace IdentityServerCenter.Database.Models
 
     public class ApplicationRoleValidator : AbstractValidator<ApplicationRole>
     {
-
-        private readonly ApplicationDbContext applicationDbContext;
-
-
         public ApplicationRoleValidator(ApplicationDbContext applicationDbContext)
         {
-            this.applicationDbContext = applicationDbContext;
-
             RuleFor(x => x.Name).NotEmpty().WithMessage("角色名称不能为空").Length(1, 255).WithMessage("角色名称长度为1-255位");
            
 
