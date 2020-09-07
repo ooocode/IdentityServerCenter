@@ -15,6 +15,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NSwag.Annotations;
+using GraphQL.Types;
+using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+using GraphQL.DataLoader;
 
 namespace IdentityServerCenter.Controllers
 {
@@ -88,7 +91,7 @@ namespace IdentityServerCenter.Controllers
         /// <summary>
         /// 创建或者更新用户
         /// </summary>
-        /// <param name="dto"></param>
+        /// <param name="viewModel"></param>
         /// <returns></returns>
         [HttpPost]
         [SwaggerResponse(typeof(string))]

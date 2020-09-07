@@ -263,7 +263,7 @@
             <summary>
             创建或者更新用户
             </summary>
-            <param name="dto"></param>
+            <param name="viewModel"></param>
             <returns></returns>
         </member>
         <member name="M:IdentityServerCenter.Controllers.UsersController.PatchUserAsync(IdentityServerCenter.Data.ApplicationDbContext,AutoMapper.IMapper,System.String,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{IdentityServerCenter.ViewModels.CreateOrUpdateUserViewModel})">
@@ -301,7 +301,7 @@
             创建或者更新角色声明
             </summary>
             <param name="userId"></param>
-            <param name="dto"></param>
+            <param name="claim"></param>
             <returns></returns>
         </member>
         <member name="M:IdentityServerCenter.Controllers.UsersController.DeleteUserClaimAsync(System.String,System.Int32)">
