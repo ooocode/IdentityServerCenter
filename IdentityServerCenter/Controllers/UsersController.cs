@@ -97,6 +97,7 @@ namespace IdentityServerCenter.Controllers
         [SwaggerResponse(typeof(string))]
         public async Task<IActionResult> CreateOrUpdateUserAsync(CreateOrUpdateUserViewModel viewModel)
         {
+            return Ok();
             var result = await userService.CreateOrUpdateUserAsync(new Models.ApplicationUser()).ConfigureAwait(false);
             if (result.Succeeded)
             {
