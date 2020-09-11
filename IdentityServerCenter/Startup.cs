@@ -21,9 +21,11 @@ using Study.Service;
 using System.IO;
 using FluentValidation.AspNetCore;
 using IdentityServerCenter.ViewModels;
+using IdentityServerCenter.Extensions;
 
 namespace IdentityServerCenter
 {
+ 
     public class Startup
     {
         public IWebHostEnvironment Environment { get; }
@@ -56,11 +58,12 @@ namespace IdentityServerCenter
                 iis.AutomaticAuthentication = false;
             });
 
-            services.AddDbContextPool<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), opt => { 
-                    opt.EnableRetryOnFailure();
-                }));
-
+            DatabaseType databaseType = DatabaseType.Sqlite;
+            if (Environment.IsProduction())
+            {
+                databaseType = DatabaseType.MSSqlServer;
+            }
+            services.AddDbContextPool<ApplicationDbContext>(options => options.UseDatabase(databaseType, Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<ApplicationUser, ApplicationRole>(
                 config =>
@@ -86,7 +89,7 @@ namespace IdentityServerCenter
                 .AddErrorDescriber<AppIdentityErrorDescriber>()
                 .AddDefaultTokenProviders();
 
-
+       
 
             var builder = services.AddIdentityServer(options =>
             {
@@ -99,21 +102,10 @@ namespace IdentityServerCenter
             }).AddAspNetIdentity<ApplicationUser>()
                 .AddConfigurationStore(Config =>
                     Config.ConfigureDbContext = build =>
-                    build.UseSqlServer(Configuration.GetConnectionString("ConfigureDbContext"),
-                    opt =>
-                    {
-                        opt.EnableRetryOnFailure();
-
-                        //opt.EnableSensitiveDataLogging();
-                        //opt.MigrationsAssembly("IdentityServerCenter");
-                    }))
+                    build.UseDatabase(databaseType, Configuration.GetConnectionString("ConfigureDbContext")))
                 .AddOperationalStore(config =>
                    {
-                       config.ConfigureDbContext = builder => builder.UseSqlServer(Configuration.GetConnectionString("PersistedGrantDbContext"),
-                           opt =>
-                           {
-                               opt.EnableRetryOnFailure();
-                           });
+                       config.ConfigureDbContext = builder => builder.UseDatabase(databaseType, Configuration.GetConnectionString("PersistedGrantDbContext"));
                        config.EnableTokenCleanup = true;
                    })
                 .AddProfileService<ProfileServiceEx>();

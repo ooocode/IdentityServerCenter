@@ -324,6 +324,39 @@
             添加默认身份资源
             </summary>
         </member>
+        <member name="T:IdentityServerCenter.Extensions.DatabaseType">
+            <summary>
+            数据库类型
+            </summary>
+        </member>
+        <member name="F:IdentityServerCenter.Extensions.DatabaseType.MySql">
+            <summary>
+            mysql
+            </summary>
+        </member>
+        <member name="F:IdentityServerCenter.Extensions.DatabaseType.MSSqlServer">
+            <summary>
+            微软sqlserver数据库
+            </summary>
+        </member>
+        <member name="F:IdentityServerCenter.Extensions.DatabaseType.Sqlite">
+            <summary>
+            sqlite本地数据库
+            </summary>
+        </member>
+        <member name="T:IdentityServerCenter.Extensions.DbContextOptionsBuilderExtensions">
+            <summary>
+            数据库builder 扩展
+            </summary>
+        </member>
+        <member name="M:IdentityServerCenter.Extensions.DbContextOptionsBuilderExtensions.UseDatabase(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder,IdentityServerCenter.Extensions.DatabaseType,System.String)">
+            <summary>
+            使用数据库
+            </summary>
+            <param name="builder"></param>
+            <param name="databaseType">数据库类型</param>
+            <param name="connectString"></param>
+        </member>
         <member name="M:IdentityServerCenter.Pages.Account.UpdateInfoModel.OnPostUploadPhotoAsync">
             <summary>
             上传头像
