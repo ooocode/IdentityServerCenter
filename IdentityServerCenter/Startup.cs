@@ -223,19 +223,15 @@ namespace IdentityServerCenter
                 Directory.CreateDirectory(Configuration["AvatarSavePath"]);
             }
 
-            services.AddScoped<IClientService, ClientService>();
+            
 
             services.AddCors();
 
 
             services.AddAutoMapper(typeof(Startup).Assembly, typeof(ApplicationDbContext).Assembly);
 
-            //services.AddAutoMapper(typeof(Startup).Assembly, typeof(ApplicationDbContext).Assembly);
-            //services.AddDbContext<QQDbContext>();
 
-            // services.BuildServiceProvider().GetService<QQDbContext>().Database.EnsureCreated();
-            //services.BuildServiceProvider().GetService<QQDbContext>().Database.EnsureCreated();
-
+            services.AddScoped<IClientService, ClientService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IDictionaryService, DictionaryService>();
@@ -310,10 +306,6 @@ namespace IdentityServerCenter
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
-
-
-          
-
 
             app.UseStaticFiles();
 
