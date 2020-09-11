@@ -7,6 +7,7 @@ import queryStringParser from "../../../queryStringParser"
 import { TextField, MaskedTextField } from 'office-ui-fabric-react/lib/TextField';
 import { Stack, IStackProps, IStackStyles } from 'office-ui-fabric-react/lib/Stack';
 import { DefaultButton, PrimaryButton, IStackTokens } from 'office-ui-fabric-react';
+import { Layout } from "../../components/layout";
 
 
 const useUpdateUser = (id: string) => {
@@ -65,36 +66,37 @@ const useUpdateUser = (id: string) => {
 
 export default () => {
     var id = queryStringParser().id as string
-  
+
     var userState = useUpdateUser(id)
 
     var userState1 = useUpdateUser(id)
 
     if (userState.isLoading) {
-        return <div>加载中......</div>
+        return <Layout>加载中......</Layout>
     } else {
         let user = userState.user;
-        return <Stack>
-            <TextField label="账号" defaultValue={user?.userName} onChange={(e, value) => user.userName = value} />
-            <TextField label="姓名" defaultValue={user?.name} onChange={(e, value) => user.name = value} />
-            <TextField label="密码" defaultValue={user?.password} onChange={(e, value) => user.password = value} />
+        return <Layout>
+            <Stack>
+                <TextField label="账号" defaultValue={user?.userName} onChange={(e, value) => user.userName = value} />
+                <TextField label="姓名" defaultValue={user?.name} onChange={(e, value) => user.name = value} />
+                <TextField label="密码" defaultValue={user?.password} onChange={(e, value) => user.password = value} />
 
 
-            {
-                userState1.isLoading == false ? <TextField label="账号" defaultValue={userState1?.user?.userName} onChange={(e, value) => user.userName = value} /> : <label>加载中</label>
-            }
+                {
+                    userState1.isLoading == false ? <TextField label="账号" defaultValue={userState1?.user?.userName} onChange={(e, value) => user.userName = value} /> : <label>加载中</label>
+                }
 
-            {/*  <TextField label="Disabled" disabled defaultValue="I am disabled" />
+                {/*  <TextField label="Disabled" disabled defaultValue="I am disabled" />
             <TextField label="Read-only" readOnly defaultValue="I am read-only" />
             <TextField label="Required " required />
             <TextField ariaLabel="Required without visible label" required />
             <TextField label="With error message" errorMessage="Error message" /> */}
 
-            <DefaultButton text="确定" onClick={(e) => {
-                userState.Update(() => {
-                    userState.ReloadUser()
-                })
-            }} />
-        </Stack>
+                <DefaultButton text="确定" onClick={(e) => {
+                    userState.Update(() => {
+                        userState.ReloadUser()
+                    })
+                }} />
+            </Stack></Layout>
     }
 }

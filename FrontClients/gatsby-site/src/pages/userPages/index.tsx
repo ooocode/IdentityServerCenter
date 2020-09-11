@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { PageProps, Link } from "gatsby"
 import { UsersClient, ApplicationUser } from "../../../api"
-
+import { Breadcrumb, IBreadcrumbItem, IDividerAsProps } from 'office-ui-fabric-react/lib/Breadcrumb';
 import {
     DetailsList,
     DetailsListLayoutMode,
@@ -13,6 +13,7 @@ import {
 } from 'office-ui-fabric-react/lib/DetailsList';
 
 import { DefaultButton, PrimaryButton, Stack, IStackTokens } from 'office-ui-fabric-react';
+import { Layout } from "../../components/layout";
 
 
 
@@ -124,7 +125,19 @@ export default () => {
         },
     ]
 
-    return <div>
+    const items: IBreadcrumbItem[] = [
+        { text: '主页', key: '1', href: "#/" },
+        { text: '用户管理', key: '2', isCurrentItem: true },
+    ];
+
+    return <Layout>
+
+        <Breadcrumb
+            items={items}
+            maxDisplayedItems={3}
+            ariaLabel="Breadcrumb with items rendered as links"
+            overflowAriaLabel="More links"
+        />
         {state.pending ? <label>加载中</label> : <DetailsList items={state.users ?? []} columns={columns}></DetailsList>}
-    </div>
+    </Layout>
 }
