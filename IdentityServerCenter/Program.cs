@@ -5,6 +5,7 @@ namespace IdentityServerCenter
 {
     public static class Program
     {
+        //
         public static void Main(string[] args)
         {
             //#if RELEASE

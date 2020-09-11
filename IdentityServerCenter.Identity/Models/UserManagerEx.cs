@@ -30,20 +30,7 @@ namespace IdentityServerCenter.Models
             this.applicationDbContext = applicationDbContext;
         }
 
-        /// <summary>
-        /// 不支持userClaim存储在cookie里面，避免cookie过大
-        /// </summary>
-        public override bool SupportsUserClaim => true;
-
-        /// <summary>
-        /// 暂不支持安全戳
-        /// </summary>
-        public override bool SupportsUserSecurityStamp => false;
-
-        /// <summary>
-        /// 支持锁定账号
-        /// </summary>
-        public override bool SupportsUserLockout => true;
+      
 
         public override async Task<bool> CheckPasswordAsync(ApplicationUser user, string password)
         {
