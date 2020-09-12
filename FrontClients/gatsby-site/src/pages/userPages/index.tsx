@@ -13,7 +13,7 @@ import {
 } from 'office-ui-fabric-react/lib/DetailsList';
 
 import { DefaultButton, PrimaryButton, Stack, IStackTokens } from 'office-ui-fabric-react';
-import { Layout } from "../../components/layout";
+import { MainLayout } from "../../components/MainLayout";
 
 
 
@@ -130,7 +130,7 @@ export default () => {
         { text: '用户管理', key: '2', isCurrentItem: true },
     ];
 
-    return <Layout>
+    return <MainLayout>
 
         <Breadcrumb
             items={items}
@@ -139,5 +139,5 @@ export default () => {
             overflowAriaLabel="More links"
         />
         {state.pending ? <label>加载中</label> : <DetailsList items={state.users ?? []} columns={columns}></DetailsList>}
-    </Layout>
+    </MainLayout>
 }

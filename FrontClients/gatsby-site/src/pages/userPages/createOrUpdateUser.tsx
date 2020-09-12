@@ -7,7 +7,7 @@ import queryStringParser from "../../../queryStringParser"
 import { TextField, MaskedTextField } from 'office-ui-fabric-react/lib/TextField';
 import { Stack, IStackProps, IStackStyles } from 'office-ui-fabric-react/lib/Stack';
 import { DefaultButton, PrimaryButton, IStackTokens } from 'office-ui-fabric-react';
-import { Layout } from "../../components/layout";
+import { MainLayout } from "../../components/MainLayout";
 
 
 const useUpdateUser = (id: string) => {
@@ -72,10 +72,10 @@ export default () => {
     var userState1 = useUpdateUser(id)
 
     if (userState.isLoading) {
-        return <Layout>加载中......</Layout>
+        return <MainLayout>加载中......</MainLayout>
     } else {
         let user = userState.user;
-        return <Layout>
+        return <MainLayout>
             <Stack>
                 <TextField label="账号" defaultValue={user?.userName} onChange={(e, value) => user.userName = value} />
                 <TextField label="姓名" defaultValue={user?.name} onChange={(e, value) => user.name = value} />
@@ -97,6 +97,6 @@ export default () => {
                         userState.ReloadUser()
                     })
                 }} />
-            </Stack></Layout>
+            </Stack></MainLayout>
     }
 }
