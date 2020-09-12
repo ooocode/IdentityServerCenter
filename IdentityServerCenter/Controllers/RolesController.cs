@@ -61,21 +61,20 @@ namespace IdentityServerCenter.Controllers
         /// <summary>
         /// 创建或者更新角色
         /// </summary>
-        /// <param name="dto"></param>
+        /// <param name="role"></param>
         /// <returns></returns>
-        //[HttpPost]
-        //[SwaggerResponse(typeof(string))]
-        //public async Task<IActionResult> CreateOrUpdateRoleAsync(CreateOrUpdateRoleDto dto)
-        //{
-        //    var result = await roleService.CreateOrUpdateRoleAsync(dto).ConfigureAwait(false);
-        //    if (result.Succeeded)
-        //    {
-        //        return new JsonResult(result.Data);
-        //    }
+        [HttpPost]
+        public async Task<IActionResult> CreateOrUpdateRoleAsync(ApplicationRole role)
+        {
+            var result = await roleService.CreateOrUpdateRoleAsync(role).ConfigureAwait(false);
+            if (result.Succeeded)
+            {
+                return new JsonResult(result.Data);
+            }
 
-        //    ModelState.AddModelError(string.Empty, result.ErrorMessage);
-        //    return BadRequest(ModelState);
-        //}
+            ModelState.AddModelError(string.Empty, result.ErrorMessage);
+            return BadRequest(ModelState);
+        }
 
         /// <summary>
         /// 删除角色

@@ -214,6 +214,13 @@
             <param name="id"></param>
             <returns></returns>
         </member>
+        <member name="M:IdentityServerCenter.Controllers.RolesController.CreateOrUpdateRoleAsync(IdentityServerCenter.Database.Models.ApplicationRole)">
+            <summary>
+            创建或者更新角色
+            </summary>
+            <param name="role"></param>
+            <returns></returns>
+        </member>
         <member name="M:IdentityServerCenter.Controllers.RolesController.DeleteRoleByIdAsync(System.String)">
             <summary>
             删除角色

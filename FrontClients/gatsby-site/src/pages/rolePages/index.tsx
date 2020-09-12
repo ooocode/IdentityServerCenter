@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
-import { PageProps } from "gatsby"
-import { UsersClient, ApplicationUser } from "../../api"
+import { PageProps, Link } from "gatsby"
+import { UsersClient, ApplicationUser, ApplicationRole, RolesClient } from "../../../api"
 
 import {
     DetailsList,
@@ -15,22 +15,40 @@ import {
 import { DefaultButton, PrimaryButton, Stack, IStackTokens } from 'office-ui-fabric-react';
 
 
-let c = (str: number) => {
-    return str
-}
-type QueryArgs = { id: number }
 
-export default function about(props: PageProps<QueryArgs>) {
+const useRoles = (loadingRolesOnFirst: boolean = true) => {
+    let [roles, setRoles] = useState<ApplicationRole[] | undefined>()
+    let [reloadRoles, setReloadRoles] = useState(loadingRolesOnFirst)
+    let [pending, setPending] = useState(true)
 
-    let [users, setUsers] = useState<ApplicationUser[] | undefined>()
+    const rolesClient = new RolesClient()
+
     useEffect(() => {
-        let userClient = new UsersClient()
-        userClient.getUsers(0, 10, "").then(res => {
-            setUsers(res.rows)
-        })
+        if (reloadRoles) {
+            setPending(true)
+            rolesClient.getRoles(0, 10, "").then(res => {
+                setRoles(res.rows)
+                setReloadRoles(false)
+                setPending(false)
+            }).catch(err => {
+                setReloadRoles(false)
+                setPending(false)
+            })
+        }
+    }, [reloadRoles])
 
-    }, [])
 
+    const DeleteRole = (id: string) => {
+        return rolesClient.deleteRoleById(id)
+    }
+
+    const ReloadUsers = () => setReloadRoles(true)
+
+    return { pending, roles, ReloadUsers, DeleteRole }
+}
+
+export default () => {
+    let state = useRoles()
 
     const columns: IColumn[] = [
         {
@@ -46,8 +64,8 @@ export default function about(props: PageProps<QueryArgs>) {
             minWidth: 150,
             maxWidth: 200,
             //onColumnClick: this._onColumnClick,
-            onRender: (item: ApplicationUser) => {
-                return <div>{item.userName}</div>;
+            onRender: (item: ApplicationRole) => {
+                return <div>{item.name}</div>;
             }
         },
         {
@@ -61,8 +79,8 @@ export default function about(props: PageProps<QueryArgs>) {
             minWidth: 100,
             maxWidth: 150,
             //onColumnClick: this._onColumnClick,
-            onRender: (item: ApplicationUser) => {
-                return <div>{item.name}</div>;
+            onRender: (item: ApplicationRole) => {
+                return <div>{item.nonEditable}</div>;
             }
         },
         {
@@ -77,8 +95,8 @@ export default function about(props: PageProps<QueryArgs>) {
             minWidth: 100,
             maxWidth: 100,
             //onColumnClick: this._onColumnClick,
-            onRender: (item: ApplicationUser) => {
-                return <div>{item.sex == 0 ? "男" : "女"}</div>;
+            onRender: (item: ApplicationRole) => {
+                return <div>{item.desc}</div>;
             }
         },
         {
@@ -93,16 +111,20 @@ export default function about(props: PageProps<QueryArgs>) {
             minWidth: 16,
             //maxWidth: 16,
             //onColumnClick: this._onColumnClick,
-            onRender: (item: ApplicationUser) => {
-                return <DefaultButton text="删除" onClick={(e) => {
-                    UsersClient
-                }} />
-
+            onRender: (role: ApplicationRole) => {
+                return <div>
+                    <DefaultButton><Link to={"createOrUpdateRole?id=" + role.id}>{role.name}</Link></DefaultButton>
+                    <DefaultButton text="删除" onClick={(e) => {
+                        state.DeleteRole(role.id).then(res => {
+                            state.ReloadUsers();
+                        })
+                    }} />
+                </div>
             }
         },
     ]
 
     return <div>
-        <DetailsList items={users ?? []} columns={columns}></DetailsList>
+        {state.pending ? <label>加载中</label> : <DetailsList items={state.roles ?? []} columns={columns}></DetailsList>}
     </div>
 }
