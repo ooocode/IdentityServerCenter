@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\UserManager\EntityFrameworkCore\src\ManagerCenter.UserManager.EntityFrameworkCore\ManagerCenter.UserManager.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\ManagerCenter.UserManager.EntityFrameworkCore\ManagerCenter.UserManager.EntityFrameworkCore.csproj" />
   </ItemGroup>
 
 
