@@ -4,48 +4,48 @@ import { UsersClient, ApplicationUser, CreateOrUpdateUserViewModel } from "../..
 
 import queryStringParser from "../../../queryStringParser"
 
-import { TextField, MaskedTextField } from 'office-ui-fabric-react/lib/TextField';
-import { Stack, IStackProps, IStackStyles } from 'office-ui-fabric-react/lib/Stack';
-import { DefaultButton, PrimaryButton, IStackTokens } from 'office-ui-fabric-react';
 import { MainLayout } from "../../components/MainLayout";
+import { Button, Checkbox, Form, Input } from "antd";
 
 
-const useUpdateUser = (id: string) => {
-    let [isLoading, setLoading] = useState(true)
+const useUser = (id: string) => {
+    let [pending, setPending] = useState(true)
 
     let [user, setUser] = useState<ApplicationUser>();
+
+    let [reloadUser, setReloadUser] = useState(true)
+
     const usersClient = new UsersClient()
-    let [hadCreateOrUpdateUser, setHadCreateOrUpdateUser] = useState(true)
 
     useEffect(() => {
-        if (hadCreateOrUpdateUser) {
+        async function loadUser() {
+            setPending(true)
             if (id) {
-                setLoading(true)
-                usersClient.getUserById(id).then(res => {
-                    setUser(res)
-                    setLoading(false)
-                    setHadCreateOrUpdateUser(false)
-                })
+                var user = await usersClient.getUserById(id);
+                setUser(user)
             } else {
-                if (user == null) {
-                    user = new ApplicationUser()
-                }
-                setLoading(false)
+                var user = new ApplicationUser()
+                setUser(user)
             }
+
+            setPending(false)
+            setReloadUser(false)
         }
-    }, [hadCreateOrUpdateUser])
+
+        loadUser()
+    }, [reloadUser])
 
 
     /**
      * 重新加载用户
      */
     let ReloadUser = () => {
-        setHadCreateOrUpdateUser(true)
+        setReloadUser(true)
     }
 
 
-    let Update = (cb: () => void) => {
-        setLoading(true)
+    let CreateOrUpdate = (cb: () => void) => {
+        setPending(true)
         console.log(user)
         let vm = new CreateOrUpdateUserViewModel();
         vm.id = user.id
@@ -54,12 +54,12 @@ const useUpdateUser = (id: string) => {
         vm.password = user.password
 
         usersClient.createOrUpdateUser(vm).then(res => {
-            setLoading(false)
+            setPending(false)
             cb()
-        }).catch(err => setLoading(false))
+        }).catch(err => setPending(false))
     }
 
-    return { isLoading, user, Update, ReloadUser }
+    return { pending, user, CreateOrUpdate, ReloadUser }
 }
 
 
@@ -67,36 +67,59 @@ const useUpdateUser = (id: string) => {
 export default () => {
     var id = queryStringParser().id as string
 
-    var userState = useUpdateUser(id)
+    var userState = useUser(id)
 
-    var userState1 = useUpdateUser(id)
+    const onFinish = values => {
+        console.log(userState.user)
+        userState.CreateOrUpdate(() => {
+            userState.ReloadUser()
+        })
+    };
 
-    if (userState.isLoading) {
+    const onFinishFailed = errorInfo => {
+        console.log('Failed:', errorInfo);
+    };
+
+
+    if (userState.pending) {
         return <MainLayout>加载中......</MainLayout>
     } else {
-        let user = userState.user;
         return <MainLayout>
-            <Stack>
-                <TextField label="账号" defaultValue={user?.userName} onChange={(e, value) => user.userName = value} />
-                <TextField label="姓名" defaultValue={user?.name} onChange={(e, value) => user.name = value} />
-                <TextField label="密码" defaultValue={user?.password} onChange={(e, value) => user.password = value} />
+            <Form
+                name="basic"
+                initialValues={{ remember: true }}
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
+            >
+                <Form.Item
+                    label="账号"
+                    rules={[{ required: true, message: '请输入账号' }]}
+                >
+                    <Input onChange={(e) => userState.user.userName = e.target.value} />
+                </Form.Item>
 
 
-                {
-                    userState1.isLoading == false ? <TextField label="账号" defaultValue={userState1?.user?.userName} onChange={(e, value) => user.userName = value} /> : <label>加载中</label>
-                }
+                <Form.Item
+                    label="姓名"
+                    rules={[{ required: true, message: '请输入姓名' }]}
+                >
+                    <Input onChange={(e) => userState.user.name = e.target.value} />
+                </Form.Item>
 
-                {/*  <TextField label="Disabled" disabled defaultValue="I am disabled" />
-            <TextField label="Read-only" readOnly defaultValue="I am read-only" />
-            <TextField label="Required " required />
-            <TextField ariaLabel="Required without visible label" required />
-            <TextField label="With error message" errorMessage="Error message" /> */}
 
-                <DefaultButton text="确定" onClick={(e) => {
-                    userState.Update(() => {
-                        userState.ReloadUser()
-                    })
-                }} />
-            </Stack></MainLayout>
+                <Form.Item
+                    label="密码"
+                    rules={[{ required: true, message: '请输入密码' }]}
+                >
+                    <Input onChange={(e) => userState.user.password = e.target.value} />
+                </Form.Item>
+
+                <Form.Item>
+                    <Button type="primary" htmlType="submit">
+                        Submit
+                    </Button>
+                </Form.Item>
+            </Form>
+        </MainLayout>
     }
 }

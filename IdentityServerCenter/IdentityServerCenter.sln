@@ -9,6 +9,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServerCenterConnect
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServerCenter.Identity", "..\IdentityServerCenter.Identity\IdentityServerCenter.Identity.csproj", "{F4467F37-4259-48AF-9EA6-DED370A94424}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdentityManager", "IdentityManager", "{CC8E9221-B15D-4900-9DA5-E01991C95244}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Abstractions", "Abstractions", "{A3FBA3AB-6B68-4C78-A39B-92A28EAE47EC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C292EE57-D232-4F35-9312-0A7F512AA7E1}"
+	ProjectSection(SolutionItems) = preProject
+		TextFile1.txt = TextFile1.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EntityFrameworkCore", "EntityFrameworkCore", "{D9CEF2C2-7AB7-43C9-AC04-267187A188B1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3D2928A3-5F68-404E-8C92-9CB4E0764B6F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +57,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A3FBA3AB-6B68-4C78-A39B-92A28EAE47EC} = {CC8E9221-B15D-4900-9DA5-E01991C95244}
+		{C292EE57-D232-4F35-9312-0A7F512AA7E1} = {A3FBA3AB-6B68-4C78-A39B-92A28EAE47EC}
+		{D9CEF2C2-7AB7-43C9-AC04-267187A188B1} = {CC8E9221-B15D-4900-9DA5-E01991C95244}
+		{3D2928A3-5F68-404E-8C92-9CB4E0764B6F} = {D9CEF2C2-7AB7-43C9-AC04-267187A188B1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2803501A-B80F-490D-8E2A-A389D8C9F35C}

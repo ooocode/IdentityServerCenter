@@ -1,37 +1,48 @@
 import React, { useState, useEffect } from "react"
 import { PageProps } from "gatsby"
-import { UsersClient, ApplicationUser, CreateOrUpdateUserViewModel, ApplicationRole, RolesClient } from "../../../api"
+import { UsersClient, ApplicationUser, CreateOrUpdateUserViewModel, ApplicationRole, RolesClient, ApiException } from "../../../api"
 
 import queryStringParser from "../../../queryStringParser"
-
-import { TextField, MaskedTextField } from 'office-ui-fabric-react/lib/TextField';
-import { Stack, IStackProps, IStackStyles } from 'office-ui-fabric-react/lib/Stack';
-import { DefaultButton, PrimaryButton, IStackTokens } from 'office-ui-fabric-react';
+import { Button, Form, Input, Layout, notification } from "antd"
+import { MainLayout } from "../../components/MainLayout"
 
 
 const useRole = (id: string, isLoadRoleOnFirst: boolean = true) => {
     let [pending, setPending] = useState(true)
-
     let [role, setRole] = useState<ApplicationRole>();
-    const rolesClient = new RolesClient()
-
     let [reloadRole, setReloadRole] = useState(isLoadRoleOnFirst)
 
+    const rolesClient = new RolesClient()
+
     useEffect(() => {
-        if (reloadRole) {
+        async function loadRole() {
+            setPending(true)
+
             if (id) {
-                setPending(true)
-                rolesClient.getRoleById(id).then(res => {
-                    setRole(res)
-                    setPending(false)
-                    setReloadRole(false)
-                })
-            } else {
-                if (role == null) {
-                    role = new ApplicationUser()
+
+                try {
+                    let role = await rolesClient.getRoleById(id)
+                    setRole(role)
+                } catch (err) {
+                    if(err instanceof ApiException){
+                        notification["error"]({
+                            message: '网络请求发生错误',
+                            description:(err as ApiException).message
+                        });
+                    }
                 }
-                setPending(false)
+            } else {
+                let role = new ApplicationUser()
+                setRole(role)
             }
+
+            setPending(false)
+        }
+
+        if (reloadRole) {
+            loadRole().then(() => {
+                setReloadRole(false)
+            })
         }
     }, [reloadRole])
 
@@ -43,8 +54,19 @@ const useRole = (id: string, isLoadRoleOnFirst: boolean = true) => {
         setReloadRole(true)
     }
 
+    /**
+     * 创建或者更新
+     * @param cb 
+     */
+    let CreateOrUpdate = (cb: () => void = null) => {
+        rolesClient.createOrUpdateRole(role).then(res => {
+            if (cb) {
+                cb();
+            }
+        })
+    }
 
-    return { pending, role, ReloadRole }
+    return { pending, role, ReloadRole, CreateOrUpdate }
 }
 
 
@@ -52,20 +74,47 @@ const useRole = (id: string, isLoadRoleOnFirst: boolean = true) => {
 export default () => {
     var id = queryStringParser().id as string
 
-    var userState = useRole(id)
+    var roleState = useRole(id)
 
-    if (userState.pending) {
-        return <div>加载中......</div>
+    let onFinish = (value) => {
+        roleState.CreateOrUpdate(() => {
+            roleState.ReloadRole()
+        })
+    }
+
+
+    if (roleState.pending) {
+        return <MainLayout>加载中......</MainLayout>
     } else {
-        let role = userState.role;
-        return <Stack>
-            <TextField label="账号" defaultValue={role.name} onChange={(e, value) => role.name = value} />
-            <TextField label="姓名" defaultValue={role.desc} onChange={(e, value) => role.desc = value} />
+        let role = roleState.role;
+        return <MainLayout>
+            <Form
+                name="basic"
+                initialValues={{ remember: true }}
+                onFinish={onFinish}
+            >
+                <Form.Item
+                    label="角色名称"
+                    name="name"
+                    rules={[{ required: true, message: '请输入角色名称' }]}
+                >
+                    <Input onChange={(e) => role.name = e.target.value} />
+                </Form.Item>
 
 
-            <DefaultButton text="确定" onClick={(e) => {
+                <Form.Item
+                    label="角色描述"
+                    name="desc">
+                    <Input onChange={(e) => role.desc = e.target.value} />
+                </Form.Item>
 
-            }} />
-        </Stack>
+
+                <Form.Item>
+                    <Button type="primary" htmlType="submit">
+                        Submit
+                    </Button>
+                </Form.Item>
+            </Form>
+        </MainLayout>
     }
 }

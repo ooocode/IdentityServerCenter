@@ -27,7 +27,8 @@ namespace IdentityServerCenter.Database.Services.DefaultImpl
         public UserService(UserManager<ApplicationUser> userManager, IMapper mapper,
             ApplicationDbContext applicationDbContext,
             ILogger<UserService> logger,
-            ApplicationUserValidator applicationUserValidator)
+            ApplicationUserValidator applicationUserValidator,
+            IDataProtectionProvider )
         {
             this.userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));

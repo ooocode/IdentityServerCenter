@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NSwag.AspNetCore" Version="13.7.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\UserManager\EntityFrameworkCore\src\ManagerCenter.UserManager.EntityFrameworkCore\ManagerCenter.UserManager.EntityFrameworkCore.csproj" />
+  </ItemGroup>
+
+
+</Project>

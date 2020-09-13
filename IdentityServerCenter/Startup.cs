@@ -22,6 +22,7 @@ using System.IO;
 using FluentValidation.AspNetCore;
 using IdentityServerCenter.ViewModels;
 using IdentityServerCenter.Extensions;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace IdentityServerCenter
 {
@@ -289,6 +290,11 @@ namespace IdentityServerCenter
                     .Build();
                 });
             });
+
+            services.AddDataProtection()
+                .SetApplicationName("IdentityServer")
+                .PersistKeysToFileSystem(new DirectoryInfo(Configuration["DataProtectionPersistKeysDirectory"]))
+                .ProtectKeysWithCertificate(Configuration["X509Thumbprint"]);
         }
 
         public void Configure(IApplicationBuilder app, ConfigurationDbContext configurationDbContext,
@@ -345,7 +351,7 @@ namespace IdentityServerCenter
 
             app.UseOpenApi(); // serve OpenAPI/Swagger documents
             app.UseSwaggerUi3(); // serve Swagger UI
-            app.UseReDoc(); // serve ReDoc UI
+            app.UseReDoc(config =>config.Path="/redoc"); // serve ReDoc UI
         }
     }
 }
