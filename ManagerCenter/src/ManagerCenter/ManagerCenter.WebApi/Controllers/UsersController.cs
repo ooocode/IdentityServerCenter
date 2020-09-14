@@ -6,6 +6,7 @@ using ManagerCenter.Shared;
 using ManagerCenter.UserManager.Abstractions;
 using ManagerCenter.UserManager.Abstractions.Dtos;
 using ManagerCenter.UserManager.Abstractions.Models;
+using ManagerCenter.WebApi.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -70,7 +71,13 @@ namespace ManagerCenter.WebApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUserByIdAsync(string id)
         {
-            var result = await userService.DeleteUserAsync(id).ConfigureAwait(false);
+            var user = await userService.FindByIdAsync(id).ConfigureAwait(false);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await userService.DeleteUsersAsync(new List<ApplicationUser> { user }).ConfigureAwait(false);
             if (result.Succeeded)
             {
                 return Ok();
@@ -149,28 +156,23 @@ namespace ManagerCenter.WebApi.Controllers
         /// <summary>
         /// 为用户分配角色
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="dto"></param>
+        /// <param name="viewModel"></param>
         /// <returns></returns>
         [HttpPost("{userId}/roles")]
-        public async Task<IActionResult> AddToRolesAsync(string userId, AddToRolesDto dto)
+        public async Task<IActionResult> AddToRolesAsync(AddToRolesViewModel viewModel)
         {
-            if (string.IsNullOrEmpty(userId))
+            if (viewModel is null)
             {
-                throw new ArgumentException($"'{nameof(userId)}' cannot be null or empty", nameof(userId));
+                throw new ArgumentNullException(nameof(viewModel));
             }
 
-            if (dto is null)
+            var user = await userService.FindByIdAsync(viewModel.UserId).ConfigureAwait(false);
+            if (user == null)
             {
-                throw new ArgumentNullException(nameof(dto));
+                return NotFound();
             }
 
-            if (userId != dto.UserId)
-            {
-                ModelState.AddModelError(string.Empty, "无效的参数");
-                return BadRequest(ModelState);
-            }
-            var result = await userService.AddToRolesAsync(dto).ConfigureAwait(false);
+            var result = await userService.AddToRolesAsync(user, viewModel.RoleIds).ConfigureAwait(false);
             if (result.Succeeded)
             {
                 return Ok();
@@ -222,7 +224,7 @@ namespace ManagerCenter.WebApi.Controllers
             return BadRequest(ModelState);
         }
 
-       
+
 
         /// <summary>
         /// 删除用户声明
@@ -233,7 +235,13 @@ namespace ManagerCenter.WebApi.Controllers
         [HttpDelete("{userId}/claims/{claimId}")]
         public async Task<IActionResult> DeleteUserClaimAsync(string userId, int claimId)
         {
-            var result = await userService.DeleteUserClaimAsync(userId, claimId).ConfigureAwait(false);
+            var userClaim = await userService.GetUserClaimByIdAsync(userId, claimId).ConfigureAwait(false);
+            if (userClaim == null)
+            {
+                return NotFound();
+            }
+
+            var result = await userService.DeleteUserClaimsAsync(new List<ApplicationIdentityUserClaim> { userClaim }).ConfigureAwait(false);
             if (result.Succeeded)
             {
                 return Ok();
@@ -241,7 +249,7 @@ namespace ManagerCenter.WebApi.Controllers
 
             ModelState.AddModelError(string.Empty, result.ErrorMessage);
             return BadRequest(ModelState);
-        } 
+        }
 
         /// <summary>
         /// 用户拥有的权限

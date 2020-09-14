@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { PageProps } from "gatsby"
-import { UsersClient, ApplicationUser, CreateOrUpdateUserViewModel, ApplicationRole, RolesClient, ApiException } from "../../../api"
+import { UsersClient, ApplicationUser, ApplicationRole, RolesClient, ApiException } from "../../../api"
 
 import queryStringParser from "../../../queryStringParser"
 import { Button, Form, Input, Layout, notification } from "antd"
@@ -19,15 +19,14 @@ const useRole = (id: string, isLoadRoleOnFirst: boolean = true) => {
             setPending(true)
 
             if (id) {
-
                 try {
                     let role = await rolesClient.getRoleById(id)
                     setRole(role)
                 } catch (err) {
-                    if(err instanceof ApiException){
+                    if (err instanceof ApiException) {
                         notification["error"]({
                             message: '网络请求发生错误',
-                            description:(err as ApiException).message
+                            description: (err as ApiException).message
                         });
                     }
                 }

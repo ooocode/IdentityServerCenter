@@ -29,6 +29,8 @@ namespace ManagerCenter.WebApi
             services.AddControllers();
             services.AddUserManager(DatabaseType.Sqlite, "data source=aa.db");
             services.AddOpenApiDocument(); // add OpenAPI v3 document
+
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,6 +44,8 @@ namespace ManagerCenter.WebApi
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(e => e.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseAuthorization();
 

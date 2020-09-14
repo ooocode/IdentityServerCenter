@@ -15,17 +15,20 @@ const useUsers = (loadingUsersOnFirst: boolean = true) => {
     const usersClient = new UsersClient()
 
     useEffect(() => {
-        if (reloadUsers) {
+        async function loadUsers() {
             setPending(true)
-            usersClient.getUsers(0, 10, "").then(res => {
-                setUsers(res.rows)
-                SetReloadUsers(false)
-                setPending(false)
-            }).catch(() => {
-                SetReloadUsers(false)
-                setPending(false)
-            })
+            try {
+                let users = await (await usersClient.getUsers(0, 10, "")).rows
+                setUsers(users)
+            } catch (ex) {
+                
+            }
+
+            SetReloadUsers(false)
+            setPending(false)
         }
+
+        loadUsers()
     }, [reloadUsers])
 
 

@@ -16,28 +16,94 @@ namespace ManagerCenter.UserManager.Abstractions
     public interface IUserService
     {
         /// <summary>
-        /// 添加角色
-        /// </summary>
-        /// <param name="dto">dto</param>
-        /// <returns>结果</returns>
-        Task<Result> AddToRolesAsync(AddToRolesDto dto);
-
-        /// <summary>
         /// 创建或者更新用户
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
         Task<DataResult<string>> CreateOrUpdateUserAsync(ApplicationUser user);
 
+        /// <summary>
+        /// 删除用户
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task<Result> DeleteUsersAsync(List<ApplicationUser> users);
 
-        Task<Result> CreateOrUpdateUserClaimAsync(ApplicationIdentityUserClaim claim);
-        Task<Result> DeleteUserAsync(string userId);
-        Task<Result> DeleteUserClaimAsync(string userId, int cliamId);
+        /// <summary>
+        /// 通过id查找用户
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         Task<ApplicationUser> FindByIdAsync(string id);
-        Task<ApplicationUser> FindByUserNameAsync(string userName);
-        Task<List<string>> GetPermissonsOfUserAsync(string userId);
-        Task<List<ApplicationRole>> GetRolesOfUserByUserIdAsync(string userId);
-        Task<List<ApplicationIdentityUserClaim>> GetUserClaimsAsync(string userId);
+
+
+        /// <summary>
+        /// 查询用户
+        /// </summary>
+        /// <param name="skip"></param>
+        /// <param name="take"></param>
+        /// <param name="search"></param>
+        /// <returns></returns>
         Task<PaginationResult<ApplicationUser>> GetUsers(int skip, int take, string search);
+
+        /// <summary>
+        /// 通过用户名查找用户
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        Task<ApplicationUser> FindByUserNameAsync(string userName);
+
+
+        /// <summary>
+        /// 删除用户声明
+        /// </summary>
+        /// <param name="userClaims"></param>
+        /// <returns></returns>
+        Task<Result> DeleteUserClaimsAsync(List<ApplicationIdentityUserClaim> userClaims);
+
+     
+        /// <summary>
+        /// 获取用户拥有的permisson
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task<List<string>> GetPermissonsOfUserAsync(string userId);
+
+        /// <summary>
+        /// 获取用户拥有的角色
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task<List<ApplicationRole>> GetRolesOfUserByUserIdAsync(string userId);
+
+        /// <summary>
+        /// 添加角色
+        /// </summary>
+        /// <param name="dto">dto</param>
+        /// <returns>结果</returns>
+        Task<Result> AddToRolesAsync(ApplicationUser user, List<string> roleIds);
+
+
+        /// <summary>
+        /// 创建或者更新用户声明
+        /// </summary>
+        /// <param name="claim"></param>
+        /// <returns></returns>
+        Task<Result> CreateOrUpdateUserClaimAsync(ApplicationIdentityUserClaim claim);
+
+        /// <summary>
+        /// 获取用户声明
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task<List<ApplicationIdentityUserClaim>> GetUserClaimsAsync(string userId);
+
+        /// <summary>
+        /// 通过id获取用户声明
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="claimId"></param>
+        /// <returns></returns>
+        Task<ApplicationIdentityUserClaim> GetUserClaimByIdAsync(string userId, int claimId);
     }
 }

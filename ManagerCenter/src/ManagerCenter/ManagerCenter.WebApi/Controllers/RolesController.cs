@@ -83,7 +83,13 @@ namespace ManagerCenter.WebApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRoleByIdAsync(string id)
         {
-            var result = await roleService.DeleteRoleAsync(id).ConfigureAwait(false);
+            var role = await roleService.FindByIdAsync(id).ConfigureAwait(false);
+            if (role == null)
+            {
+                return NotFound();
+            }
+
+            var result = await roleService.DeleteRolesAsync(new List<ApplicationRole> { role }).ConfigureAwait(false);
             if (result.Succeeded)
             {
                 return Ok();

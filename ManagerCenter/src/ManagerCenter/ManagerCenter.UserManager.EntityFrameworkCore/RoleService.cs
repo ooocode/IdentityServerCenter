@@ -16,7 +16,7 @@ namespace ManagerCenter.UserManager.EntityFrameworkCore
     {
         private readonly RoleManager<ApplicationRole> roleManager;
         private readonly ApplicationDbContext applicationDbContext;
-      
+
 
         public RoleService(RoleManager<ApplicationRole> roleManager,
             ApplicationDbContext applicationDbContext)
@@ -34,7 +34,7 @@ namespace ManagerCenter.UserManager.EntityFrameworkCore
         /// <returns></returns>
         public async Task<PaginationResult<ApplicationRole>> GetRolesAsync(int skip, int take, string search)
         {
-            var query = roleManager.Roles;
+            var query = applicationDbContext.Roles.AsQueryable();
             if (!string.IsNullOrEmpty(search))
             {
                 search = search.Trim();
@@ -54,7 +54,7 @@ namespace ManagerCenter.UserManager.EntityFrameworkCore
         /// <returns></returns>
         public async Task<ApplicationRole> FindByIdAsync(string roleId)
         {
-            ApplicationRole role = await roleManager.FindByIdAsync(roleId).ConfigureAwait(false);
+            ApplicationRole role = await applicationDbContext.Roles.FirstOrDefaultAsync(e => e.Id == roleId).ConfigureAwait(false);
             return role;
         }
 
@@ -63,26 +63,28 @@ namespace ManagerCenter.UserManager.EntityFrameworkCore
         /// </summary>
         /// <param name="roleId"></param>
         /// <returns></returns>
-        public async Task<Result> DeleteRoleAsync(string roleId)
+        public async Task<Result> DeleteRolesAsync(List<ApplicationRole> roles)
         {
-            var role = await applicationDbContext.Roles.FirstOrDefaultAsync(e => e.Id == roleId).ConfigureAwait(false);
-            if (role == null)
+            if (roles is null)
             {
-                return FailedResult("角色不存在");
+                throw new ArgumentNullException(nameof(roles));
             }
 
-            if (role.NonEditable)
+            foreach (var role in roles)
             {
-                return FailedResult("默认角色不可删除");
+                if (role.NonEditable)
+                {
+                    return FailedResult("默认角色不可删除");
+                }
+
+                //先删除角色权限
+                var rolePermissons = applicationDbContext.RolePermissons.Where(e => e.RoleId == role.Id);
+                applicationDbContext.RolePermissons.RemoveRange(rolePermissons);
+
+                //再删除角色
+                applicationDbContext.Roles.Remove(role);
             }
 
-            //先删除角色权限
-            var rolePermissons = applicationDbContext.RolePermissons.Where(e => e.RoleId == role.Id);
-            applicationDbContext.RolePermissons.RemoveRange(rolePermissons);
-
-            //再删除角色
-            applicationDbContext.Roles.Remove(role);
-        
             try
             {
                 await applicationDbContext.SaveChangesAsync().ConfigureAwait(false);
@@ -101,6 +103,11 @@ namespace ManagerCenter.UserManager.EntityFrameworkCore
         /// <returns>成功返回角色id</returns>
         public async Task<DataResult<string>> CreateOrUpdateRoleAsync(ApplicationRole role)
         {
+            if (role is null)
+            {
+                throw new ArgumentNullException(nameof(role));
+            }
+
             IdentityResult result;
             if (string.IsNullOrEmpty(role.Id))
             {

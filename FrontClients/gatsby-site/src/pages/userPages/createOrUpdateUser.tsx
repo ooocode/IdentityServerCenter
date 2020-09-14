@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { PageProps } from "gatsby"
-import { UsersClient, ApplicationUser, CreateOrUpdateUserViewModel } from "../../../api"
+import { UsersClient, ApplicationUser } from "../../../api"
 
 import queryStringParser from "../../../queryStringParser"
 
@@ -47,7 +47,7 @@ const useUser = (id: string) => {
     let CreateOrUpdate = (cb: () => void) => {
         setPending(true)
         console.log(user)
-        let vm = new CreateOrUpdateUserViewModel();
+        /*let vm = new CreateOrUpdateUserViewModel();
         vm.id = user.id
         vm.name = user.name
         vm.userName = user.userName
@@ -56,7 +56,7 @@ const useUser = (id: string) => {
         usersClient.createOrUpdateUser(vm).then(res => {
             setPending(false)
             cb()
-        }).catch(err => setPending(false))
+        }).catch(err => setPending(false))*/
     }
 
     return { pending, user, CreateOrUpdate, ReloadUser }

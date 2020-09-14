@@ -122,18 +122,16 @@ namespace ManagerCenter.UserManager.EntityFrameworkCore
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task<Result> DeleteUserAsync(string userId)
+        public async Task<Result> DeleteUsersAsync(List<ApplicationUser> users)
         {
-            var user = await userManager.FindByIdAsync(userId).ConfigureAwait(false);
-            if (user == null)
+            applicationDbContext.Users.RemoveRange(users);
+            try
             {
-                return FailedResult("用户不存在");
+                await applicationDbContext.SaveChangesAsync().ConfigureAwait(false);
             }
-
-            var result = await userManager.DeleteAsync(user).ConfigureAwait(false);
-            if (!result.Succeeded)
+            catch (DbUpdateException ex)
             {
-                return FailedResult(result.Errors.FirstOrDefault().Description);
+                return FailedResult(ex);
             }
 
             return OkResult();
@@ -145,31 +143,30 @@ namespace ManagerCenter.UserManager.EntityFrameworkCore
         /// <param name="userId"></param>
         /// <param name="roleIds"></param>
         /// <returns></returns>
-        public async Task<Result> AddToRolesAsync(AddToRolesDto dto)
+        public async Task<Result> AddToRolesAsync(ApplicationUser user, List<string> roleIds)
         {
-            if (dto is null)
+            if (user is null)
             {
-                throw new ArgumentNullException(nameof(dto));
+                throw new ArgumentNullException(nameof(user));
             }
 
-            var existUser = await applicationDbContext.Users.AnyAsync(e => e.Id == dto.UserId).ConfigureAwait(false);
-            if (!existUser)
+            if (roleIds is null)
             {
-                return FailedResult("用户不存在");
+                throw new ArgumentNullException(nameof(roleIds));
             }
 
-            //先删除
-            var userRoles = applicationDbContext.UserRoles.Where(e => e.UserId == dto.UserId);
+            //先删除用户的角色
+            var userRoles = applicationDbContext.UserRoles.Where(e => e.UserId == user.Id);
             applicationDbContext.UserRoles.RemoveRange(userRoles);
 
-            foreach (var roleId in dto.RoleIds)
+            foreach (var roleId in roleIds)
             {
                 var existRole = await applicationDbContext.Roles.AnyAsync(e => e.Id == roleId).ConfigureAwait(false);
                 if (!existRole)
                 {
                     return FailedResult($"角色[{roleId}]不存在");
                 }
-                await applicationDbContext.UserRoles.AddAsync(new IdentityUserRole<string> { UserId = dto.UserId, RoleId = roleId }).ConfigureAwait(false);
+                await applicationDbContext.UserRoles.AddAsync(new IdentityUserRole<string> { UserId = user.Id, RoleId = roleId }).ConfigureAwait(false);
             }
 
             try
@@ -227,27 +224,21 @@ namespace ManagerCenter.UserManager.EntityFrameworkCore
                 await applicationDbContext.SaveChangesAsync().ConfigureAwait(false);
                 return OkResult();
             }
-            catch(DbUpdateException ex)
+            catch (DbUpdateException ex)
             {
                 return FailedResult(ex);
             }
         }
 
-      
+
         /// <summary>
         /// 删除用户声明
         /// </summary>
         /// <param name="cliamId"></param>
         /// <returns></returns>
-        public async Task<Result> DeleteUserClaimAsync(string userId, int cliamId)
+        public async Task<Result> DeleteUserClaimsAsync(List<ApplicationIdentityUserClaim> userClaims)
         {
-            var claim = await applicationDbContext.UserClaims.FirstOrDefaultAsync(e => e.UserId == userId && e.Id == cliamId).ConfigureAwait(false);
-            if (claim == null)
-            {
-                return FailedResult($"{cliamId}不存在");
-            }
-
-            applicationDbContext.UserClaims.Remove(claim);
+            applicationDbContext.UserClaims.RemoveRange(userClaims);
             try
             {
                 await applicationDbContext.SaveChangesAsync().ConfigureAwait(false);
@@ -296,6 +287,19 @@ namespace ManagerCenter.UserManager.EntityFrameworkCore
             }
 
             return permissons;
+        }
+
+
+        /// <summary>
+        /// 用过id获取用户声明
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="claimId"></param>
+        /// <returns></returns>
+        public async Task<ApplicationIdentityUserClaim> GetUserClaimByIdAsync(string userId, int claimId)
+        {
+            var userClaim = await applicationDbContext.UserClaims.FirstOrDefaultAsync(e => e.UserId == userId && e.Id == claimId).ConfigureAwait(false);
+            return userClaim;
         }
     }
 }

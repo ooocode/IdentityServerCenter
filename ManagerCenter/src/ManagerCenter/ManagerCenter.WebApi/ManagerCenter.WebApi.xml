@@ -1,0 +1,162 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ManagerCenter.WebApi</name>
+    </assembly>
+    <members>
+        <member name="M:ManagerCenter.WebApi.Controllers.PermissonsController.GetPermissonsAsync(System.Nullable{System.Int32},System.Nullable{System.Int32},System.String)">
+            <summary>
+            获取所有权限
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ManagerCenter.WebApi.Controllers.PermissonsController.GetPermissonByIdAsync(System.String)">
+            <summary>
+            根据id获取权限
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ManagerCenter.WebApi.Controllers.PermissonsController.CreateOrUpdatePermissonAsync(ManagerCenter.UserManager.Abstractions.Models.Permisson)">
+            <summary>
+            创建或者更新权限
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ManagerCenter.WebApi.Controllers.PermissonsController.DeletePermissonAsync(System.String)">
+            <summary>
+            删除权限
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ManagerCenter.WebApi.Controllers.RolesController.GetRolesAsync(System.Int32,System.Int32,System.String)">
+            <summary>
+            查询角色列表
+            </summary>
+            <param name="skip"></param>
+            <param name="take"></param>
+            <param name="search"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ManagerCenter.WebApi.Controllers.RolesController.GetRoleByIdAsync(System.String)">
+            <summary>
+            通过id获取角色
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ManagerCenter.WebApi.Controllers.RolesController.CreateOrUpdateRoleAsync(ManagerCenter.UserManager.Abstractions.Models.ApplicationRole)">
+            <summary>
+            创建或者更新角色
+            </summary>
+            <param name="role"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ManagerCenter.WebApi.Controllers.RolesController.DeleteRoleByIdAsync(System.String)">
+            <summary>
+            删除角色
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ManagerCenter.WebApi.Controllers.RolesController.GetRolePermissonsAsync(System.String)">
+            <summary>
+            获取角色拥有的权限
+            </summary>
+            <param name="roleId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ManagerCenter.WebApi.Controllers.RolesController.ReAddPermissonsToRoleAsync(System.String,ManagerCenter.UserManager.Abstractions.Dtos.ReAddPermissonsToRoleDto)">
+            <summary>
+            重新分配权限到角色
+            </summary>
+            <param name="roleId"></param>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ManagerCenter.WebApi.Controllers.UsersController.GetUsersAsync(System.Int32,System.Int32,System.String)">
+            <summary>
+            查询用户列表
+            </summary>
+            <param name="skip"></param>
+            <param name="take"></param>
+            <param name="search"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ManagerCenter.WebApi.Controllers.UsersController.GetUserByIdAsync(System.String)">
+            <summary>
+            通过id获取角色
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ManagerCenter.WebApi.Controllers.UsersController.DeleteUserByIdAsync(System.String)">
+            <summary>
+            通过id删除用户
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ManagerCenter.WebApi.Controllers.UsersController.GetRolesOfUserAsync(System.String)">
+            <summary>
+            获取用户拥有的角色
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ManagerCenter.WebApi.Controllers.UsersController.AddToRolesAsync(ManagerCenter.WebApi.ViewModels.AddToRolesViewModel)">
+            <summary>
+            为用户分配角色
+            </summary>
+            <param name="viewModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ManagerCenter.WebApi.Controllers.UsersController.GetUserClaimsAsync(System.String)">
+            <summary>
+            获取用户声明
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ManagerCenter.WebApi.Controllers.UsersController.CreateOrUpdateUserClaimAsync(System.String,ManagerCenter.UserManager.Abstractions.Models.ApplicationIdentityUserClaim)">
+            <summary>
+            创建或者更新角色声明
+            </summary>
+            <param name="userId"></param>
+            <param name="claim"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ManagerCenter.WebApi.Controllers.UsersController.DeleteUserClaimAsync(System.String,System.Int32)">
+            <summary>
+            删除用户声明
+            </summary>
+            <param name="userId"></param>
+            <param name="claimId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ManagerCenter.WebApi.Controllers.UsersController.GetPermissonsOfUserAsync(System.String)">
+            <summary>
+            用户拥有的权限
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ManagerCenter.WebApi.ViewModels.AddToRolesViewModel">
+            <summary>
+            为用户分配角色视图模型
+            </summary>
+        </member>
+        <member name="P:ManagerCenter.WebApi.ViewModels.AddToRolesViewModel.UserId">
+            <summary>
+            用户id
+            </summary>
+        </member>
+        <member name="P:ManagerCenter.WebApi.ViewModels.AddToRolesViewModel.RoleIds">
+            <summary>
+            角色id列表
+            </summary>
+        </member>
+    </members>
+</doc>
