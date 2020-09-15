@@ -21,7 +21,7 @@
             <summary>
             创建或者更新权限
             </summary>
-            <param name="dto"></param>
+            <param name="permisson"></param>
             <returns></returns>
         </member>
         <member name="M:ManagerCenter.WebApi.Controllers.PermissonsController.DeletePermissonAsync(System.String)">
@@ -76,6 +76,11 @@
             <param name="dto"></param>
             <returns></returns>
         </member>
+        <member name="T:ManagerCenter.WebApi.Controllers.UsersController">
+            <summary>
+            用户控制器
+            </summary>
+        </member>
         <member name="M:ManagerCenter.WebApi.Controllers.UsersController.GetUsersAsync(System.Int32,System.Int32,System.String)">
             <summary>
             查询用户列表
@@ -97,6 +102,13 @@
             通过id删除用户
             </summary>
             <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ManagerCenter.WebApi.Controllers.UsersController.CreateOrUpdateUserAsync(ManagerCenter.WebApi.ViewModels.CreateOrUpdateUserViewModel)">
+            <summary>
+            创建或者更新用户
+            </summary>
+            <param name="viewModel"></param>
             <returns></returns>
         </member>
         <member name="M:ManagerCenter.WebApi.Controllers.UsersController.GetRolesOfUserAsync(System.String)">
@@ -156,6 +168,16 @@
         <member name="P:ManagerCenter.WebApi.ViewModels.AddToRolesViewModel.RoleIds">
             <summary>
             角色id列表
+            </summary>
+        </member>
+        <member name="P:ManagerCenter.WebApi.ViewModels.CreateOrUpdateUserViewModel.UserName">
+            <summary>
+            用户名
+            </summary>
+        </member>
+        <member name="P:ManagerCenter.WebApi.ViewModels.CreateOrUpdateUserViewModel.Name">
+            <summary>
+            姓名
             </summary>
         </member>
     </members>

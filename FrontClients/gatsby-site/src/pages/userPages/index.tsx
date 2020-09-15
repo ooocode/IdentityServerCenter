@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react"
 import { Link } from "gatsby"
 import { UsersClient, ApplicationUser } from "../../../api"
 
-
 import { MainLayout } from "../../components/MainLayout";
-
 
 
 const useUsers = (loadingUsersOnFirst: boolean = true) => {
@@ -21,14 +19,16 @@ const useUsers = (loadingUsersOnFirst: boolean = true) => {
                 let users = await (await usersClient.getUsers(0, 10, "")).rows
                 setUsers(users)
             } catch (ex) {
-                
+                showErrorMsgBox(ex)
             }
 
             SetReloadUsers(false)
             setPending(false)
         }
 
-        loadUsers()
+        if (reloadUsers) {
+            loadUsers()
+        }
     }, [reloadUsers])
 
 
@@ -45,6 +45,7 @@ const useUsers = (loadingUsersOnFirst: boolean = true) => {
 
 import { Button, Table } from 'antd';
 import { ColumnsType } from "antd/lib/table";
+import { showErrorMsgBox } from "../../../utility";
 
 
 

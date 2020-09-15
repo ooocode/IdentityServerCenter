@@ -4,6 +4,7 @@ using ManagerCenter.UserManager.Abstractions;
 using ManagerCenter.UserManager.Abstractions.Dtos;
 using ManagerCenter.UserManager.Abstractions.Models;
 using ManagerCenter.UserManager.EntityFrameworkCore.Data;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -23,20 +24,49 @@ namespace ManagerCenter.UserManager.EntityFrameworkCore
 
         public UserService(UserManager<ApplicationUser> userManager, IMapper mapper,
             ApplicationDbContext applicationDbContext,
-            ILogger<UserService> logger)
+            ILogger<UserService> logger,
+            IDataProtectionProvider  dataProtectionProvider)
         {
             this.userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             this.applicationDbContext = applicationDbContext ?? throw new ArgumentNullException(nameof(applicationDbContext));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
+        
+            dataProtectionProvider.CreateProtector("").CreateProtector("").Protect()
         }
 
         /// <summary>
-        /// 创建或者更新用户
+        /// 创建用户
         /// </summary>
         /// <param name="dto"></param>
         /// <returns></returns>
-        public async Task<DataResult<string>> CreateOrUpdateUserAsync(ApplicationUser user)
+        public async Task<DataResult<string>> CreateUserAsync(CreateUserDto dto)
+        {
+            var id = GuidEx.NewGuid().ToString();
+            ApplicationUser user = new ApplicationUser
+            {
+                Id = id,
+                UserName = dto.UserName,
+                Name = dto.Name,
+                Password = dto.Password
+            };
+
+            var identityResult = await userManager.CreateAsync(user, user.Password).ConfigureAwait(false);
+            if (identityResult.Succeeded)
+            {
+                return OkDataResult(user.Id);
+            }
+
+            return FailedDataResult<string>(identityResult.Errors.FirstOrDefault().Description);
+        }
+
+        /// <summary>
+        /// 更新用户
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        public async Task<DataResult<string>> UpdateUserAsync(ApplicationUser user)
         {
             if (user is null)
             {
@@ -44,23 +74,13 @@ namespace ManagerCenter.UserManager.EntityFrameworkCore
             }
 
             //Id为空则创建
-            IdentityResult result;
-            if (string.IsNullOrEmpty(user.Id))
-            {
-                user.Id = GuidEx.NewGuid().ToString();
-                result = await userManager.CreateAsync(user, user.Password).ConfigureAwait(false);
-            }
-            else
-            {
-                result = await userManager.UpdateAsync(user).ConfigureAwait(false);
-            }
-
-            if (result.Succeeded)
+            IdentityResult identityResult = await userManager.UpdateAsync(user).ConfigureAwait(false);
+            if (identityResult.Succeeded)
             {
                 return OkDataResult(user.Id);
             }
 
-            return FailedDataResult<string>(result.Errors.FirstOrDefault().Description);
+            return FailedDataResult<string>(identityResult.Errors.FirstOrDefault().Description);
         }
 
         /// <summary>
@@ -70,7 +90,7 @@ namespace ManagerCenter.UserManager.EntityFrameworkCore
         /// <returns></returns>
         public async Task<ApplicationUser> FindByIdAsync(string id)
         {
-            var user = await userManager.Users.FirstOrDefaultAsync(e => e.Id == id).ConfigureAwait(false);
+            var user = await applicationDbContext.Users.FirstOrDefaultAsync(e => e.Id == id).ConfigureAwait(false);
             return user;
         }
 
@@ -81,7 +101,7 @@ namespace ManagerCenter.UserManager.EntityFrameworkCore
         /// <returns></returns>
         public async Task<ApplicationUser> FindByUserNameAsync(string userName)
         {
-            var user = await userManager.Users.FirstOrDefaultAsync(e => e.UserName == userName).ConfigureAwait(false);
+            var user = await applicationDbContext.Users.FirstOrDefaultAsync(e => e.UserName == userName).ConfigureAwait(false);
             return user;
         }
 

@@ -46,7 +46,7 @@ namespace ManagerCenter.WebApi.Controllers
         /// <summary>
         /// 创建或者更新权限
         /// </summary>
-        /// <param name="dto"></param>
+        /// <param name="permisson"></param>
         /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> CreateOrUpdatePermissonAsync(Permisson permisson)

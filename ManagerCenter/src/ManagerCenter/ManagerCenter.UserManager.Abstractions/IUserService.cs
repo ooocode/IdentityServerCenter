@@ -16,11 +16,18 @@ namespace ManagerCenter.UserManager.Abstractions
     public interface IUserService
     {
         /// <summary>
-        /// 创建或者更新用户
+        /// 创建用户
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        Task<DataResult<string>> CreateUserAsync(CreateUserDto dto);
+
+        /// <summary>
+        /// 更新用户
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        Task<DataResult<string>> CreateOrUpdateUserAsync(ApplicationUser user);
+        Task<DataResult<string>> UpdateUserAsync(ApplicationUser user);
 
         /// <summary>
         /// 删除用户
