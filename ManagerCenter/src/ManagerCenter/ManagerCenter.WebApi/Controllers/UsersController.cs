@@ -27,7 +27,7 @@ namespace ManagerCenter.WebApi.Controllers
         private readonly ILogger<UsersController> logger;
         private readonly IUserService userService;
 
-        public UsersController(ILogger<UsersController> logger, IUserService userService,)
+        public UsersController(ILogger<UsersController> logger, IUserService userService)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));

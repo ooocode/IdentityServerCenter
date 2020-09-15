@@ -21,20 +21,51 @@ namespace ManagerCenter.UserManager.EntityFrameworkCore
         private readonly IMapper mapper;
         private readonly ApplicationDbContext applicationDbContext;
         private readonly ILogger<UserService> logger;
+        private readonly ITimeLimitedDataProtector dataProtector;
 
         public UserService(UserManager<ApplicationUser> userManager, IMapper mapper,
             ApplicationDbContext applicationDbContext,
             ILogger<UserService> logger,
-            IDataProtectionProvider  dataProtectionProvider)
+            IDataProtectionProvider dataProtectionProvider)
         {
+            if (dataProtectionProvider is null)
+            {
+                throw new ArgumentNullException(nameof(dataProtectionProvider));
+            }
+
             this.userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             this.applicationDbContext = applicationDbContext ?? throw new ArgumentNullException(nameof(applicationDbContext));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
-        
-            dataProtectionProvider.CreateProtector("").CreateProtector("").Protect()
+            dataProtector = dataProtectionProvider.CreateProtector(nameof(UserService)).ToTimeLimitedDataProtector();
         }
+
+
+        private string EncryptUserId(string userId)
+        {
+            var encryptId = dataProtector.Protect(userId);
+            return encryptId;
+        }
+
+        private ApplicationUser EncryptUserId(ApplicationUser user)
+        {
+            user.Id = dataProtector.Protect(user.Id);
+            return user;
+        }
+
+        private string DecryptUserId(string encryptUserId)
+        {
+            var deCryptId = dataProtector.Unprotect(encryptUserId);
+            return deCryptId;
+        }
+
+        private ApplicationUser DecryptUserId(ApplicationUser user)
+        {
+            user.Id = dataProtector.Unprotect(user.Id);
+            return user;
+        }
+
 
         /// <summary>
         /// 创建用户
@@ -55,7 +86,7 @@ namespace ManagerCenter.UserManager.EntityFrameworkCore
             var identityResult = await userManager.CreateAsync(user, user.Password).ConfigureAwait(false);
             if (identityResult.Succeeded)
             {
-                return OkDataResult(user.Id);
+                return OkDataResult(EncryptUserId(id));
             }
 
             return FailedDataResult<string>(identityResult.Errors.FirstOrDefault().Description);
@@ -73,11 +104,13 @@ namespace ManagerCenter.UserManager.EntityFrameworkCore
                 throw new ArgumentNullException(nameof(user));
             }
 
+            user = DecryptUserId(user);
+
             //Id为空则创建
             IdentityResult identityResult = await userManager.UpdateAsync(user).ConfigureAwait(false);
             if (identityResult.Succeeded)
             {
-                return OkDataResult(user.Id);
+                return OkDataResult(EncryptUserId(user.Id));
             }
 
             return FailedDataResult<string>(identityResult.Errors.FirstOrDefault().Description);
@@ -90,8 +123,9 @@ namespace ManagerCenter.UserManager.EntityFrameworkCore
         /// <returns></returns>
         public async Task<ApplicationUser> FindByIdAsync(string id)
         {
+            id = DecryptUserId(id);
             var user = await applicationDbContext.Users.FirstOrDefaultAsync(e => e.Id == id).ConfigureAwait(false);
-            return user;
+            return EncryptUserId(user);
         }
 
         /// <summary>
@@ -102,6 +136,7 @@ namespace ManagerCenter.UserManager.EntityFrameworkCore
         public async Task<ApplicationUser> FindByUserNameAsync(string userName)
         {
             var user = await applicationDbContext.Users.FirstOrDefaultAsync(e => e.UserName == userName).ConfigureAwait(false);
+            user = EncryptUserId(user);
             return user;
         }
 
@@ -133,6 +168,7 @@ namespace ManagerCenter.UserManager.EntityFrameworkCore
 
             var total = await query.CountAsync().ConfigureAwait(false);
             var users = await query.Skip(skip).Take(take).ToListAsync().ConfigureAwait(false);
+            users = users.Select(e => EncryptUserId(e)).ToList();
 
             return OkPaginationResult(users, total, take);
         }
@@ -144,6 +180,7 @@ namespace ManagerCenter.UserManager.EntityFrameworkCore
         /// <returns></returns>
         public async Task<Result> DeleteUsersAsync(List<ApplicationUser> users)
         {
+            users = users.Select(e => DecryptUserId(e)).ToList();
             applicationDbContext.Users.RemoveRange(users);
             try
             {
