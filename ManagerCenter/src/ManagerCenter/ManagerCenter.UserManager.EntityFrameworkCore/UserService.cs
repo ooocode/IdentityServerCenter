@@ -33,7 +33,7 @@ namespace ManagerCenter.UserManager.EntityFrameworkCore
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
         
-            dataProtectionProvider.CreateProtector("").CreateProtector("").Protect()
+            //dataProtectionProvider.CreateProtector("").CreateProtector("").Protect()
         }
 
         /// <summary>
