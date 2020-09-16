@@ -30,6 +30,7 @@ namespace ManagerCenter.WebApi
             services.AddUserManager(DatabaseType.Sqlite, "data source=aa.db");
             services.AddOpenApiDocument(); // add OpenAPI v3 document
 
+            services.AddDataProtection();
             services.AddCors();
         }
 

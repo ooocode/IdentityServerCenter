@@ -50,8 +50,6 @@ import { showErrorMsgBox } from "../../../utility";
 
 
 export default () => {
-
-
     const columns: ColumnsType<ApplicationUser> = [
         {
             title: '账号',
@@ -94,8 +92,9 @@ export default () => {
 
     return <MainLayout>
         <Button><Link to="createOrUpdateUser/">新建用户</Link></Button>
-        <Table columns={columns} dataSource={state.users} scroll={{ x: 1500, y: 300 }} />
-
+        <Table columns={columns}
+            dataSource={state.users}
+            scroll={{ x: 1500, y: 300 }} />
     </MainLayout>
 }
 

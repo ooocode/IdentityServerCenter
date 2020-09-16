@@ -9,3 +9,12 @@
   .site-layout-background {
     background: #fff;
   }
+
+  html,body,#root{
+    width: 100%;
+    height: 100%;
+  }
+
+  .ant-layout{
+    height: 100%;
+  }
