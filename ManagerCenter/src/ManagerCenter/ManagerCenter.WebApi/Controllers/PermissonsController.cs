@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using ManagerCenter.Shared;
 using ManagerCenter.UserManager.Abstractions;
 using ManagerCenter.UserManager.Abstractions.Models;
+using ManagerCenter.UserManager.Abstractions.Models.UserManagerModels;
+using ManagerCenter.UserManager.Abstractions.UserManagerInterfaces;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860

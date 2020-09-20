@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using ManagerCenter.UserManager.EntityFrameworkCore.Extensions;
+using ManagerCenter.Shared.Database;
 
 namespace ManagerCenter.WebApi
 {
@@ -26,8 +27,9 @@ namespace ManagerCenter.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddRazorPages();
             services.AddControllers();
-            services.AddUserManager(DatabaseType.Sqlite, "data source=aa.db");
+            services.AddUserManager(DatabaseType.Sqlite, "data source=TempDb/aa.db", "data source=TempDb/config.db", "data source=TempDb/opt.db");
             services.AddOpenApiDocument(); // add OpenAPI v3 document
 
             services.AddDataProtection();
@@ -42,7 +44,7 @@ namespace ManagerCenter.WebApi
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+           // app.UseHttpsRedirection();
 
             app.UseRouting();
 
@@ -53,6 +55,7 @@ namespace ManagerCenter.WebApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapRazorPages();
             });
 
             app.UseOpenApi(); // serve OpenAPI/Swagger documents

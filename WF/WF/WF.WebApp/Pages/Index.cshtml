@@ -1,0 +1,34 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+@{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>标题</th>
+                <th>收件人</th>
+                <th>当前状态</th>
+                <th>发件时间</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @{
+                var tasks = await taskService.GetTasks();
+                foreach (var task in tasks)
+                {
+                    var arch = await archDbContext.Arches.FirstOrDefaultAsync(e => e.BusinessKey == task.BusinessKey);
+                    <tr>
+                        <td><a asp-page="/FormPages/GWSXSP" asp-route-id="@task.Id">@(arch?.Title??task.FlowStatus)</a></td>
+                        <td> @task.UserName</td>
+                        <td> @task.FlowStatus</td>
+                        <td>@task.CreateTime</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}

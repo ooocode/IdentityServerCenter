@@ -1,7 +1,10 @@
 ﻿using ManagerCenter.Shared;
 using ManagerCenter.UserManager.Abstractions;
 using ManagerCenter.UserManager.Abstractions.Dtos;
+using ManagerCenter.UserManager.Abstractions.Dtos.UserManagerDtos;
 using ManagerCenter.UserManager.Abstractions.Models;
+using ManagerCenter.UserManager.Abstractions.Models.UserManagerModels;
+using ManagerCenter.UserManager.Abstractions.UserManagerInterfaces;
 using ManagerCenter.UserManager.EntityFrameworkCore.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +26,52 @@ namespace ManagerCenter.UserManager.EntityFrameworkCore
         {
             this.roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
             this.applicationDbContext = applicationDbContext ?? throw new ArgumentNullException(nameof(applicationDbContext));
+        }
+
+        /// <summary>
+        /// 创建角色
+        /// </summary>
+        /// <param name="role"></param>
+        /// <returns></returns>
+        public async Task<DataResult<string>> CreateRoleAsync(CreateRoleDto role)
+        {
+            if (role is null)
+            {
+                throw new ArgumentNullException(nameof(role));
+            }
+
+            ApplicationRole applicationRole = new ApplicationRole
+            {
+                Id = GuidEx.NewGuid().ToString(),
+                Name = role.Name,
+                Desc = role.Desc
+            };
+
+            var identityResult =  await roleManager.CreateAsync(applicationRole).ConfigureAwait(false);
+            if (identityResult.Succeeded)
+            {
+                return OkDataResult(applicationRole.Id);
+            }
+
+            return FailedDataResult<string>(identityResult.Errors.FirstOrDefault().Description);
+        }
+
+
+
+        /// <summary>
+        /// 更新角色
+        /// </summary>
+        /// <param name="applicationRole"></param>
+        /// <returns></returns>
+        public async Task<DataResult<ApplicationRole>> UpdateRoleAsync(ApplicationRole applicationRole)
+        {
+            var identityResult = await roleManager.UpdateAsync(applicationRole).ConfigureAwait(false);
+            if (identityResult.Succeeded)
+            {
+                return OkDataResult(applicationRole);
+            }
+
+            return FailedDataResult<ApplicationRole>(identityResult.Errors.FirstOrDefault()?.Description);
         }
 
         /// <summary>

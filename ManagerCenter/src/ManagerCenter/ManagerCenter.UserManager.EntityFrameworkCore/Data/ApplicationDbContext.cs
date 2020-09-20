@@ -2,12 +2,18 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using ManagerCenter.UserManager.Abstractions.Models;
+using ManagerCenter.UserManager.Abstractions.Models.UserManagerModels;
 
 namespace ManagerCenter.UserManager.EntityFrameworkCore.Data
 {
     //TUser, TRole, TKey, TUserClaim, TUserRole, TUserLogin, TRoleClaim, TUserToken
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole,string,
-         ApplicationIdentityUserClaim, IdentityUserRole<string>, IdentityUserLogin<string>, ApplicationIdentityRoleClaim, IdentityUserToken<string>>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, 
+         ApplicationRole,
+         string,
+         ApplicationIdentityUserClaim, IdentityUserRole<string>, 
+         IdentityUserLogin<string>, 
+         ApplicationIdentityRoleClaim, 
+         IdentityUserToken<string>>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

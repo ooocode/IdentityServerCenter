@@ -8,6 +8,7 @@ using MailKit.Net.Smtp;
 using MimeKit.Text;
 using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 using ManagerCenter.UserManager.Abstractions;
+using ManagerCenter.UserManager.Abstractions.UserManagerInterfaces;
 
 namespace ManagerCenter.UserManager.EntityFrameworkCore
 {

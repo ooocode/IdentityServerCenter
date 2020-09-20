@@ -1,0 +1,8 @@
+@using ManagerCenter.WebApp
+@namespace ManagerCenter.WebApp.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@inject ElsaContextEx db
+@using Elsa.Persistence
+@using Microsoft.EntityFrameworkCore;
+@inject IWorkflowDefinitionStore workflowDefinitionStore
+@inject IWorkflowInstanceStore workflowInstanceStore;
