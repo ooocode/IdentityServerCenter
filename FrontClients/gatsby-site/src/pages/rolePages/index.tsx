@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react"
 import { PageProps, Link } from "gatsby"
 import { UsersClient, ApplicationUser, ApplicationRole, RolesClient } from "../../../api"
 import { MainLayout } from "../../components/MainLayout"
-import { Button, Table } from 'antd';
-import { ColumnsType } from "antd/lib/table";
 
 
 const useRoles = (loadingRolesOnFirst: boolean = true) => {
@@ -43,37 +41,10 @@ const useRoles = (loadingRolesOnFirst: boolean = true) => {
 
 
 export default () => {
-    const columns: ColumnsType<ApplicationUser> = [
-        {
-            title: '角色名',
-            width: 150,
-            dataIndex: 'name',
-            key: "name",
-            fixed: 'left',
-        },
-        {
-            title: '描述',
-            width: 150,
-            dataIndex: 'desc',
-            key: "desc",
-            fixed: 'left',
-        },
-        {
-            title: 'Action',
-            key: 'operation',
-            fixed: 'right',
-            width: 100,
-            render: (role: ApplicationRole) => <>
-                <Link to={"/rolePages/createOrUpdateRole?id=" + role.id}>编辑</Link>
-            </>,
-        },
-    ];
 
     let state = useRoles()
 
     return <MainLayout>
-        <Button><Link to="createOrUpdateRole/">新建角色</Link></Button>
-        <Table columns={columns} dataSource={state.roles} scroll={{ x: 1500, y: 300 }} />
 
     </MainLayout>
 }

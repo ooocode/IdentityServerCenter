@@ -42,59 +42,17 @@ const useUsers = (loadingUsersOnFirst: boolean = true) => {
 }
 
 
-
-import { Button, Table } from 'antd';
-import { ColumnsType } from "antd/lib/table";
 import { showErrorMsgBox } from "../../../utility";
 
 
 
 export default () => {
-    const columns: ColumnsType<ApplicationUser> = [
-        {
-            title: '账号',
-            width: 150,
-            dataIndex: 'userName',
-            key: "userName",
-            fixed: 'left',
-        },
-        {
-            title: '姓名',
-            width: 150,
-            dataIndex: 'name',
-            key: "name",
-            fixed: 'left',
-        },
-        {
-            title: '邮箱',
-            dataIndex: 'email',
-            key: 'email',
-            width: 150,
-        },
-        {
-            title: '手机号码',
-            dataIndex: 'phone',
-            key: 'phone',
-            width: 150,
-        },
-        {
-            title: 'Action',
-            key: 'operation',
-            fixed: 'right',
-            width: 100,
-            render: (user: ApplicationUser) => <>
-                <Link to={"/userPages/createOrUpdateUser?id=" + user.id}>编辑</Link>
-            </>,
-        },
-    ];
+    
 
     let state = useUsers()
 
     return <MainLayout>
-        <Button><Link to="createOrUpdateUser/">新建用户</Link></Button>
-        <Table columns={columns}
-            dataSource={state.users}
-            scroll={{ x: 1500, y: 300 }} />
+       Yonghu
     </MainLayout>
 }
 

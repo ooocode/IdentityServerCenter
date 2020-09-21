@@ -1455,9 +1455,11 @@ export interface IApplicationUser extends IIdentityUser {
 
 export class CreateOrUpdateUserViewModel implements ICreateOrUpdateUserViewModel {
     id?: string | undefined;
-    userName?: string | undefined;
-    name?: string | undefined;
-    password?: string | undefined;
+    /** 用户名 */
+    userName!: string;
+    /** 姓名 */
+    name!: string;
+    password!: string;
 
     constructor(data?: ICreateOrUpdateUserViewModel) {
         if (data) {
@@ -1496,9 +1498,11 @@ export class CreateOrUpdateUserViewModel implements ICreateOrUpdateUserViewModel
 
 export interface ICreateOrUpdateUserViewModel {
     id?: string | undefined;
-    userName?: string | undefined;
-    name?: string | undefined;
-    password?: string | undefined;
+    /** 用户名 */
+    userName: string;
+    /** 姓名 */
+    name: string;
+    password: string;
 }
 
 /** 为用户分配角色视图模型 */

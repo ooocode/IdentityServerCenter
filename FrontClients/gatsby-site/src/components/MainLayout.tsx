@@ -1,7 +1,7 @@
 
 
 //import React from "react"
-//import { Link } from "gatsby"
+import { Link } from "gatsby"
 //import { MainLayout } from "../components/MainLayout"
 
 
@@ -33,20 +33,26 @@ import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import Link from '@material-ui/core/Link';
+//import Link from '@material-ui/core/Link';
 import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
-//import MenuIcon from '@material-ui/icons/Menu';
-//import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-//import NotificationsIcon from '@material-ui/icons/Notifications';
+import MenuIcon from '@material-ui/icons/Menu';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import NotificationsIcon from '@material-ui/icons/Notifications';
 //import { mainListItems, secondaryListItems } from './listItems';
+import DashboardIcon from '@material-ui/icons/Menu';
+import ShoppingCartIcon from '@material-ui/icons/Menu';
+import PeopleIcon from '@material-ui/icons/Menu';
+import BarChartIcon from '@material-ui/icons/Menu';
+import LayersIcon from '@material-ui/icons/Menu';
+
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
+      {/*  <Link color="inherit" href="https://material-ui.com/">
         Your Website
-      </Link>{' '}
+      </Link>{' '} */}
       {new Date().getFullYear()}
       {'.'}
     </Typography>
@@ -157,14 +163,14 @@ export function MainLayout({ children }) {
             onClick={handleDrawerOpen}
             className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
           >
-            {/* <MenuIcon /> */}
+            <MenuIcon />
           </IconButton>
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             Dashboard
           </Typography>
           <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
-              {/*  <NotificationsIcon /> */}
+              <NotificationsIcon />
             </Badge>
           </IconButton>
         </Toolbar>
@@ -178,39 +184,44 @@ export function MainLayout({ children }) {
       >
         <div className={classes.toolbarIcon}>
           <IconButton onClick={handleDrawerClose}>
-            {/*  <ChevronLeftIcon /> */}
+            <ChevronLeftIcon />
           </IconButton>
         </div>
         <Divider />
         <List>
           <div>
+            <Link to="/userPages/" style={{}}>
+              <ListItem button>
+                <ListItemIcon>
+                  <DashboardIcon />
+                </ListItemIcon>
+
+                <ListItemText primary="用户管理" />
+
+              </ListItem>
+            </Link>
             <ListItem button>
               <ListItemIcon>
-                {/* <DashboardIcon /> */}
+                <ShoppingCartIcon />
               </ListItemIcon>
-              <ListItemText primary="用户管理" />
+              <Link to="/rolePages/">
+                <ListItemText primary="角色管理" /></Link>
             </ListItem>
             <ListItem button>
               <ListItemIcon>
-                {/*  <ShoppingCartIcon /> */}
-              </ListItemIcon>
-              <ListItemText primary="Orders" />
-            </ListItem>
-            <ListItem button>
-              <ListItemIcon>
-                {/*  <PeopleIcon /> */}
+                <PeopleIcon />
               </ListItemIcon>
               <ListItemText primary="Customers" />
             </ListItem>
             <ListItem button>
               <ListItemIcon>
-                {/* <BarChartIcon /> */}
+                <BarChartIcon />
               </ListItemIcon>
               <ListItemText primary="Reports" />
             </ListItem>
             <ListItem button>
               <ListItemIcon>
-                {/*  <LayersIcon /> */}
+                <LayersIcon />
               </ListItemIcon>
               <ListItemText primary="Integrations" />
             </ListItem>

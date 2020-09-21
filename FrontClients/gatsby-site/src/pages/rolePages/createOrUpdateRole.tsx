@@ -3,7 +3,6 @@ import { PageProps } from "gatsby"
 import { UsersClient, ApplicationUser, ApplicationRole, RolesClient, ApiException } from "../../../api"
 
 import queryStringParser from "../../../queryStringParser"
-import { Button, Form, Input, Layout, notification } from "antd"
 import { MainLayout } from "../../components/MainLayout"
 
 
@@ -24,10 +23,7 @@ const useRole = (id: string, isLoadRoleOnFirst: boolean = true) => {
                     setRole(role)
                 } catch (err) {
                     if (err instanceof ApiException) {
-                        notification["error"]({
-                            message: '网络请求发生错误',
-                            description: (err as ApiException).message
-                        });
+                      
                     }
                 }
             } else {
@@ -87,33 +83,7 @@ export default () => {
     } else {
         let role = roleState.role;
         return <MainLayout>
-            <Form
-                name="basic"
-                initialValues={{ remember: true }}
-                onFinish={onFinish}
-            >
-                <Form.Item
-                    label="角色名称"
-                    name="name"
-                    rules={[{ required: true, message: '请输入角色名称' }]}
-                >
-                    <Input onChange={(e) => role.name = e.target.value} />
-                </Form.Item>
-
-
-                <Form.Item
-                    label="角色描述"
-                    name="desc">
-                    <Input onChange={(e) => role.desc = e.target.value} />
-                </Form.Item>
-
-
-                <Form.Item>
-                    <Button type="primary" htmlType="submit">
-                        Submit
-                    </Button>
-                </Form.Item>
-            </Form>
+          
         </MainLayout>
     }
 }

@@ -5,7 +5,6 @@ import { UsersClient, ApplicationUser, CreateOrUpdateUserViewModel } from "../..
 import queryStringParser from "../../../queryStringParser"
 
 import { MainLayout } from "../../components/MainLayout";
-import { Button, Checkbox, Form, Input } from "antd";
 import { messageBox, showErrorMsgBox } from "../../../utility";
 
 
@@ -101,41 +100,7 @@ export default () => {
     } else {
         var user = userState.user
         return <MainLayout>
-            <Form
-                name="basic"
-                initialValues={{ remember: true }}
-                onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
-            >
-                <Form.Item
-                    label="账号"
-                    rules={[{ required: true, message: '请输入账号' }]}
-                >
-                    <Input onChange={(e) => user.userName = e.target.value} defaultValue={user.userName} />
-                </Form.Item>
-
-
-                <Form.Item
-                    label="姓名"
-                    rules={[{ required: true, message: '请输入姓名' }]}
-                >
-                    <Input onChange={(e) => user.name = e.target.value} defaultValue={user.name} />
-                </Form.Item>
-
-
-                <Form.Item
-                    label="密码"
-                    rules={[{ required: true, message: '请输入密码' }]}
-                >
-                    <Input onChange={(e) => user.password = e.target.value} defaultValue={user.password} />
-                </Form.Item>
-
-                <Form.Item>
-                    <Button type="primary" htmlType="submit">
-                        Submit
-                    </Button>
-                </Form.Item>
-            </Form>
+           
         </MainLayout>
     }
 }

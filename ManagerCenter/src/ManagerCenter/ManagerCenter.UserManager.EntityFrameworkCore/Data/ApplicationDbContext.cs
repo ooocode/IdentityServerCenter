@@ -47,7 +47,7 @@ namespace ManagerCenter.UserManager.EntityFrameworkCore.Data
             }
 
             base.OnModelCreating(builder);
-          
+
 
             //设置学校班级表 班级名称唯一
             builder.Entity<SchoolClass>().HasIndex(e => new { e.Name }).IsUnique();
