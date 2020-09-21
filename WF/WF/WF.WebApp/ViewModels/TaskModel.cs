@@ -35,5 +35,7 @@ namespace WF.WebApp.ViewModels
         /// 外向
         /// </summary>
         public List<string> Outgoings { get; set; }
+
+        public string ProcessDefinitionId { get; set; }
     }
 }

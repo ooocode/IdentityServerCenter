@@ -72,8 +72,26 @@ namespace WF.WebApp.Services
             return null;
         }
 
+
         /// <summary>
-        /// 通过id获取任务
+        /// 获取处理定义xml
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<string> GetProcessModelXml(string processDefinitionId)
+        {
+            var result = await httpClient.GetAsync($"/getProcessModelXml?processDefinitionId={processDefinitionId}");
+            if (result.IsSuccessStatusCode)
+            {
+                var str = await result.Content.ReadAsStringAsync();
+                return str;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 获取未办任务
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -88,6 +106,24 @@ namespace WF.WebApp.Services
             }
             return null;
         }
+
+        /// <summary>
+        /// 获取已办办任务
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<List<TaskModel>> DoneTasks()
+        {
+            var result = await httpClient.GetAsync($"/doneTasks");
+            if (result.IsSuccessStatusCode)
+            {
+                var str = await result.Content.ReadAsStringAsync();
+                var ls = Newtonsoft.Json.JsonConvert.DeserializeObject<List<TaskModel>>(str);
+                return ls;
+            }
+            return null;
+        }
+
 
 
         /// <summary>
@@ -135,5 +171,7 @@ namespace WF.WebApp.Services
             var text = await result.RequestMessage.Content.ReadAsStringAsync();
             return text;
         }
+
+
     }
 }

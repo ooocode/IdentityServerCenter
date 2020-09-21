@@ -37,12 +37,15 @@ public class TaskModel {
 
     private List<String> outgoings;
 
+    private String processDefinitionId;
+
     public static TaskModel fromTaskEntity(Task task) {
         TaskModel model = new TaskModel();
         model.setId(task.getId());
         model.setFlowStatus(task.getName());
         model.setCreateTime(task.getCreateTime());
         model.setUserName(task.getAssignee());
+        model.setProcessDefinitionId(task.getProcessDefinitionId());
         return model;
     }
 
@@ -101,5 +104,13 @@ public class TaskModel {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getProcessDefinitionId() {
+        return processDefinitionId;
+    }
+
+    public void setProcessDefinitionId(String processDefinitionId) {
+        this.processDefinitionId = processDefinitionId;
     }
 }

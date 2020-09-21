@@ -1,27 +1,30 @@
 package com.study.workflow;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import com.study.workflow.Models.CompleteTaskModel;
-import com.study.workflow.Models.ProcessDefinitionModel;
-import com.study.workflow.Models.StartProcessDefinitionModel;
-import com.study.workflow.Models.TaskModel;
+import com.study.workflow.Models.*;
 
+import org.camunda.bpm.engine.HistoryService;
 import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
+import org.camunda.bpm.engine.history.HistoricActivityInstance;
+import org.camunda.bpm.engine.history.HistoricProcessInstance;
 import org.camunda.bpm.engine.repository.ProcessDefinition;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
 import org.camunda.bpm.model.bpmn.Bpmn;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
-import org.camunda.bpm.model.bpmn.impl.BpmnModelConstants;
 import org.camunda.bpm.model.bpmn.impl.instance.ExclusiveGatewayImpl;
 import org.camunda.bpm.model.bpmn.impl.instance.UserTaskImpl;
 import org.camunda.bpm.model.bpmn.instance.Activity;
+import org.camunda.bpm.model.bpmn.instance.EndEvent;
 import org.camunda.bpm.model.bpmn.instance.ExclusiveGateway;
-import org.camunda.bpm.model.bpmn.instance.UserTask;
 import org.h2.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -43,9 +46,13 @@ public class TasksController {
     @Autowired
     private RuntimeService runtimeService;
 
+    @Autowired
+    private HistoryService historyService;
+
+
     /**
      * 获取处理定义列表
-     * 
+     *
      * @return
      */
     @GetMapping("/getProcessDefinitions")
@@ -65,7 +72,7 @@ public class TasksController {
 
     /**
      * 通过id获取处理定义
-     * 
+     *
      * @param processDefinitionId
      * @return
      */
@@ -82,7 +89,7 @@ public class TasksController {
 
     /**
      * 通过id启动处理定义
-     * 
+     *
      * @param processDefinitionId 处理定义id
      * @return 处理实例id
      */
@@ -96,7 +103,7 @@ public class TasksController {
 
     /**
      * 获取未完成的任务
-     * 
+     *
      * @return 任务列表
      */
     @GetMapping("/getTasks")
@@ -120,7 +127,7 @@ public class TasksController {
 
     /**
      * 通过id获取未完成的任务
-     * 
+     *
      * @param id 任务id
      * @return 任务
      */
@@ -177,17 +184,79 @@ public class TasksController {
 
     /**
      * 完成任务
-     * 
+     *
      * @param model
      */
     @PostMapping("/completeTask")
     @ResponseBody
-    public void completeTask(@RequestBody CompleteTaskModel model) {
+    public Result completeTask(@RequestBody CompleteTaskModel model) {
+        Result result = new Result();
         try {
             taskService.complete(model.getTaskId(), model.getVariables());
+            result.setSuccessed(true);
         } catch (Exception ex) {
-            
+            result.setErrorMessage(ex.getMessage());
         }
+        return  result;
+    }
 
+
+    /**
+     * 已办完成任务
+     */
+    @GetMapping("/doneTasks")
+    @ResponseBody
+    public List<TaskModel> doneTasks() {
+        List<TaskModel> taskModels = new ArrayList<>();
+        try {
+            var taskInstances = historyService.createHistoricTaskInstanceQuery()
+                    .finished()
+                    .orderByHistoricTaskInstanceEndTime()
+                    .desc()
+                    .list();
+            taskInstances.forEach(e -> {
+                //获取处理实例Id
+                final String proccessIntanceId = e.getProcessInstanceId();
+
+                //通过处理实例Id获取历史处理实例
+                var processInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(proccessIntanceId).singleResult();
+
+                var businessKey = processInstance.getBusinessKey();
+                TaskModel taskModel = new TaskModel();
+                taskModel.setBusinessKey(businessKey);
+                taskModel.setUserName(e.getAssignee());
+                taskModel.setFlowStatus(e.getName());
+                taskModel.setCreateTime(e.getEndTime());
+                taskModel.setProcessDefinitionId(e.getProcessDefinitionId());
+
+
+                //var task = taskService.createTaskQuery().taskId(id).singleResult();
+
+
+                //var taskModel = TaskModel.fromTaskEntity(task);
+                //taskModel.setBusinessKey(processInstance.getBusinessKey());
+
+                taskModels.add(taskModel);
+            });
+
+        } catch (Exception ex) {
+
+        }
+        return taskModels;
+    }
+
+    @GetMapping("/getProcessModelXml")
+    public String getProcessModelXml(String processDefinitionId) {
+
+        InputStream stream = repositoryService.getProcessModel(processDefinitionId);
+        byte[] bytes = new byte[0];
+        try {
+            bytes = stream.readAllBytes();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String xml = new String(bytes);
+
+        return xml;
     }
 }
