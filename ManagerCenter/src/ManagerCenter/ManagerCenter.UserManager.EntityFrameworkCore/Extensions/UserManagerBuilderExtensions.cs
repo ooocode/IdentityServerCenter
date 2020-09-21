@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
+using ManagerCenter.Shared.Database;
 using ManagerCenter.UserManager.Abstractions;
 using ManagerCenter.UserManager.Abstractions.Models;
+using ManagerCenter.UserManager.Abstractions.Models.UserManagerModels;
+using ManagerCenter.UserManager.Abstractions.UserManagerInterfaces;
 using ManagerCenter.UserManager.EntityFrameworkCore.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,13 +12,17 @@ namespace ManagerCenter.UserManager.EntityFrameworkCore.Extensions
 {
     public static class UserManagerBuilderExtensions
     {
-        public static void AddUserManager(this IServiceCollection services, DatabaseType databaseType,string connectString)
+        public static void AddUserManager(this IServiceCollection services,
+            DatabaseType databaseType,
+            string connectString,
+             string configurationStoreDbConnectString,
+             string operationalStoreDbConnectString)
         {
 
             services.AddDbContextPool<ApplicationDbContext>(options => options.UseDatabase(databaseType, connectString));
             services.BuildServiceProvider().GetService<ApplicationDbContext>().Database.EnsureCreated();
 
-            services.AddIdentityCore<ApplicationUser>(
+            services.AddIdentity<ApplicationUser, ApplicationRole>(
                 config =>
                 {
                     config.Password = new PasswordOptions
@@ -36,16 +43,30 @@ namespace ManagerCenter.UserManager.EntityFrameworkCore.Extensions
                 })
                 .AddRoles<ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddUserManager<Microsoft.AspNetCore.Identity.UserManager<ApplicationUser>>();
+                .AddUserManager<Microsoft.AspNetCore.Identity.UserManager<ApplicationUser>>()
             //.AddErrorDescriber<AppIdentityErrorDescriber>()
-            //.AddDefaultTokenProviders();
+            .AddDefaultTokenProviders();
 
             services.AddAutoMapper(typeof(UserManagerBuilderExtensions).Assembly);
 
 
+            services.AddIdentityServer()
+               .AddAspNetIdentity<ApplicationUser>()
+               .AddConfigurationStore(Config =>
+               {
+                   Config.ConfigureDbContext = build =>
+                  build.UseDatabase(databaseType, configurationStoreDbConnectString);
+               })
+               .AddOperationalStore(config =>
+               {
+                   config.ConfigureDbContext = builder => builder.UseDatabase(databaseType, operationalStoreDbConnectString);
+                   config.EnableTokenCleanup = true;
+               });
+
+
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRoleService, RoleService>();
-            services.AddScoped<IDictionaryService, DictionaryService>();
+            //services.AddScoped<IDictionaryService, DictionaryService>();
             services.AddScoped<IPermissonService, PermissonService>();
             services.AddScoped<IEmailSender, EmailSender>();
         }

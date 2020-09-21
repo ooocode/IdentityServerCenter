@@ -1,0 +1,211 @@
+﻿
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>学习坊</title>
+    <meta name="keywords" content="电影,连续剧,综艺,动漫,动作片,喜剧片,爱情片,科幻片,恐怖片,剧情片,战争片,国产剧,香港剧,韩国剧,欧美剧,纪录片,微电影,台湾剧,日本剧,海外剧,内地综艺,港台综艺,日韩综艺,欧美综艺,国产动漫,日韩动漫,欧美动漫,港台动漫,海外动漫" />
+    <meta name="description" content="电影,连续剧,综艺,动漫,动作片,喜剧片,爱情片,科幻片,恐怖片,剧情片,战争片,国产剧,香港剧,韩国剧,欧美剧,纪录片,微电影,台湾剧,日本剧,海外剧,内地综艺,港台综艺,日韩综艺,欧美综艺,国产动漫,日韩动漫,欧美动漫,港台动漫,海外动漫" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+
+    <link href="https://cdn.jsdelivr.net/npm/@@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vuetify@2.3.10/dist/vuetify.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.x/css/font-awesome.min.css" rel="stylesheet">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!--google浏览器禁止http  所以要加上这一行-->
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+    <style>
+        #keep .v-navigation-drawer__border {
+            display: none
+        }
+    </style>
+
+
+    <script>
+        if (document.location.search.match(/type=embed/gi)) {
+            window.parent.postMessage("resize", "*");
+        }
+    </script>
+
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+
+</head>
+
+<body>
+    <template id="template">
+        <div>
+            <v-app>
+                <v-navigation-drawer v-model="drawer" app clipped>
+                    <v-list dense>
+                        <v-list-item @@click="window.location.href='/'">
+                            <v-list-item-action>
+                                <i class="fa fa-home fa-lg" aria-hidden="true"></i>
+
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title>
+                                    主页
+                                </v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+
+                        <v-list-item key="1" @@click="window.location.href='/Movie/Index?BigTypeId=1'">
+                            <v-list-item-action>
+                                <i class="fa fa-film" aria-hidden="true" style="color:red"></i>
+
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title>
+                                    &#x7535;&#x5F71;
+                                </v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                        <v-list-item key="2" @@click="window.location.href='/Movie/Index?BigTypeId=2'">
+                            <v-list-item-action>
+                                <i class="fa fa-video-camera" aria-hidden="true" style=""></i>
+
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title>
+                                    &#x8FDE;&#x7EED;&#x5267;
+                                </v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                        <v-list-item key="3" @@click="window.location.href='/Movie/Index?BigTypeId=3'">
+                            <v-list-item-action>
+                                <i class="fa fa-music" aria-hidden="true" style=""></i>
+
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title>
+                                    &#x7EFC;&#x827A;
+                                </v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                        <v-list-item key="4" @@click="window.location.href='/Movie/Index?BigTypeId=4'">
+                            <v-list-item-action>
+                                <i class="fa fa-gamepad" aria-hidden="true" style=""></i>
+
+                            </v-list-item-action>
+                            <v-list-item-content>
+                                <v-list-item-title>
+                                    &#x52A8;&#x6F2B;
+                                </v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+
+                        <v-divider></v-divider>
+
+                        <v-list-item class="mt-3" @@click="window.location.href='/Movie/History'">
+                            <v-list-item-action>
+                                <i class="fa fa-history" aria-hidden="true"></i>
+                            </v-list-item-action>
+                            <v-list-item-title class="grey--text text--darken-1">观看历史</v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-navigation-drawer>
+
+                <v-app-bar app clipped-left color="white" dense style="box-shadow: none">
+                    <v-app-bar-nav-icon @@click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+                    <i class="fa fa-youtube-play mx-3 fa-2x" style="color:red" aria-hidden="true"></i>
+                    <v-toolbar-title class="mr-5 align-center">
+                        <span class="title" style="cursor:pointer" onclick="window.location.href='/'">看剧网</span>
+                    </v-toolbar-title>
+
+                    <v-spacer></v-spacer>
+
+                    <v-layout row align-center style="max-width: 650px">
+                        <form method="get" action="/Movie/SearchResult" id="searchForm">
+                            <input type="text" name="search" style="border:1px solid skyblue;max-width:140px" placeholder="搜索" value="" />
+                            <i class="fa fa-search" onclick="document.getElementById('searchForm').submit()"></i>
+                        </form>
+                    </v-layout>
+                </v-app-bar>
+
+
+                <v-main style="background-color:rgb(249,249,249)">
+                    <v-container fill-height>
+                        <v-layout>
+                            <v-flex shrink>
+                                <slot></slot>
+                            </v-flex>
+                        </v-layout>
+                    </v-container>
+                </v-main>
+            </v-app>
+        </div>
+    </template>
+
+
+    <div id="app">
+        <template-com>
+            <div id="mainBody" style="display:none">
+                @RenderBody()
+            </div>
+        </template-com>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js" integrity="sha256-ngFW3UnAN0Tnm76mDuu7uUtYEcG3G5H1+zioJw3t+68=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.3.10/dist/vuetify.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue-router@3.3.4/dist/vue-router.min.js" integrity="sha256-87g98o5+aw7/ExJ9tBjvH8zz46FJ7hiylPtNFcPvsSw=" crossorigin="anonymous"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-lazyload@1.9.7/jquery.lazyload.min.js"></script>
+
+    <!--axios-->
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.19.2/dist/axios.min.js" integrity="sha256-T/f7Sju1ZfNNfBh7skWn0idlCBcI3RwdLSS4/I7NQKQ=" crossorigin="anonymous"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert@2.1.2/dist/sweetalert.min.js" integrity="sha256-KsRuvuRtUVvobe66OFtOQfjP8WA2SzYsmm4VPfMnxms=" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        Vue.component("template-com", {
+            template: '#template',
+            vuetify: new Vuetify({
+                theme: {
+                    dark: false
+                }
+            }),
+            data: function () {
+                return {
+                    isShowLoading: false,
+                    source: "#a",
+                    drawer: Cookies.get("drawer") === "true" ? true : false,
+                }
+            },
+            mounted: function () {
+                document.getElementById("app").removeAttribute("style")
+                window.addEventListener('scroll', this.lazyLoading); // 滚动到底部，再加载的处理事件
+            },
+            watch: {
+                "drawer": function () {
+                    console.log(this.drawer)
+                    Cookies.set("drawer", this.drawer)
+                }
+            },
+        })
+    </script>
+
+    <script>
+        window.onload = function () {
+            document.getElementById("mainBody").removeAttribute("style")
+        }
+    </script>
+
+    @RenderSection("Scripts", false)
+</body>
+
+</html>

@@ -1,0 +1,73 @@
+﻿@page
+@model WF.WebApp.Pages.FormPages.GWSXSPModel
+@{
+    var task = Model.UndoTask;
+}
+
+<div class="text-center">
+    <h3>公务事项审批</h3>
+    <div class="text-right">
+        <a href="#">当前状态：@task.FlowStatus</a>
+    </div>
+</div>
+
+
+@{
+    var arch = await archDbContext.Arches.FirstOrDefaultAsync(e => e.BusinessKey == task.BusinessKey);
+    WF.WebApp.ViewModels.CompleteTaskModel completeTaskModel = new ViewModels.CompleteTaskModel
+    {
+        TaskId = task.Id,
+        Title = arch?.Title
+    };
+}
+<div>
+    <form method="post">
+        <input type="hidden" asp-for="@completeTaskModel.TaskId" />
+        <div class="form-group">
+            <label class="col-form-label">标题</label>
+            <input class="form-control" asp-for="@completeTaskModel.Title" />
+        </div>
+
+
+        <div class="form-group">
+            <label class="col-form-label">接收用户，多个用英文逗号分开</label>
+            <input class="form-control" asp-for="@completeTaskModel.RecvUserList" />
+        </div>
+
+        @if (task.TargetGatewayConditions.Count > 0)
+        {
+            <div class="form-group">
+                <label class="col-form-label">流程选择</label>
+
+                <select class="form-control" asp-for="@completeTaskModel.Dispose">
+                    @foreach (var item in task.TargetGatewayConditions)
+                    {
+                        var value = item.Split("==").LastOrDefault();
+                        value = value?.Replace("}", string.Empty)?.Replace("\"", string.Empty);
+
+                        <option value="@value">@value</option>
+                    }
+                </select>
+            </div>
+        }
+        else if (task.Outgoings.Count > 0)
+        {
+            <div class="form-group">
+                <label class="col-form-label">自动流程选择</label>
+
+                <select class="form-control">
+                    @foreach (var item in task.Outgoings)
+                    {
+                        <option value="@item">@item</option>
+                    }
+                </select>
+            </div>
+        }
+
+
+        <div class="form-group">
+            <button class="btn btn-primary" type="submit">完成</button>
+        </div>
+    </form>
+</div>
+

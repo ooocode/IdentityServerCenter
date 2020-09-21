@@ -4,7 +4,10 @@ using System.Threading.Tasks;
 using ManagerCenter.Shared;
 using ManagerCenter.UserManager.Abstractions;
 using ManagerCenter.UserManager.Abstractions.Dtos;
+using ManagerCenter.UserManager.Abstractions.Dtos.UserManagerDtos;
 using ManagerCenter.UserManager.Abstractions.Models;
+using ManagerCenter.UserManager.Abstractions.Models.UserManagerModels;
+using ManagerCenter.UserManager.Abstractions.UserManagerInterfaces;
 using Microsoft.AspNetCore.Mvc;
 using NSwag.Annotations;
 
@@ -65,13 +68,36 @@ namespace ManagerCenter.WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateOrUpdateRoleAsync(ApplicationRole role)
         {
-            var result = await roleService.CreateOrUpdateRoleAsync(role).ConfigureAwait(false);
-            if (result.Succeeded)
+            bool succeeded = false;
+            string errorMsg = null;
+            string id = null;
+            if (string.IsNullOrEmpty(role.Id))
             {
-                return new JsonResult(result.Data);
+                var result = await roleService.CreateRoleAsync(new CreateRoleDto
+                {
+                    Name = role.Name,
+                    Desc = role.Desc,
+                    NonEditable = role.NonEditable
+                }).ConfigureAwait(false);
+
+                succeeded = result.Succeeded;
+                errorMsg = result.ErrorMessage;
+                id = result.Data;
+            }
+            else
+            {
+                var result = await roleService.UpdateRoleAsync(role).ConfigureAwait(false);
+                succeeded = result.Succeeded;
+                errorMsg = result.ErrorMessage;
+                id = result.Data.Id;
+            }
+           
+            if (succeeded)
+            {
+                return new JsonResult(id);
             }
 
-            ModelState.AddModelError(string.Empty, result.ErrorMessage);
+            ModelState.AddModelError(string.Empty, errorMsg);
             return BadRequest(ModelState);
         }
 

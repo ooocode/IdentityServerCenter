@@ -17,7 +17,7 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:ManagerCenter.WebApi.Controllers.PermissonsController.CreateOrUpdatePermissonAsync(ManagerCenter.UserManager.Abstractions.Models.Permisson)">
+        <member name="M:ManagerCenter.WebApi.Controllers.PermissonsController.CreateOrUpdatePermissonAsync(ManagerCenter.UserManager.Abstractions.Models.UserManagerModels.Permisson)">
             <summary>
             创建或者更新权限
             </summary>
@@ -47,7 +47,7 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:ManagerCenter.WebApi.Controllers.RolesController.CreateOrUpdateRoleAsync(ManagerCenter.UserManager.Abstractions.Models.ApplicationRole)">
+        <member name="M:ManagerCenter.WebApi.Controllers.RolesController.CreateOrUpdateRoleAsync(ManagerCenter.UserManager.Abstractions.Models.UserManagerModels.ApplicationRole)">
             <summary>
             创建或者更新角色
             </summary>
@@ -68,7 +68,7 @@
             <param name="roleId"></param>
             <returns></returns>
         </member>
-        <member name="M:ManagerCenter.WebApi.Controllers.RolesController.ReAddPermissonsToRoleAsync(System.String,ManagerCenter.UserManager.Abstractions.Dtos.ReAddPermissonsToRoleDto)">
+        <member name="M:ManagerCenter.WebApi.Controllers.RolesController.ReAddPermissonsToRoleAsync(System.String,ManagerCenter.UserManager.Abstractions.Dtos.UserManagerDtos.ReAddPermissonsToRoleDto)">
             <summary>
             重新分配权限到角色
             </summary>
@@ -132,7 +132,7 @@
             <param name="userId"></param>
             <returns></returns>
         </member>
-        <member name="M:ManagerCenter.WebApi.Controllers.UsersController.CreateOrUpdateUserClaimAsync(System.String,ManagerCenter.UserManager.Abstractions.Models.ApplicationIdentityUserClaim)">
+        <member name="M:ManagerCenter.WebApi.Controllers.UsersController.CreateOrUpdateUserClaimAsync(System.String,ManagerCenter.UserManager.Abstractions.Models.UserManagerModels.ApplicationIdentityUserClaim)">
             <summary>
             创建或者更新角色声明
             </summary>

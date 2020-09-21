@@ -1,0 +1,50 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div>
+    @{
+        var defs = await workflowDefinitionStore.ListAsync(Elsa.Models.VersionOptions.Latest);
+        foreach (var item in defs)
+        {
+            <a asp-page-handler="StartFlow" asp-route-workflowDefinitionId="@item.DefinitionId">新建【@item.Name】</a>
+        }
+
+        var userTaskBlocks = await workflowInstanceStore.ListByBlockingActivityAsync("UserTask");
+        <div>
+            <label>为完成的用户任务</label>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>当前状态</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in userTaskBlocks)
+                    {
+                        var state = (await db.ActivityDefinitions.FirstOrDefaultAsync(e => e.ActivityId == item.Item2.Id))?.State;
+                        var userTask = state.ToObject<Elsa.Activities.UserTask.Activities.UserTask>();
+                        <tr>
+                            <td>@userTask.Title</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    }
+
+</div>
+
+@section Scripts{
+
+    <script>
+
+        var vue = new Vue({
+            el: "#app"
+        })
+    </script>
+
+}

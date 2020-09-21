@@ -3,6 +3,8 @@ using ManagerCenter.Shared;
 using ManagerCenter.UserManager.Abstractions;
 using ManagerCenter.UserManager.Abstractions.Dtos;
 using ManagerCenter.UserManager.Abstractions.Models;
+using ManagerCenter.UserManager.Abstractions.Models.UserManagerModels;
+using ManagerCenter.UserManager.Abstractions.UserManagerInterfaces;
 using ManagerCenter.UserManager.EntityFrameworkCore.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
