@@ -10,9 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Elsa" Version="1.2.2.29" />
-    <PackageReference Include="Elsa.Dashboard" Version="1.2.2.29" />
-    <PackageReference Include="Elsa.Persistence.EntityFrameworkCore" Version="1.2.2.29" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.0-rc.1.20451.17" />
     <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.0.3">
       <PrivateAssets>all</PrivateAssets>
