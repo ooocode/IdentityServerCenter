@@ -4,16 +4,17 @@
     var task = Model.UndoTask;
 }
 @{
-    var arch = await archDbContext.Arches.FirstOrDefaultAsync(e => e.BusinessKey == task.BusinessKey);
+    var arch = await ArchManager.GetArchByBusinessKeyAsync(task.BusinessKey);
     WF.WebApp.ViewModels.CompleteTaskModel completeTaskModel = new ViewModels.CompleteTaskModel
     {
         TaskId = task.Id,
-        Title = arch?.Title
+        Title = arch?.Title,
+        ArchNo = arch?.ArchNo
     };
 }
 
 <div class="text-center">
-    <h3>公务事项审批</h3>
+    <h3>@(arch?.ProcessDefinitionName?? "默认表单")</h3>
     <div class="text-right">
         <a href="/BpmnModel?processDefinitionId=@task.ProcessDefinitionId" target="_blank">当前状态：@task.FlowStatus</a>
     </div>
@@ -22,11 +23,17 @@
 
 
 <div>
-    <form method="post">
+    <form method="post" asp-page-handler="Complete">
         <input type="hidden" asp-for="@completeTaskModel.TaskId" />
         <div class="form-group">
             <label class="col-form-label">标题</label>
             <input class="form-control" asp-for="@completeTaskModel.Title" />
+        </div>
+
+
+        <div class="form-group">
+            <label class="col-form-label">文号</label>
+            <input class="form-control" asp-for="@completeTaskModel.ArchNo" />
         </div>
 
 
@@ -67,8 +74,70 @@
 
 
         <div class="form-group">
+            <label class="col-form-label">附件列表</label>
+            <ul class="list-group border border-primary">
+
+                @{
+                    var atts = await ArchManager.GetArchAttachmentsAsync(arch);
+                    if (atts != null)
+                    {
+                        foreach (var item in atts)
+                        {
+                            <li class="list-group-item">@item.OrignFileName <button type="button" onclick="deleteAttachment(@item.Id)">删除</button></li>
+                        }
+                    }
+                }
+            </ul>
+
+            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#staticBackdrop">
+                点击上传附件
+            </button>
+        </div>
+
+        <div class="form-group">
             <button class="btn btn-primary" type="submit">完成</button>
         </div>
     </form>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">上传附件窗口</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <form action="/api/archs/@(arch?.BusinessKey)/attachments" enctype="multipart/form-data" method="post">
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <input type="file" class="form-control-file" name="file">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭此窗口</button>
+                    <button type="submit" class="btn btn-primary">确定上传附件</button>
+                </div>
+
+                @Html.AntiForgeryToken()
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/axios.min.js"></script>
+    <script>
+        function deleteAttachment(id) {
+            axios.delete("/api/archs/@(arch?.BusinessKey)/attachments/" + id).then(function (res) {
+                alert("删除成功")
+            })
+        }
+    </script>
+}

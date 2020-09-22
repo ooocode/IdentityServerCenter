@@ -5,7 +5,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using WF.WebApp.Data;
+using WF.Core.Data;
+using WF.Core.Models;
+using WF.WebApp.Models;
 using WF.WebApp.ViewModels;
 
 namespace WF.WebApp.Services
@@ -13,9 +15,9 @@ namespace WF.WebApp.Services
     public class TasksService
     {
         private readonly HttpClient httpClient;
-        private readonly ArchDbContext archDbContext;
+        private readonly ArchDbContext<MyArch> archDbContext;
 
-        public TasksService(HttpClient httpClient, ArchDbContext archDbContext)
+        public TasksService(HttpClient httpClient, ArchDbContext<MyArch> archDbContext)
         {
             this.httpClient = httpClient;
             this.archDbContext = archDbContext;
@@ -28,6 +30,12 @@ namespace WF.WebApp.Services
         /// <returns></returns>
         public async Task<string> startProcessDefinitionByIdAsync(string processDefinitionId)
         {
+            var processDef = await GetProcessDefinitionById(processDefinitionId);
+            if(processDef == null)
+            {
+                return null;
+            }
+
             StartProcessDefinitionModel model = new StartProcessDefinitionModel
             {
                 businessKey = Guid.NewGuid().ToString(),
@@ -40,9 +48,12 @@ namespace WF.WebApp.Services
             var arch = await archDbContext.Arches.FirstOrDefaultAsync(e => e.BusinessKey == model.businessKey);
             if (arch == null)
             {
-                arch = new Models.Arch
+                arch = new MyArch
                 {
                     BusinessKey = model.businessKey,
+                    ProcessDefinitionId = processDefinitionId,
+                    ProcessDefinitionName = processDef.Name,
+                    ArchNo = $"{processDef.Name} {DateTime.Now.Year} 号",
                     Version = 0
                 };
 
@@ -55,19 +66,40 @@ namespace WF.WebApp.Services
             return text;
         }
 
+
         /// <summary>
-        /// 通过id获取任务
+        /// 获取处理定义列表
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<TaskModel> GetTaskByIdAsync(string id)
+        public async Task<List<ProcessDefinitionModel>> GetProcessDefinitions()
         {
-            var result = await httpClient.GetAsync($"/getTaskById?id={id}");
+            var result = await httpClient.GetAsync($"/getProcessDefinitions");
             if (result.IsSuccessStatusCode)
             {
                 var str = await result.Content.ReadAsStringAsync();
-                var task = Newtonsoft.Json.JsonConvert.DeserializeObject<TaskModel>(str);
-                return task;
+                var processDefinitions = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ProcessDefinitionModel>>(str);
+                return processDefinitions;
+            }
+            return null;
+        }
+
+
+
+
+        /// <summary>
+        /// 通过id获取处理定义
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<ProcessDefinitionModel> GetProcessDefinitionById(string processDefinitionId)
+        {
+            var result = await httpClient.GetAsync($"/getProcessDefinitionById?processDefinitionId={processDefinitionId}");
+            if (result.IsSuccessStatusCode)
+            {
+                var str = await result.Content.ReadAsStringAsync();
+                var processDefinition = Newtonsoft.Json.JsonConvert.DeserializeObject<ProcessDefinitionModel>(str);
+                return processDefinition;
             }
             return null;
         }
@@ -95,7 +127,7 @@ namespace WF.WebApp.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<List<TaskModel>> GetTasks()
+        public async Task<List<TaskModel>> GetTodoTasksAsync()
         {
             var result = await httpClient.GetAsync($"/getTasks");
             if (result.IsSuccessStatusCode)
@@ -112,7 +144,7 @@ namespace WF.WebApp.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<List<TaskModel>> DoneTasks()
+        public async Task<List<TaskModel>> GetDoneTasksAsync()
         {
             var result = await httpClient.GetAsync($"/doneTasks");
             if (result.IsSuccessStatusCode)
@@ -125,6 +157,17 @@ namespace WF.WebApp.Services
         }
 
 
+        public async Task<TaskModel> GetTodoTaskByIdAsync(string id)
+        {
+            var result = await httpClient.GetAsync($"/getTaskById?id={id}");
+            if (result.IsSuccessStatusCode)
+            {
+                var str = await result.Content.ReadAsStringAsync();
+                var ls = Newtonsoft.Json.JsonConvert.DeserializeObject<TaskModel>(str);
+                return ls;
+            }
+            return null;
+        }
 
         /// <summary>
         /// 完成任务
@@ -132,7 +175,7 @@ namespace WF.WebApp.Services
         /// <param name="model"></param>
         public async Task<string> CompleteTaskAsync(CompleteTaskModel model)
         {
-            var task = await GetTaskByIdAsync(model.TaskId);
+            var task = await GetTodoTaskByIdAsync(model.TaskId);
             if (task == null)
             {
                 return null;
@@ -145,6 +188,7 @@ namespace WF.WebApp.Services
                 arch.FlowStatus = task.FlowStatus;
                 arch.Title = model.Title;
                 arch.Version = arch.Version + 1;
+                arch.ArchNo = model.ArchNo;
 
                 await archDbContext.SaveChangesAsync();
             }

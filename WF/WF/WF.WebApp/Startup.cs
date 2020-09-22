@@ -11,7 +11,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
-using WF.WebApp.Data;
+using WF.Core;
+using WF.Core.Data;
+using WF.WebApp.Models;
 using WF.WebApp.Services;
 
 namespace WF.WebApp
@@ -28,8 +30,7 @@ namespace WF.WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContextPool<ArchDbContext>(ctx => ctx.UseSqlite("data source=arch.db"));
-            services.BuildServiceProvider().GetService<ArchDbContext>().Database.EnsureCreated();
+            services.AddArchManager<MyArch>();
 
             services.AddControllers();
             services.AddRazorPages().AddRazorRuntimeCompilation();
@@ -43,8 +44,8 @@ namespace WF.WebApp
             });
 
             services.AddHttpClient<TasksService>(ctx => ctx.BaseAddress = new Uri("http://127.0.0.1:8080"));
-
-           
+            services.AddCors();
+            services.AddOpenApiDocument();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,6 +64,8 @@ namespace WF.WebApp
 
             app.UseRouting();
 
+            app.UseCors(e => e.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -70,6 +73,10 @@ namespace WF.WebApp
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
             });
+
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
+            app.UseReDoc();
         }
     }
 }

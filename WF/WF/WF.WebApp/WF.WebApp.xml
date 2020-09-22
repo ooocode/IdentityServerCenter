@@ -1,0 +1,144 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WF.WebApp</name>
+    </assembly>
+    <members>
+        <member name="M:WF.WebApp.Controllers.ArchsController.GetTodoTasksAsync">
+            <summary>
+            待办列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WF.WebApp.Controllers.ArchsController.GetTodoTaskByIdAsync(System.String)">
+            <summary>
+            通过id获取待办
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WF.WebApp.Controllers.ArchsController.GetDoneTasksAsync">
+            <summary>
+            待办列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WF.WebApp.Controllers.ArchsController.GetDoneTaskByIdAsync(System.String)">
+            <summary>
+            通过id获取待办
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WF.WebApp.Controllers.ArchsController.AddArchAttachmentAsync(System.String)">
+            <summary>
+            上传附件
+            </summary>
+            <param name="businessKey"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WF.WebApp.Controllers.ArchsController.DeleteArchAttachmentAsync(System.String,System.Int32)">
+            <summary>
+            删除附件
+            </summary>
+            <param name="businessKey"></param>
+            <returns></returns>
+        </member>
+        <member name="P:WF.WebApp.Models.MyArch.Title">
+            <summary>
+            标题
+            </summary>
+        </member>
+        <member name="P:WF.WebApp.Models.MyArch.ArchNo">
+            <summary>
+            文号
+            </summary>
+        </member>
+        <member name="M:WF.WebApp.Services.TasksService.startProcessDefinitionByIdAsync(System.String)">
+            <summary>
+            启动处理流程
+            </summary>
+            <param name="processDefinitionId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WF.WebApp.Services.TasksService.GetProcessDefinitions">
+            <summary>
+            获取处理定义列表
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WF.WebApp.Services.TasksService.GetProcessDefinitionById(System.String)">
+            <summary>
+            通过id获取处理定义
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WF.WebApp.Services.TasksService.GetProcessModelXml(System.String)">
+            <summary>
+            获取处理定义xml
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WF.WebApp.Services.TasksService.GetTodoTasksAsync">
+            <summary>
+            获取未办任务
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WF.WebApp.Services.TasksService.GetDoneTasksAsync">
+            <summary>
+            获取已办办任务
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WF.WebApp.Services.TasksService.CompleteTaskAsync(WF.WebApp.ViewModels.CompleteTaskModel)">
+            <summary>
+            完成任务
+            </summary>
+            <param name="model"></param>
+        </member>
+        <member name="P:WF.WebApp.ViewModels.CompleteTaskModel.TaskId">
+            <summary>
+            任务id
+            </summary>
+        </member>
+        <member name="P:WF.WebApp.ViewModels.CompleteTaskModel.Dispose">
+            <summary>
+            dispose
+            </summary>
+        </member>
+        <member name="P:WF.WebApp.ViewModels.CompleteTaskModel.Title">
+            <summary>
+            标题
+            </summary>
+        </member>
+        <member name="P:WF.WebApp.ViewModels.CompleteTaskModel.RecvUserList">
+            <summary>
+            接收用户列表
+            </summary>
+        </member>
+        <member name="P:WF.WebApp.ViewModels.TaskModel.FlowStatus">
+            <summary>
+            当前流程状态
+            </summary>
+        </member>
+        <member name="P:WF.WebApp.ViewModels.TaskModel.CreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:WF.WebApp.ViewModels.TaskModel.TargetGatewayConditions">
+            <summary>
+            目标网关条件
+            </summary>
+        </member>
+        <member name="P:WF.WebApp.ViewModels.TaskModel.Outgoings">
+            <summary>
+            外向
+            </summary>
+        </member>
+    </members>
+</doc>

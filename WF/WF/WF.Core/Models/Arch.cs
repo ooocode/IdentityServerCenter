@@ -1,14 +1,14 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WF.WebApp.Models
+namespace WF.Core.Models
 {
     public class Arch
     {
-        [Key]
         public int Id { get; set; }
 
         /// <summary>
@@ -16,16 +16,22 @@ namespace WF.WebApp.Models
         /// </summary>
         public string FlowStatus  { get; set; }
 
-    
         /// <summary>
-        /// 标题
-        /// </summary>
-        public string Title  { get; set; }
-
-        /// <summary>
-        /// 业务编号
+        /// 唯一业务编号
         /// </summary>
         public string BusinessKey { get; set; }
+
+        /// <summary>
+        /// 处理定义id
+        /// </summary>
+        public string ProcessDefinitionId { get; set; }
+
+
+        /// <summary>
+        /// 处理定义名称
+        /// </summary>
+        public string ProcessDefinitionName { get; set; }
+
 
         /// <summary>
         /// 版本号

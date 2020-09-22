@@ -1,7 +1,7 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "待办";
 }
 
 @{
@@ -17,12 +17,12 @@
 
         <tbody>
             @{
-                var tasks = await taskService.GetTasks();
+                var tasks = await taskService.GetTodoTasksAsync();
                 foreach (var task in tasks)
                 {
-                    var arch = await archDbContext.Arches.FirstOrDefaultAsync(e => e.BusinessKey == task.BusinessKey);
+                    var arch = await ArchManager.GetArchByBusinessKeyAsync(task.BusinessKey);
                     <tr>
-                        <td><a asp-page="/FormPages/GWSXSP" asp-route-id="@task.Id">@(arch?.Title??task.FlowStatus)</a></td>
+                        <td><a asp-page="/FormPages/GWSXSP" asp-route-id="@task.Id">【@arch?.ProcessDefinitionName】@(arch?.Title??task.FlowStatus)</a></td>
                         <td> @task.UserName</td>
                         <td> @task.FlowStatus</td>
                         <td>@task.CreateTime</td>
