@@ -7,18 +7,21 @@ using ManagerCenter.UserManager.Abstractions.Models.UserManagerModels;
 namespace ManagerCenter.UserManager.EntityFrameworkCore.Data
 {
     //TUser, TRole, TKey, TUserClaim, TUserRole, TUserLogin, TRoleClaim, TUserToken
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, 
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser,
          ApplicationRole,
          string,
-         ApplicationIdentityUserClaim, IdentityUserRole<string>, 
-         IdentityUserLogin<string>, 
-         ApplicationIdentityRoleClaim, 
+         ApplicationIdentityUserClaim, IdentityUserRole<string>,
+         IdentityUserLogin<string>,
+         ApplicationIdentityRoleClaim,
          IdentityUserToken<string>>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
+
+        public DbSet<Department> Departments { get; set; }
+        public DbSet<UserDepartment> UserDepartments { get; set; }
 
         /// <summary>
         /// 学校班级
@@ -33,17 +36,17 @@ namespace ManagerCenter.UserManager.EntityFrameworkCore.Data
         /// <summary>
         /// 角色权限
         /// </summary>
-        public DbSet<RolePermisson> RolePermissons  { get; set; }
+        public DbSet<RolePermisson> RolePermissons { get; set; }
 
         /// <summary>
         /// 字典类型
         /// </summary>
-        public DbSet<DictionaryType> DictionaryTypes  { get; set; }
+        public DbSet<DictionaryType> DictionaryTypes { get; set; }
 
         /// <summary>
         /// 字典
         /// </summary>
-        public DbSet<Dictionary> Dictionaries  { get; set; }
+        public DbSet<Dictionary> Dictionaries { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -61,7 +64,7 @@ namespace ManagerCenter.UserManager.EntityFrameworkCore.Data
             //声明类型的ClientId和名称构成唯一索引
             builder.Entity<Permisson>().HasIndex(e => e.Name).IsUnique();
 
-           
+
             builder.Entity<RolePermisson>().HasKey(e => new { e.RoleId, e.PermissonId });
 
             //字典类型名称唯一

@@ -1,24 +1,41 @@
-import { ApplicationUser, UsersClient } from './../api';
+import { ApplicationUser, CreateOrUpdateUserViewModel, UsersClient } from './../api';
 import { ref } from 'vue';
 
-export default (userId:string) => {
-    let isLoding = ref(true)
+export default (userId: string | undefined) => {
+    let isLoading = ref(true)
     let user = ref<ApplicationUser>()
     let usersClient = new UsersClient()
 
-    let load = async () => {
-        isLoding.value = true
+    let Load = async () => {
 
-        try {
-            let res = await usersClient.getUserById(userId)
-            user.value = res.rows
-        } catch (ex) {
-            console.log(ex)
+        isLoading.value = true
+        if (userId) {
+            try {
+                let res = await usersClient.getUserById(userId)
+                user.value = res
+            } catch (ex) {
+                console.log(ex)
+            }
         }
-        isLoding.value = false
+
+        if (!user.value) {
+            user.value = new ApplicationUser()
+        }
+
+
+        isLoading.value = false
+    }
+
+    let CreateOrUpdate = async () => {
+        let vm = new CreateOrUpdateUserViewModel()
+        vm.id = user?.value?.id;
+        vm.name = user?.value?.name ?? "";
+        vm.userName = user?.value?.userName ?? ""
+        vm.password = user?.value?.password ?? ""
+        await usersClient.createOrUpdateUser(vm)
     }
 
     return {
-        isLoding, users, load
+        isLoading, user, Load, CreateOrUpdate
     }
 }

@@ -3,7 +3,7 @@
     <table class="table">
       <thead>
         <tr>
-          <td>账号</td>
+          <td>角色账号</td>
           <td>姓名</td>
         </tr>
       </thead>
